@@ -1,0 +1,945 @@
+// Fonts
+@import "fonts";
+// Variables
+@import "variables";
+
+// Footer
+@import "footer";
+
+// Bootstrap
+@import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Common Css
+.divide-border-1 {
+    > * {
+        padding: 0.875rem 0;
+
+        @media (min-width: 768px) {
+            border-right: 1px solid $primary;
+
+            &:first-child,
+            &:last-child {
+                border-color: transparent;
+            }
+        }
+    }
+}
+
+.main-inner-content {
+    min-height: $main-area-height;
+}
+
+// Global anchor Link Start
+a {
+    transition: all 0.3s linear;
+}
+
+// Global anchor Link End
+// Global Container Start
+.container {
+    max-width: $container-max-size !important;
+}
+
+// Global Container End
+
+// Global Input & Select Field Start
+.form-control,
+.form-select {
+    box-shadow: $input-box-shadow;
+
+    &:focus {
+        box-shadow: $input-box-shadow;
+    }
+}
+
+// Global Input & Select Field End
+// Global Button Css Start
+.btn {
+    box-shadow: $btn-box-shadow;
+    outline: none !important;
+
+    &:focus {
+        box-shadow: none !important;
+    }
+
+    &.btn-primary {
+        color: $primary-white;
+        background: $primary-gradient;
+
+        &:hover {
+            color: $btn-link-hover-color;
+            background: $secondary-gradient;
+        }
+    }
+
+    &.btn-secondary {
+        color: $primary-white;
+        background: $secondary-gradient;
+
+        &:hover {
+            color: $btn-link-hover-color;
+            background: $primary-gradient;
+        }
+    }
+}
+
+// Global Button Css End
+//  Global Scrollbar Css Start
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: $global_corner_xl;
+    background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #6e6e6e;
+
+    &:hover {
+        border-width: 10px;
+    }
+}
+
+*::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2.375rem #979797;
+    border-radius: $global_corner_xl;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s linear;
+
+    &:hover {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.dynamic-headingStyle {
+    padding: 3px 0;
+    border-bottom: 1px solid #ddd;
+
+    &::after {
+        content: "";
+        width: 80px;
+        height: 2px;
+        background: $primary;
+        bottom: -1px;
+        z-index: 0;
+        position: absolute;
+        left: 0;
+    }
+}
+
+.card {
+    padding: 0.5rem;
+}
+
+.card-body {
+    padding: 0;
+}
+
+.card-title {
+    font-size: $card-title-font-size !important;
+
+    @media (max-width: 575px) {
+        font-size: 0.75rem !important;
+        line-height: 16px;
+    }
+}
+
+.card-img-top {
+    max-height: $card-img-height;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.card-animation {
+    transform: translate(0);
+    transition: $transition-base;
+
+    &:hover {
+        transform: translateY(5px);
+    }
+}
+
+// Hover animation
+.hover-link-animation {
+    a {
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 1px;
+            background: $primary-white;
+            transition: width 0.4s ease-in-out;
+        }
+
+        &:hover::after,
+        &.active::after {
+            width: 100%;
+        }
+    }
+}
+
+.social-links {
+    img {
+        transition: all 0.4s linear;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 767px) {
+            width: 3.125rem;
+            height: 3.125rem;
+        }
+    }
+}
+
+//  Global Scrollbar Css End
+
+// ------------------------------------------------
+// ---------------- Header css start --------------
+// ------------------------------------------------
+.main-header {
+    .navbar-collapse {
+        .navbar-nav {
+            .livetvicon {
+                a {
+                    background: $dark-warning;
+                    border-radius: 4px;
+                    padding: 0.313rem;
+
+                    &:hover {
+                        box-shadow: $yellow-box-shadow;
+                    }
+
+                    img {
+                        max-width: 1.875rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .custom-toggler {
+        border: none;
+
+        &:focus {
+            box-shadow: none !important;
+        }
+
+        .toggler-icon {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: $primary-white;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        &[aria-expanded="true"] {
+            .toggler-icon:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .toggler-icon:nth-child(2) {
+                opacity: 0;
+            }
+
+            .toggler-icon:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+    }
+}
+
+.header-bottom {
+    background: $light-grap;
+
+    .header-social-list {
+        li {
+            a {
+                span {
+                    font-size: 0.688rem;
+
+                    @media (max-width: 767px) {
+                        font-size: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.main-inner-content {
+    .live-news-bar {
+        background: $light-grap;
+        border-radius: 10px;
+
+        .news-title {
+            position: relative;
+            padding: 7px 15px;
+            margin-right: 30px;
+            min-width: 70px;
+            min-height: 50px;
+            max-width: 120px;
+            border-radius: 10px 0 0 10px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                background: $primary;
+                right: -20px;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                top: calc(50% - 3px);
+                border-radius: 50px;
+                animation: blinker 1s linear infinite;
+            }
+        }
+    }
+
+    .custom-news-card {
+        .custom-news-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+    }
+
+    .deatil-page {
+        h1 {
+            @include font-h3;
+            color: $black;
+
+            @media (max-width: 575px) {
+                font-size: 1.25rem !important;
+                line-height: 1.9rem !important;
+            }
+        }
+
+        p {
+            color: $black;
+            @include font-base;
+            margin-bottom: 15px;
+        }
+    }
+}
+
+footer {
+    @media (max-width: 575px) {
+        font-size: 0.75rem !important;
+        line-height: 16px;
+    }
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+//css resources\images\pexels-photo-225630-700x466.jpeg
+
+/* Style for the Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    /* Full viewport height */
+    background: url("/resources/images/pexels-photo-225630-700x466.jpeg")
+        no-repeat center center/cover;
+    /* Replace with your actual image path */
+}
+
+/* Dark overlay to make text more readable */
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Adjust opacity for desired darkness */
+}
+
+/* Content positioning for the text inside the hero */
+.hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Keep content above the overlay */
+}
+
+/* Custom styling for the navbar */
+.navbar {
+    transition: background-color 0.3s ease;
+}
+
+/* Make the navbar transparent initially, and solid on scroll (requires JS) */
+.navbar-dark {
+    background-color: transparent !important;
+}
+
+.btn.btn-primary {
+    color: $primary;
+    background-color: white !important;
+    border: 1px solid $primary;
+}
+
+/* Style for the active/scrolled navbar */
+.navbar.scrolled {
+    background-color: #fff !important;
+    /* Primary blue color for example */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.scrolled .nav-link {
+    color: #00004f !important;
+    /* Text color becomes black */
+}
+.navbar.scrolled .nav-link.active {
+    color: #00004f !important;
+    /* Text color becomes black */
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #ff4b04 !important;
+}
+
+.nav-link {
+    font-size: 1.3em !important;
+    color: $primary;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+    color: #ff4b04 !important;
+}
+/* Card image for tour packages */
+.card-img-top {
+    height: 200px;
+    /* Uniform height for all package images */
+    object-fit: cover;
+    /* Ensures images cover the area without distortion */
+}
+
+// Style for article cards with hover effect
+.article-card {
+    border: none;
+    /* Remove default Bootstrap border */
+    transition: all 0.3s ease;
+    /* Smooth transition for hover effects */
+}
+
+.card-destination {
+    border: none;
+    /* Remove default Bootstrap border */
+    transition: all 0.3s ease;
+}
+
+/* Hover effect: slightly lift the card and increase the shadow */
+.card-destination:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    /* Move the card up slightly */
+}
+
+.article-card:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    /* Move the card up slightly */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    /* Larger, more pronounced shadow */
+}
+
+/* Style for the "Read More" link */
+.read-more-link {
+    color: #000;
+    /* Or whatever primary color you want */
+    font-weight: 500;
+}
+
+/* Card body for the padding seen in your image */
+.article-card .card-body {
+    padding-top: 1.5rem;
+    /* Adjust as needed */
+}
+
+/* Optional: Adjust the snippet text color/size */
+.article-snippet {
+    font-size: 0.95rem;
+}
+
+/* --- FAB Container & Position --- */
+.contact-fab-container {
+    position: fixed;
+    bottom: 25px; /* Adjust vertical position */
+    right: 2px; /* Adjust horizontal position */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 1050; /* Ensure it stays above everything */
+}
+
+/* --- Main FAB Button (Purple Circle) --- */
+.fab-main {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #00004f; /* Purple color from your image */
+    color: white;
+    font-size: 30px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease;
+}
+
+/* --- Action Buttons (Phone & WhatsApp) --- */
+.fab-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 5px;
+    bottom: 66px; /* Position above the main button (56px + gap) */
+    opacity: 0; /* Initially hidden */
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Class added by JS to show actions */
+.fab-actions.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.fab-action {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s;
+}
+
+.fab-whatsapp {
+    background-color: #25d366;
+} /* WhatsApp Green */
+.fab-phone {
+    background-color: #00c853;
+} /* Phone/Call Green */
+.fab-youtube {
+    background-color: #ff0000;
+} /* YouTube Red */
+.fab-facebook {
+    background-color: #3b5998;
+} /* Facebook Blue */
+
+.fab-instagram {
+    /* Set the size and shape for a floating action button (FAB) */
+
+    /* Center the icon inside the button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* The Instagram Gradient Background */
+    background-image: linear-gradient(
+        45deg,
+        #405de6,
+        /* Blue */ #833ab4,
+        /* Purple */ #e1306c,
+        /* Red-Pink */ #fd1d1d,
+        /* Red */ #fcaf45 /* Yellow */
+    );
+}
+
+/* Set the icon color to white for contrast */
+.fab-instagram .fa-instagram {
+    color: white;
+} /* Phone/Call Green */
+
+/* --- Contact Label (The bubble with "Contact us") --- */
+.contact-label {
+    position: absolute;
+    right: 66px; /* Position to the left of the main button */
+    padding: 8px 15px;
+    background-color: #00004f;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Allows clicks to pass through when hidden */
+    white-space: nowrap;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* Arrow/Tail for the Contact Label bubble */
+.contact-label::after {
+    content: "";
+    position: absolute;
+    right: -5px; /* Adjust to align with the button */
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-left: 5px solid white;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    transform: translateY(-50%);
+}
+
+/* Show label on hover of the container */
+.contact-fab-container:hover .contact-label {
+    opacity: 1;
+    transform: translateX(-5px); /* Slide it out slightly */
+}
+
+/* Hide label when the actions are open (to make space for 'X' button) */
+.contact-fab-container.open .contact-label {
+    display: none;
+}
+
+/* Rotate the main button to show 'X' when open */
+.contact-fab-container.open .fab-main {
+    background-color: #9370db; /* Keep purple */
+    transform: rotate(
+        45deg
+    ); /* This creates the 'X' effect if your icon is a '+' */
+    /* If your icon is an actual 'X', you'd change the icon class in JS */
+}
+
+.fab-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 66px;
+
+    /* Smooth Transition for all properties (Opacity and Transform) */
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* A nice easing function */
+
+    /* Initial Hiding State */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px); /* Start 20px below its final position */
+}
+
+/* Class added by JS to show actions */
+.fab-actions.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Smoothly slide up to its final position */
+}
+
+/* Styling for the logo container and images */
+.logo-container {
+    /* Set a consistent size for the logo area */
+    width: 250px; /* Adjust as needed */
+    height: 6em; /* Adjust as needed */
+    display: flex;
+    align-items: center; /* Vertically aligns the logos in the center */
+    // justify-content: center; /* Aligns content to the start (left) */
+    padding: 0; /* Remove default padding if any */
+}
+
+.logo-container img {
+    /* Ensure both images fit within the container */
+    // max-height: 100%;
+    width: auto;
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for the fade effect */
+    position: absolute; /* Allows them to stack */
+}
+
+/* Initially, only the front logo is visible */
+.logo-container .front-logo {
+    opacity: 1;
+    visibility: visible;
+    width: 180px;
+    height: 9.5em;
+}
+
+// .logo-container .back-logo {
+//     opacity: 0;
+//     visibility: hidden;
+//     width: 150px;
+//     height: 9em;
+//     position: relative;
+// }
+
+/* When the navbar is scrolled, switch logo visibility */
+.navbar.scrolled .logo-container .front-logo {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar.scrolled .logo-container .back-logo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Ensure the navbar brand is properly aligned */
+.navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Add margin to the book now button for better spacing */
+.d-flex.align-items-center.justify-content-end {
+    margin-left: 1rem;
+}
+
+//heading line width
+.line-width {
+    width: 15%;
+}
+
+.btn:hover {
+    background-color: $primary;
+    color: $primary-white;
+}
+
+//background image attachment section
+.ameera-holidays-section {
+    /* Set the background image */
+    background-image: url("/resources/images/facts-bg.webp"); /* Replace with the actual path */
+
+    /* Key Parallax Property */
+    background-attachment: fixed;
+
+    /* Ensure the image covers the section */
+    background-size: cover;
+
+    /* Center the image */
+    background-position: center center;
+
+    /* Minimum height to make the section visible */
+    min-height: 500px;
+
+    /* Adds a dark overlay to make white text pop, like in your image */
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+
+    /* Add padding for top and bottom spacing (Bootstrap's py-5 handles this too) */
+    padding: 80px 0;
+}
+
+.facts-section {
+    background-image: url("/resources/images/facts-bg.webp");
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Custom Underline Style */
+.custom-underline {
+    width: 80px;
+    height: 3px;
+    background-color: #ff5733; /* Red color from the image */
+}
+
+/* Icon Color (since Bootstrap doesn't have a red-hot color by default) */
+.text-danger {
+    color: #ff5733 !important; /* Forces the specific red color */
+}
+
+.carousel-img-responsive {
+    /* Default height for all screens (e.g., mobile-first approach) */
+    height: 400px;
+    object-position: center;
+    /* This ensures the image covers the area without distortion */
+    object-fit: cover;
+}
+
+/* Use a Bootstrap breakpoint (e.g., min-width: 992px for 'lg' - desktop) */
+@media (min-width: 992px) {
+    .carousel-img-responsive {
+        /* Taller height for desktop views */
+        height: 800px;
+    }
+
+    .navbar-expand-lg .navbar-collapse {
+        flex-direction: column;
+    }
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+// ========================================
+// Profile Image Cropper & Dropzone Styles
+// ========================================
+
+// Dropzone container (circular profile style)
+.profile-dropzone,
+.profile-image-dropzone {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border: 3px solid #e9ecef;
+    margin: 0 auto;
+
+    &:hover {
+        border-color: $primary;
+    }
+
+    &.dropzone-active {
+        border-color: $primary;
+        background-color: rgba($primary, 0.1);
+    }
+
+    .dropzone-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .dropzone-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+        width: 100%;
+        height: 100%;
+
+        i {
+            font-size: 3rem;
+        }
+    }
+
+    .dropzone-overlay {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 38px;
+        height: 38px;
+        background-color: $primary;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+        cursor: pointer;
+        transition:
+            transform 0.2s ease,
+            background-color 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+        i {
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        &:hover {
+            transform: scale(1.1);
+            background-color: darken($primary, 10%);
+        }
+    }
+}
+
+// Cropper Modal
+#cropperModal {
+    .modal-dialog {
+        max-width: 600px;
+    }
+
+    .modal-header {
+        background-color: $primary;
+        color: white;
+        border-radius: 0;
+
+        .btn-close {
+            filter: invert(1);
+        }
+    }
+
+    .modal-body {
+        padding: 0;
+    }
+
+    .cropper-container-wrapper {
+        min-height: 300px;
+        max-height: 450px;
+        background-color: #333;
+        overflow: hidden;
+        position: relative;
+
+        #cropper-image {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+
+    .modal-footer {
+        justify-content: center;
+        gap: 1rem;
+
+        .btn {
+            min-width: 120px;
+        }
+    }
+}
+
+// Image error message
+.image-error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    background-color: #f8d7da;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+}
+
+#cropperModal {
+    .cropper-container {
+        z-index: 1;
+    }
+
+    .cropper-wrap-box,
+    .cropper-canvas,
+    .cropper-drag-box,
+    .cropper-crop-box,
+    .cropper-modal {
+        z-index: auto;
+    }
+}
