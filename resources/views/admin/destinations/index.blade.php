@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('title') Tours @endsection
+@section('title') Destinations @endsection
 @section('content')
-    @can('tour-list')
+    @can('destination-list')
         <div class="gap-2 pb-2 mb-4 d-flex align-items-center">
-            <h3 class="page-title">Tour Packages</h3>
+            <h3 class="page-title">Destinations</h3>
         </div>
         <div class="col-md-12 divide-y-1 dashboard-card-main-col">
             <div class="row">

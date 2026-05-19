@@ -57,4 +57,37 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::resource('permissions', PermissionController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+
+    // Settings
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+    // Destinations
+    Route::resource('destinations', \App\Http\Controllers\Admin\DestinationController::class);
+
+    // Tour Packages
+    Route::resource('tours', \App\Http\Controllers\Admin\TourController::class);
+
+    // Reviews
+    Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class)->only(['index', 'show', 'destroy']);
+    Route::get('/reviews/{id}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
+
+    // Gallery
+    Route::resource('galleries', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
+
+    // Blog Categories
+    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show']);
+
+    // Blog Posts
+    Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
+
+    // Enquiries
+    Route::resource('enquiries', \App\Http\Controllers\Admin\EnquiryController::class)->only(['index', 'show', 'destroy']);
+    Route::get('/enquiries/{id}/reply', [\App\Http\Controllers\Admin\EnquiryController::class, 'reply'])->name('enquiries.reply');
+});
+
+// Frontend Wishlist (auth required)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/wishlist', [\App\Http\Controllers\Front\WishlistController::class, 'index'])->name('front.wishlist');
+    Route::post('/wishlist/toggle', [\App\Http\Controllers\Front\WishlistController::class, 'toggle'])->name('front.wishlist.toggle');
 });
