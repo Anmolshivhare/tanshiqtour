@@ -19,7 +19,7 @@
                 <tr><th>Tour</th><td>{{ $review->tour->title ?? '—' }}</td></tr>
                 <tr><th>Rating</th><td>{{ $review->rating }}/5 ⭐</td></tr>
                 <tr><th>Title</th><td>{{ $review->review_title ?? '—' }}</td></tr>
-                <tr><th>Status</th><td>{!! $review->statusBadge() !!}</td></tr>
+                <tr><th>Status</th><td>{{ $review->status == 1 ? 'Active' : 'Inactive' }}</td></tr>
                 <tr><th>Date</th><td>{{ $review->created_at }}</td></tr>
             </table>
             <div class="mt-3">

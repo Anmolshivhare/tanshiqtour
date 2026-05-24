@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\DestinationDataTable;
+use App\Helpers\SlugHelper;
 use App\Helpers\UserHelper;
 use App\Http\Requests\Admin\Destination\CreateRequest;
 use App\Http\Requests\Admin\Destination\UpdateRequest;
@@ -39,8 +40,7 @@ class DestinationController extends WebController
 
     public function create()
     {
-        $statuses = $this->statusRepository->getDataOnBasisOfFilter(['module' => config('constants.common_status_name')]);
-        return view('admin.destinations.create', compact('statuses'));
+        return view('admin.destinations.create');
     }
 
     public function store(CreateRequest $request)
@@ -55,7 +55,7 @@ class DestinationController extends WebController
             }
             // Auto-generate slug if not set
             if (empty($requestData['slug'])) {
-                $requestData['slug'] = \Str::slug($requestData['name']);
+                $requestData['slug'] = SlugHelper::make($requestData['name']);
             }
             // Default status to active if not provided
             if (empty($requestData['status'])) {
@@ -65,6 +65,7 @@ class DestinationController extends WebController
                 ])->first();
                 $requestData['status'] = $status->id;
             }
+
             $this->dbObject::beginTransaction();
             $this->destinationRepository->createData($requestData);
             $this->dbObject::commit();

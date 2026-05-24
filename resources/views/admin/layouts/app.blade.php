@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" type="image/png" href="{{ Vite::asset('resources/images/logo.jpg') }}" alt="fav-icon">
+    <link rel="icon" type="image/png" href="{{ Vite::asset(config('constants.company_logo')) }}" alt="fav-icon"> 
 
     <!-- Scripts -->
     @vite(['resources/scss/admin/admin.scss', 'resources/js/admin/admin.js'])

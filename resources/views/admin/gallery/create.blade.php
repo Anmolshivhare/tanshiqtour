@@ -55,15 +55,6 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        <option value="">Select Status</option>
-                        @foreach($statuses as $s)
-                            <option value="{{ $s->id }}" {{ old('status') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
                 <div class="col-md-12">
                     <div class="form-check">
                         <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1" {{ old('is_featured') ? 'checked' : '' }}>

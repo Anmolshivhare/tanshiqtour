@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\ReviewStatus;
 use App\Traits\CommonTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,10 +29,6 @@ class Review extends Model
         'updated_by',
     ];
 
-    protected $casts = [
-        'status' => ReviewStatus::class,
-    ];
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly([
@@ -48,12 +43,12 @@ class Review extends Model
 
     public function scopeApproved($query)
     {
-        return $query->where('status', ReviewStatus::Approved);
+        return $query->where('status', 1);
     }
 
     public function scopePending($query)
     {
-        return $query->where('status', ReviewStatus::Pending);
+        return $query->where('status', 0);
     }
 
     public function tour()
@@ -69,9 +64,9 @@ class Review extends Model
     /**
      * Helper: get the badge HTML for status display in views.
      */
-    public function statusBadge(): string
-    {
-        if (!$this->status) return '<span class="badge bg-secondary">N/A</span>';
-        return '<span class="badge ' . $this->status->badgeClass() . '">' . $this->status->label() . '</span>';
-    }
+    // public function statusBadge(): string
+    // {
+    //     if (!$this->status) return '<span class="badge bg-secondary">N/A</span>';
+    //     return '<span class="badge ' . $this->status->badgeClass() . '">' . $this->status->label() . '</span>';
+    // }
 }

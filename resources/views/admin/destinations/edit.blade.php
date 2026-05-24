@@ -15,12 +15,12 @@
                 @method('PUT')
                 <div class="col-md-6">
                     <label for="name" class="form-label required">Name</label>
-                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $destination->name) }}">
+                    <input type="text" name="name" id="name" class="form-control makeSlug @error('name') is-invalid @enderror" value="{{ old('name', $destination->name) }}">
                     @error('name') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-6">
                     <label for="slug" class="form-label">Slug</label>
-                    <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $destination->slug) }}">
+                    <input type="text" name="slug" id="slug" class="form-control pageSlug" value="{{ old('slug', $destination->slug) }}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label for="country" class="form-label">Country</label>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-12">
                     <a href="{{ route('admin.destinations.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Destination</button>
+                    <button type="submit" class="btn btn-primary">{{ __('buttons.update') }} </button>
                 </div>
             </form>
         </div>

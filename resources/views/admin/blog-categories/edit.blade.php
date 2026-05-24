@@ -12,11 +12,11 @@
                 @method('PUT')
                 <div class="col-md-6">
                     <label class="form-label required">Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name', $blogCategory->name) }}">
+                    <input type="text" name="name" class="form-control makeSlug" value="{{ old('name', $blogCategory->name) }}">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Slug</label>
-                    <input type="text" name="slug" class="form-control" value="{{ old('slug', $blogCategory->slug) }}">
+                    <input type="text" name="slug" class="form-control pageSlug" value="{{ old('slug', $blogCategory->slug) }}">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Status</label>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-12">
                     <a href="{{ route('admin.blog-categories.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">{{ __('buttons.update') }}</button>
                 </div>
             </form>
         </div>

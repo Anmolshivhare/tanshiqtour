@@ -84,6 +84,14 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'blog-delete', 'parent_id' => $blogPerm->id]);
         Permission::create(['name' => 'blog-show',   'parent_id' => $blogPerm->id]);
 
+        // ── author Posts ────────────────────────────────────────────────────────────
+        $authorPerm = Permission::create(['name' => 'author-management']);
+        Permission::create(['name' => 'author-list',   'parent_id' => $authorPerm->id]);
+        Permission::create(['name' => 'author-create', 'parent_id' => $authorPerm->id]);
+        Permission::create(['name' => 'author-edit',   'parent_id' => $authorPerm->id]);
+        Permission::create(['name' => 'author-delete', 'parent_id' => $authorPerm->id]);
+        Permission::create(['name' => 'author-show',   'parent_id' => $authorPerm->id]);
+
         // ── Enquiries ─────────────────────────────────────────────────────────────
         $enquiryPerm = Permission::create(['name' => 'enquiry-management']);
         Permission::create(['name' => 'enquiry-list',   'parent_id' => $enquiryPerm->id]);

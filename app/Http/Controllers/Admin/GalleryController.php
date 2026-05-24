@@ -46,10 +46,9 @@ class GalleryController extends WebController
 
     public function create()
     {
-        $statuses     = $this->statusRepository->getDataOnBasisOfFilter(['module' => config('constants.common_status_name')]);
         $destinations = $this->destinationRepository->getForDropdown();
         $tours        = $this->tourRepository->getForDropdown();
-        return view('admin.gallery.create', compact('statuses', 'destinations', 'tours'));
+        return view('admin.gallery.create', compact('destinations', 'tours'));
     }
 
     public function store(CreateRequest $request)

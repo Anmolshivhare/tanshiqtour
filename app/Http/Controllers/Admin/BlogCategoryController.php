@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\BlogCategoryDataTable;
+use App\Helpers\SlugHelper;
 use App\Http\Requests\Admin\BlogCategory\CreateRequest;
 use App\Http\Requests\Admin\BlogCategory\UpdateRequest;
 use App\Repositories\BlogCategoryRepository;
@@ -35,8 +36,7 @@ class BlogCategoryController extends WebController
 
     public function create()
     {
-        $statuses = $this->statusRepository->getDataOnBasisOfFilter(['module' => config('constants.common_status_name')]);
-        return view('admin.blog-categories.create', compact('statuses'));
+        return view('admin.blog-categories.create');
     }
 
     public function store(CreateRequest $request)
@@ -44,7 +44,7 @@ class BlogCategoryController extends WebController
         try {
             $requestData = $this->blogCategoryRepository->getDataFromRequest($request);
             if (empty($requestData['slug'])) {
-                $requestData['slug'] = \Str::slug($requestData['name']);
+                $requestData['slug'] = SlugHelper::make($requestData['name']);
             }
             if (empty($requestData['status'])) {
                 $status = $this->statusRepository->getDataOnBasisOfFilter([

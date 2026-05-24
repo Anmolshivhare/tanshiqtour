@@ -14,12 +14,12 @@
                 @csrf
                 <div class="col-md-8">
                     <label class="form-label required">Title</label>
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
+                    <input type="text" name="title" class="form-control makeSlug @error('title') is-invalid @enderror" value="{{ old('title') }}">
                     @error('title') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Slug</label>
-                    <input type="text" name="slug" class="form-control" value="{{ old('slug') }}" placeholder="Auto-generated">
+                    <input type="text" name="slug" class="form-control pageSlug" value="{{ old('slug') }}" placeholder="Auto-generated">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Author</label>
@@ -36,15 +36,6 @@
                         <option value="">Select Category</option>
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}" {{ old('category_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        <option value="">Select Status</option>
-                        @foreach($statuses as $s)
-                            <option value="{{ $s->id }}" {{ old('status') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
                     </select>
                 </div>

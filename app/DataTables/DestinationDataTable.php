@@ -32,14 +32,19 @@ class DestinationDataTable extends DataTable
                 return view('admin.layouts.partials.dataTable-action-button', compact('editRoute', 'deleteRoute', 'viewRoute'));
             })
             ->editColumn('status', function ($row) {
-                return $row->statusName->name ?? 'N/A';
+                return $row->statusName?->name ?? 'N/A';
+            })
+            ->filterColumn('status', function ($query, $keyword) {
+                $query->whereHas('statusName', function ($statusQuery) use ($keyword) {
+                    $statusQuery->where('name', 'like', "%{$keyword}%");
+                });
             })
             ->setRowId('id');
     }
 
     public function query(Destination $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('statusName');
     }
 
     public function html(): HtmlBuilder
@@ -50,7 +55,7 @@ class DestinationDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
-            ->orderBy('3', 'desc');
+            ->orderBy('5', 'desc');
 
         $buttons = [];
         if ($userCreate) {

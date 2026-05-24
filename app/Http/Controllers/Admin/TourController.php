@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\TourDataTable;
+use App\Helpers\SlugHelper;
 use App\Helpers\UserHelper;
 use App\Http\Requests\Admin\Tour\CreateRequest;
 use App\Http\Requests\Admin\Tour\UpdateRequest;
@@ -47,9 +48,8 @@ class TourController extends WebController
 
     public function create()
     {
-        $statuses     = $this->statusRepository->getDataOnBasisOfFilter(['module' => config('constants.common_status_name')]);
         $destinations = $this->destinationRepository->getForDropdown();
-        return view('admin.tours.create', compact('statuses', 'destinations'));
+        return view('admin.tours.create', compact('destinations'));
     }
 
     public function store(CreateRequest $request)
@@ -60,7 +60,7 @@ class TourController extends WebController
                 $requestData['featured_image'] = basename(UserHelper::uploadImage($request->file('featured_image'), 'tours'));
             }
             if (empty($requestData['slug'])) {
-                $requestData['slug'] = \Str::slug($requestData['title']);
+                $requestData['slug'] = SlugHelper::make($requestData['name']);
             }
             if (empty($requestData['status'])) {
                 $status = $this->statusRepository->getDataOnBasisOfFilter([
@@ -135,9 +135,9 @@ class TourController extends WebController
                 }
             }
 
-            // Replace itinerary days
+            // Replace itinerary days (also supports deleting all days)
+            $this->itineraryDayRepository->deleteByTourId((int) $id);
             if ($request->has('itinerary') && is_array($request->input('itinerary'))) {
-                $this->itineraryDayRepository->deleteByTourId((int) $id);
                 foreach ($request->input('itinerary') as $day) {
                     if (!empty($day['title'])) {
                         $day['tour_id'] = $id;

@@ -14,12 +14,12 @@
                 @csrf
                 <div class="col-md-6">
                     <label for="name" class="form-label required">Name</label>
-                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Destination name">
+                    <input type="text" name="name" id="name" class="form-control makeSlug @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Destination name">
                     @error('name') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-6">
                     <label for="slug" class="form-label">Slug</label>
-                    <input type="text" name="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}" placeholder="Auto-generated if empty">
+                    <input type="text" name="slug" id="slug" class="form-control pageSlug @error('slug') is-invalid @enderror" value="{{ old('slug') }}" placeholder="Auto-generated if empty" readonly>
                     @error('slug') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-4">
@@ -34,15 +34,7 @@
                     <label for="city" class="form-label">City</label>
                     <input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}" placeholder="City">
                 </div>
-                <div class="col-md-6">
-                    <label for="status" class="form-label">Status</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">Select Status</option>
-                        @foreach($statuses as $s)
-                            <option value="{{ $s->id }}" {{ old('status') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 <div class="col-md-6">
                     <label for="featured_image" class="form-label">Featured Image</label>
                     <input type="file" name="featured_image" id="featured_image" class="form-control" accept="image/*">
@@ -57,11 +49,11 @@
                 </div>
                 <div class="col-md-12">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="5">{{ old('description') }}</textarea>
+                    <textarea name="description" id="description" class="form-control" rows="5" placeholder="Long Description">{{ old('description') }}</textarea>
                 </div>
                 <div class="col-12">
                     <a href="{{ route('admin.destinations.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Create Destination</button>
+                    <button type="submit" class="btn btn-primary">{{ __('buttons.create') }}</button>
                 </div>
             </form>
         </div>

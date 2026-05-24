@@ -120,19 +120,9 @@ if ($(".editor").length) {
             })
             .catch((error) => console.error(error));
     });
-
-    // script for making a slug for page/
-    $(".makeSlug").on("blur", function () {
-        let title = $(this).val().trim();
-        let slug = title
-            .toLowerCase()
-            .replace(/\s+/g, "-") // replace all spaces/tabs with "-"
-            .replace(/[^\w-]+/g, "") // remove non-word chars except "-"
-            .replace(/-+/g, "-"); // collapse multiple dashes
-        console.log(slug);
-        $(".pageSlug").val(slug);
-    });
 }
+
+
 
 /**Sweet alert on delete button
  * code start */
@@ -285,5 +275,102 @@ $(function () {
         $("#filter-form")[0].reset();
         $("#daterange").val("");
         dataTable.ajax.reload();
+    });
+
+});
+
+
+// Generic slug auto-generation
+$(function () {
+    const toSlug = (value) =>
+        value
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/[^\w\s-]+/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+
+    if (!$(".makeSlug").length || !$(".pageSlug").length) return;
+
+    $(".makeSlug").on("input blur", function () {
+        $(".pageSlug").val(toSlug($(this).val() || ""));
+    });
+
+    if (!$(".pageSlug").val() && $(".makeSlug").val()) {
+        $(".pageSlug").val(toSlug($(".makeSlug").val()));
+    }
+});
+
+// Tour itinerary add/remove days
+$(function () {
+    const $container = $("#itinerary-container");
+    const $addBtn = $("#add-day-btn");
+    if (!$container.length || !$addBtn.length) return;
+
+    const dayCardTemplate = (index, dayNumber) => `
+        <div class="itinerary-day card mb-3 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Day ${dayNumber}</h6>
+                <button type="button" class="btn btn-outline-danger btn-sm remove-day-btn">Remove</button>
+            </div>
+            <input type="hidden" name="itinerary[${index}][day_number]" value="${dayNumber}">
+            <div class="row g-2">
+                <div class="col-md-6"><input type="text" name="itinerary[${index}][title]" class="form-control" placeholder="Day title"></div>
+                <div class="col-md-6"><input type="text" name="itinerary[${index}][accommodation]" class="form-control" placeholder="Accommodation"></div>
+                <div class="col-md-6"><input type="text" name="itinerary[${index}][meals_included]" class="form-control" placeholder="Meals (B/L/D)"></div>
+                <div class="col-12"><textarea name="itinerary[${index}][description]" class="form-control" rows="2" placeholder="Day description"></textarea></div>
+            </div>
+        </div>`;
+
+    function ensureRemoveButtons() {
+        $container.find(".itinerary-day").each(function () {
+            const $card = $(this);
+            const $heading = $card.find("h6").first();
+            if (!$card.find(".remove-day-btn").length) {
+                if (!$heading.parent().hasClass("d-flex")) {
+                    $heading.wrap('<div class="d-flex justify-content-between align-items-center mb-2"></div>');
+                }
+                $heading.after('<button type="button" class="btn btn-outline-danger btn-sm remove-day-btn">Remove</button>');
+            }
+        });
+    }
+
+    function reindexDays() {
+        $container.find(".itinerary-day").each(function (index) {
+            const dayNumber = index + 1;
+            const $card = $(this);
+            $card.find("h6").first().text(`Day ${dayNumber}`);
+
+            $card.find("input, textarea, select").each(function () {
+                const $field = $(this);
+                const fieldName = $field.attr("name");
+                if (!fieldName) return;
+                $field.attr("name", fieldName.replace(/itinerary\[\d+\]/, `itinerary[${index}]`));
+            });
+
+            const $dayNumberField = $card.find('input[name^="itinerary["][name$="[day_number]"]').first();
+            if ($dayNumberField.length) {
+                $dayNumberField.val(dayNumber);
+            }
+        });
+    }
+
+    ensureRemoveButtons();
+    reindexDays();
+
+    $addBtn.on("click", function () {
+        const dayNumber = $container.find(".itinerary-day").length + 1;
+        const index = dayNumber - 1;
+        $container.append(dayCardTemplate(index, dayNumber));
+    });
+
+    $container.on("click", ".remove-day-btn", function () {
+        $(this).closest(".itinerary-day").remove();
+        reindexDays();
+    });
+
+    $container.closest("form").on("submit", function () {
+        reindexDays();
     });
 });

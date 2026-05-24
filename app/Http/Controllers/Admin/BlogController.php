@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\BlogDataTable;
+use App\Helpers\DateHelper;
+use App\Helpers\SlugHelper;
 use App\Helpers\UserHelper;
 use App\Http\Requests\Admin\Blog\CreateRequest;
 use App\Http\Requests\Admin\Blog\UpdateRequest;
@@ -40,19 +42,35 @@ class BlogController extends WebController
         $this->middleware(['permission:blog-show'],   ['only' => ['show']]);
     }
 
+    /**
+     * Display a listing of the blog posts.
+     *
+     * @param BlogDataTable $dataTable
+     * @return \Illuminate\Http\Response
+     */
     public function index(BlogDataTable $dataTable)
     {
         return $dataTable->render('admin.blog.index');
     }
 
+    /**
+     * Show the form for creating a new blog post.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        $statuses   = $this->statusRepository->getDataOnBasisOfFilter(['module' => config('constants.common_status_name')]);
-        $authors    = $this->authorRepository->getAllData()->pluck('name', 'id');
+        $authors    = $this->authorRepository->getActiveAuthors();
         $categories = $this->blogCategoryRepository->getForDropdown();
-        return view('admin.blog.create', compact('statuses', 'authors', 'categories'));
+        return view('admin.blog.create', compact('authors', 'categories'));
     }
 
+    /**
+     * Store a newly created blog post in storage.
+     *
+     * @param CreateRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(CreateRequest $request)
     {
         try {
@@ -61,10 +79,10 @@ class BlogController extends WebController
                 $requestData['featured_image'] = basename(UserHelper::uploadImage($request->file('featured_image'), 'blogs'));
             }
             if (empty($requestData['slug'])) {
-                $requestData['slug'] = \Str::slug($requestData['title']);
+                $requestData['slug'] = SlugHelper::make($requestData['title']);
             }
             if (!empty($requestData['published_at'])) {
-                $requestData['published_at'] = \Carbon\Carbon::parse($requestData['published_at']);
+                $requestData['published_at'] = DateHelper::formatDateTime($requestData['published_at']);
             }
             if (empty($requestData['status'])) {
                 $status = $this->statusRepository->getDataOnBasisOfFilter([
@@ -83,12 +101,24 @@ class BlogController extends WebController
         }
     }
 
+    /**
+     * Display the specified blog post.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
         $blog = $this->blogRepository->getDataById(decrypt($id));
         return view('admin.blog.show', compact('blog'));
     }
 
+    /**
+     * Show the form for editing the specified blog post.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $blog       = $this->blogRepository->getDataById(decrypt($id));
@@ -98,6 +128,13 @@ class BlogController extends WebController
         return view('admin.blog.edit', compact('blog', 'statuses', 'authors', 'categories'));
     }
 
+    /**
+     * Update the specified blog post in storage.
+     *
+     * @param UpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(UpdateRequest $request, $id)
     {
         try {
@@ -108,7 +145,7 @@ class BlogController extends WebController
                 $requestData['featured_image'] = basename(UserHelper::uploadImage($request->file('featured_image'), 'blogs'));
             }
             if (!empty($requestData['published_at'])) {
-                $requestData['published_at'] = \Carbon\Carbon::parse($requestData['published_at']);
+                $requestData['published_at'] = DateHelper::formatDateTime($requestData['published_at']);
             }
             $this->dbObject::beginTransaction();
             $this->blogRepository->updateData($id, $requestData);
@@ -120,6 +157,12 @@ class BlogController extends WebController
         }
     }
 
+    /**
+     * Remove the specified blog post from storage.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         try {

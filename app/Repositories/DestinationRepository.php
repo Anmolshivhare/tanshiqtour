@@ -51,6 +51,6 @@ class DestinationRepository extends BaseRepository
      */
     public function getForDropdown(): array
     {
-        return $this->model->pluck('name', 'id')->toArray();
+        return $this->model->active()->pluck('name', 'id')->toArray();
     }
 }

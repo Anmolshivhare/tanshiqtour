@@ -32,15 +32,15 @@ class ReviewController extends WebController
         return view('admin.reviews.show', compact('review'));
     }
 
-    public function approve($id)
-    {
-        try {
-            $this->reviewRepository->updateData(decrypt($id), ['status' => ReviewStatus::Approved->value]);
-            return $this->successAjaxResponse($this->indexRouteName, 'Review approved successfully.');
-        } catch (Exception $exception) {
-            return $this->errorAjaxResponse($exception);
-        }
-    }
+    // public function approve($id)
+    // {
+    //     try {
+    //         $this->reviewRepository->updateData(decrypt($id), ['status' => ReviewStatus::Approved->value]);
+    //         return $this->successAjaxResponse($this->indexRouteName, 'Review approved successfully.');
+    //     } catch (Exception $exception) {
+    //         return $this->errorAjaxResponse($exception);
+    //     }
+    // }
 
     public function destroy($id)
     {

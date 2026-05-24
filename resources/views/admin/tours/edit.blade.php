@@ -16,12 +16,12 @@
                 <h5 class="col-12 border-bottom pb-2">Basic Information</h5>
                 <div class="col-md-6">
                     <label class="form-label required">Tour Title</label>
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $tour->title) }}">
+                    <input type="text" name="title" class="form-control makeSlug @error('title') is-invalid @enderror" value="{{ old('title', $tour->title) }}">
                     @error('title') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Slug</label>
-                    <input type="text" name="slug" class="form-control" value="{{ old('slug', $tour->slug) }}">
+                    <input type="text" name="slug" class="form-control pageSlug" value="{{ old('slug', $tour->slug) }}">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Location</label>
@@ -74,30 +74,37 @@
                 </div>
 
                 <h5 class="col-12 border-bottom pb-2 mt-3">Itinerary Days</h5>
+                @php
+                    $oldItineraryRows = old('itinerary');
+                    if (is_array($oldItineraryRows) && !empty($oldItineraryRows)) {
+                        $itineraryRows = array_values($oldItineraryRows);
+                    } else {
+                        $itineraryRows = $tour->itineraryDays->map(function ($day) {
+                            return [
+                                'title' => $day->title,
+                                'accommodation' => $day->accommodation,
+                                'meals_included' => $day->meals_included,
+                                'description' => $day->description,
+                            ];
+                        })->toArray();
+                    }
+                    if (empty($itineraryRows)) {
+                        $itineraryRows = [[]];
+                    }
+                @endphp
                 <div class="col-12" id="itinerary-container">
-                    @forelse($tour->itineraryDays as $i => $day)
+                    @foreach($itineraryRows as $i => $day)
                     <div class="itinerary-day card mb-3 p-3">
-                        <h6>Day {{ $day->day_number }}</h6>
-                        <input type="hidden" name="itinerary[{{ $i }}][day_number]" value="{{ $day->day_number }}">
+                        <h6>Day {{ $i + 1 }}</h6>
+                        <input type="hidden" name="itinerary[{{ $i }}][day_number]" value="{{ $i + 1 }}">
                         <div class="row g-2">
-                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][title]" class="form-control" value="{{ $day->title }}" placeholder="Day title"></div>
-                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][accommodation]" class="form-control" value="{{ $day->accommodation }}" placeholder="Accommodation"></div>
-                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][meals_included]" class="form-control" value="{{ $day->meals_included }}" placeholder="Meals (B/L/D)"></div>
-                            <div class="col-12"><textarea name="itinerary[{{ $i }}][description]" class="form-control" rows="2">{{ $day->description }}</textarea></div>
+                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][title]" class="form-control" value="{{ $day['title'] ?? '' }}" placeholder="Day title"></div>
+                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][accommodation]" class="form-control" value="{{ $day['accommodation'] ?? '' }}" placeholder="Accommodation"></div>
+                            <div class="col-md-6"><input type="text" name="itinerary[{{ $i }}][meals_included]" class="form-control" value="{{ $day['meals_included'] ?? '' }}" placeholder="Meals (B/L/D)"></div>
+                            <div class="col-12"><textarea name="itinerary[{{ $i }}][description]" class="form-control" rows="2">{{ $day['description'] ?? '' }}</textarea></div>
                         </div>
                     </div>
-                    @empty
-                    <div class="itinerary-day card mb-3 p-3">
-                        <h6>Day 1</h6>
-                        <input type="hidden" name="itinerary[0][day_number]" value="1">
-                        <div class="row g-2">
-                            <div class="col-md-6"><input type="text" name="itinerary[0][title]" class="form-control" placeholder="Day title"></div>
-                            <div class="col-md-6"><input type="text" name="itinerary[0][accommodation]" class="form-control" placeholder="Accommodation"></div>
-                            <div class="col-md-6"><input type="text" name="itinerary[0][meals_included]" class="form-control" placeholder="Meals (B/L/D)"></div>
-                            <div class="col-12"><textarea name="itinerary[0][description]" class="form-control" rows="2" placeholder="Day description"></textarea></div>
-                        </div>
-                    </div>
-                    @endforelse
+                    @endforeach
                 </div>
                 <div class="col-12">
                     <button type="button" class="btn btn-outline-secondary btn-sm" id="add-day-btn">+ Add Day</button>
@@ -105,29 +112,10 @@
 
                 <div class="col-12 mt-3">
                     <a href="{{ route('admin.tours.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Tour</button>
+                    <button type="submit" class="btn btn-primary">{{ __('buttons.update') }}</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 @endsection
-@push('scripts')
-<script>
-    let dayCount = {{ $tour->itineraryDays->count() ?: 1 }};
-    document.getElementById('add-day-btn').addEventListener('click', function () {
-        const idx = dayCount++;
-        document.getElementById('itinerary-container').insertAdjacentHTML('beforeend', `
-            <div class="itinerary-day card mb-3 p-3">
-                <h6>Day ${idx + 1}</h6>
-                <input type="hidden" name="itinerary[${idx}][day_number]" value="${idx + 1}">
-                <div class="row g-2">
-                    <div class="col-md-6"><input type="text" name="itinerary[${idx}][title]" class="form-control" placeholder="Day title"></div>
-                    <div class="col-md-6"><input type="text" name="itinerary[${idx}][accommodation]" class="form-control" placeholder="Accommodation"></div>
-                    <div class="col-md-6"><input type="text" name="itinerary[${idx}][meals_included]" class="form-control" placeholder="Meals (B/L/D)"></div>
-                    <div class="col-12"><textarea name="itinerary[${idx}][description]" class="form-control" rows="2" placeholder="Day description"></textarea></div>
-                </div>
-            </div>`);
-    });
-</script>
-@endpush
