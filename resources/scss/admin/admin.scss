@@ -144,6 +144,90 @@ a {
     }
 }
 
+.admin-login-page {
+    min-height: 100vh;
+    height: auto;
+    padding: 2.5rem 0;
+    background: linear-gradient(180deg, #f4f7fb 0%, #eef2f8 100%);
+
+    .login-shell {
+        gap: 1.75rem;
+    }
+
+    .login-logo-wrap {
+        margin-bottom: 0;
+    }
+
+    .login-logo {
+        max-width: 250px;
+        width: 100%;
+        height: auto;
+    }
+
+    .login-card {
+        background: #ffffff;
+        box-shadow: 0 16px 42px rgba(20, 38, 90, 0.12) !important;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .login-title {
+        margin: 0 0 1rem;
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .login-form {
+        .form-label {
+            font-weight: 600;
+            color: #223150;
+            margin-bottom: 0.35rem;
+        }
+
+        .form-control {
+            min-height: 48px;
+            background-color: #ffffff;
+            border-color: #d9deea;
+
+            &:focus {
+                border-color: #2d56c8;
+            }
+        }
+
+        .login-pass-btn {
+            min-width: 50px;
+            border-color: #d9deea;
+            color: #2d56c8;
+            background-color: #ffffff;
+        }
+
+        .btn-primary {
+            min-height: 48px;
+            font-weight: 700;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .admin-login-page {
+        padding: 1.25rem 0;
+
+        .login-logo {
+            max-width: 280px;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .login-title {
+            font-size: 1.7rem;
+        }
+    }
+}
+
 //  Global Scrollbar
 *::-webkit-scrollbar,
 *::-webkit-scrollbar-thumb {
@@ -384,6 +468,9 @@ a {
                     transition: opacity 0.3s ease;
                 }
                 .accordion-button {
+                    i {
+                        color: $warning;
+                    }
                     &.collapsed {
                         background-color: transparent;
                     }
@@ -403,6 +490,12 @@ a {
                                 border: 0;
                             }
                         }
+                    }
+                }
+
+                .sidebar-menu-links {
+                    i {
+                        color: $warning;
                     }
                 }
             }

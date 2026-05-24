@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
-    {{-- <link rel="icon" type="image/png" href="{{ Vite::asset('resources/images/fav-icon.webp') }}" alt="fav-icon"> --}}
+    <link rel="icon" type="image/png" href="{{ Vite::asset(config('constants.company_logo')) }}" alt="fav-icon"> 
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

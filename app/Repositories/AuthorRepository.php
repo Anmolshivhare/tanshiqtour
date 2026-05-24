@@ -23,6 +23,9 @@ class AuthorRepository extends BaseRepository
     {
         return $request->only([
             'name',
+            'email',
+            'bio',
+            'profile_image',
             'status',
         ]);
     }
@@ -32,6 +35,6 @@ class AuthorRepository extends BaseRepository
      */
     public function getActiveAuthors()
     {
-        return $this->model->activeAuthors()->get();
+        return $this->model->active()->pluck('name', 'id')->toArray();
     }
 }

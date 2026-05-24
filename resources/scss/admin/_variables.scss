@@ -43,11 +43,11 @@ $white: #ffffff;
 $primary-white: #ffffff; //used
 $light: #f6f6f6; //used
 $dark: #454545; //used
-$primary: #0f40e3; //used
+$primary: #022179; // brand primary blue
 $secondary: #353c48; //used
 
 $primary-text: #3f4254;
-$primary-gradient: linear-gradient(360.02deg, #0f72e3 2.02%, #0f24e3 100%);
+$primary-gradient: linear-gradient(360.02deg, #022179 2.02%, #0330aa 100%);
 
 $secondary-bg: #181f2c; //used
 $secondary-gradient: linear-gradient(95.02deg, #313f4e 7.02%, #313f4e 95.7%);
@@ -56,7 +56,7 @@ $placeholder-color: #ababab;
 $profile-text-color: #8c8c8c;
 $success: #2ace58;
 $green: green;
-$warning: #ffc107;
+$warning: #ffbe00; // brand accent yellow
 $error: #ff0000;
 $danger: $error;
 $info: #2a7fce;
@@ -127,11 +127,11 @@ $btn-padding-y: 0.6rem;
 $btn-padding-x: 2.5rem;
 $btn-font-family: $font-family-sans-serif;
 $btn-font-size: 0.875rem;
-$btn-link-color: $primary-white;
-$btn-link-hover-color: $primary-white;
-$btn-primary-color: $primary-white;
-$btn-bg: $primary; //used
-$btn-gradient: linear-gradient(95.02deg, #5c5524 7.02%, #5c5524 95.7%); //used
+$btn-link-color: $primary;
+$btn-link-hover-color: $white;
+$btn-primary-color: $primary;
+$btn-bg: $warning; // brand accent button background
+$btn-gradient: linear-gradient(95.02deg, #ffbe00 7.02%, #e3a900 95.7%);
 $btn-box-shadow: 0px 0px 0.25rem 0px rgba(0, 0, 0, 0.25);
 $btn-border-radius: 0.25rem;
 $btn-transition: all 0.3s linear;

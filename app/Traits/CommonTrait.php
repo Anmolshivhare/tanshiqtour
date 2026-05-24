@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use App\Helpers\UserHelper;
 use App\Models\Status;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait CommonTrait
@@ -88,5 +89,15 @@ trait CommonTrait
     public function statusName(): BelongsTo
     {
         return $this->belongsTo(Status::class, 'status');
+    }
+
+     /**
+     * Scope a query to only include active records.
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->whereHas('statusName', function ($query) {
+            $query->where('name', config('constants.active_status_name'));
+        });
     }
 }

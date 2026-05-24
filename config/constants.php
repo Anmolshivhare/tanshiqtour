@@ -34,7 +34,7 @@ return [
             'label' => 'Inactive'
         ],
     ],
-    'company_logo' => 'resources/images/logo.jpg',
+    'company_logo' => 'resources/images/admin_logo.png', 
     'default_image' => 'resources/images/user-avtar.svg',
 
     // Tour configuration

@@ -4,27 +4,27 @@
 @endsection
 
 @section('content')
-    <section class="login-sec">
+    <section class="login-sec admin-login-page">
         <div class="container">
-            <div class="row justify-content-center flex-column align-items-center">
-                <div class="mb-4 col-xl-4 col-lg-6">
-                    <div class="text-center d-block card-image">
+            <div class="row justify-content-center flex-column align-items-center login-shell">
+                <div class="col-xl-5 col-lg-6 col-md-8">
+                    <div class="text-center d-block card-image login-logo-wrap">
                         @if (!empty($settingData->admin_panel_logo_img))
                             <img src="{{ asset('storage/setting_images/' . $settingData->admin_panel_logo_img) }}" alt="logo"
-                                class="img-fluid" />
+                                class="img-fluid login-logo" />
                         @else
-                            <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="logo" class="img-fluid" />
+                            <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="logo" class="img-fluid login-logo" />
                         @endif
 
                     </div>
                 </div>
 
-                <div class="col-xl-6 col-xxl-4 col-lg-8">
-                    <div class="shadow-sm card rounded-1">
+                <div class="col-xl-5 col-lg-6 col-md-8">
+                    <div class="shadow-sm card rounded-3 border-0 login-card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h1 class="my-2 text-center fw-bold text-dark">{{ __('labels.login') }}</h1>
+                                    <h1 class="text-center fw-bold text-dark login-title">{{ __('labels.login') }}</h1>
                                     @if (session('error'))
                                         <div class="alert alert-danger" role="alert">
                                             {{ session('error') }}
@@ -37,7 +37,7 @@
                                         </div>
                                     @endif
 
-                                    <form method="POST" action="{{ route('admin.post-login') }}" class="row g-3">
+                                    <form method="POST" action="{{ route('admin.post-login') }}" class="row g-3 login-form">
                                         @csrf
                                         <div class="col-md-12">
                                             <label for="email" class="form-label required">{{ __('labels.email') }}</label>
@@ -56,7 +56,7 @@
                                                 <input type="password" name="password" id="password"
                                                     class="form-control @error('password') is-invalid @enderror"
                                                     placeholder="{{ __('labels.password') }}">
-                                                <button type="button" class="btn btn-outline-secondary"
+                                                <button type="button" class="btn btn-outline-secondary login-pass-btn border border-primary-subtle"
                                                     onclick="togglePassword('password', this)">
                                                     <i class="bi bi-eye-fill"></i>
                                                 </button>
@@ -79,7 +79,7 @@
                                                 for="rememberCheckbox">{{ __('labels.remember_me') }}</label>
                                         </div>
 
-                                        <div class="gap-2 d-grid">
+                                        <div class="gap-2 mt-1 d-grid">
                                             <button type="submit" class="btn btn-primary">{{ __('labels.login') }}</button>
                                         </div>
                                     </form>

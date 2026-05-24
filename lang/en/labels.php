@@ -148,4 +148,6 @@ return [
     'customer_management' => 'Customer Management',
     'register' => 'Register',
     'phone' => 'Phone',
+    'author' => 'Author',
+    'authors' => 'Authors',
 ];

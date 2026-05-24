@@ -13,9 +13,6 @@ class TourRepository extends BaseRepository
 
     /**
      * Get data from request for tour creation/update.
-     *
-     * @param object $request
-     * @return array
      */
     public function getDataFromRequest($request): array
     {
@@ -27,14 +24,14 @@ class TourRepository extends BaseRepository
             'price_per_person',
             'description',
             'featured_image',
-            'status_id'
+            'destination_id',
+            'max_persons',
+            'status',
         ]);
     }
 
     /**
      * Get all active tours.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getActiveTours()
     {
@@ -43,12 +40,25 @@ class TourRepository extends BaseRepository
 
     /**
      * Get tour by slug.
-     *
-     * @param string $slug
-     * @return Tour|null
      */
     public function getBySlug(string $slug): ?Tour
     {
         return $this->model->where('slug', $slug)->first();
+    }
+
+    /**
+     * Get all tours for a dropdown list.
+     */
+    public function getForDropdown(): array
+    {
+        return $this->model->pluck('title', 'id')->toArray();
+    }
+
+    /**
+     * Get tour with its relations.
+     */
+    public function getWithRelations(int $id): ?Tour
+    {
+        return $this->model->with(['destination', 'images', 'itineraryDays', 'reviews'])->find($id);
     }
 }
