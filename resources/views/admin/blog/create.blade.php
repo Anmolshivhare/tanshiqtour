@@ -39,14 +39,17 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Featured Image</label>
-                    <input type="file" name="featured_image" class="form-control" accept="image/*">
-                </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
                     <label class="form-label">Publish Date</label>
                     <input type="datetime-local" name="published_at" class="form-control" value="{{ old('published_at') }}">
                 </div>
+
+                <div class="col-lg-6 col-md-6">
+                 <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :default-image="Vite::asset(config('constants.company_logo'))"
+                            :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                </div>
+               
                 <div class="col-md-12">
                     <label class="form-label">Excerpt</label>
                     <textarea name="excerpt" class="form-control" rows="2">{{ old('excerpt') }}</textarea>

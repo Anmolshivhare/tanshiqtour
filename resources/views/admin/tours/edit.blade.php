@@ -57,16 +57,41 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label class="form-label">Featured Image</label>
                     @if($tour->featured_image)
                         <div class="mb-1"><img src="{{ asset('storage/tours/' . $tour->featured_image) }}" height="60"></div>
                     @endif
                     <input type="file" name="featured_image" class="form-control" accept="image/*">
+                </div> --}}
+
+               <div class="col-md-6">
+                    <x-image-uploader id="featured_image" name="featured_image" label="Featured Image"
+                        :preview-image="$tour->featured_image ? asset('storage/tours/' . $tour->featured_image) : null"
+                        :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                        :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label">Gallery Images (Upload to replace all)</label>
-                    <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple>
+                    @if($tour->images && $tour->images->count())
+                        <div class="mb-2">
+                            <label class="form-label">Current Gallery</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                @foreach($tour->images as $image)
+                                    <label class="d-inline-block text-center">
+                                        <img src="{{ asset('storage/tours/gallery/' . $image->image_path) }}" alt="Gallery image"
+                                            class="rounded border d-block mb-1" style="width:72px;height:72px;object-fit:cover;">
+                                        <input type="checkbox" name="remove_gallery_image_ids[]" value="{{ $image->id }}"
+                                            {{ in_array((string) $image->id, old('remove_gallery_image_ids', [])) ? 'checked' : '' }}>
+                                        <small class="d-block text-danger">Remove</small>
+                                    </label>
+                                @endforeach
+                            </div>
+                            <small class="text-muted d-block mt-1">Select Remove on specific images to delete them.</small>
+                        </div>
+                    @endif
+                    <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Add More)"
+                        :max-size="2" :max-files="10" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                 </div>
                 <div class="col-12">
                     <label class="form-label">Description</label>

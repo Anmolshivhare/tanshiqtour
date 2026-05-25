@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label required">Type</label>
-                    <select name="type" class="form-select">
+                    <select name="type" id="gallery_type" class="form-select">
                         <option value="image" {{ old('type', $gallery->type) == 'image' ? 'selected' : '' }}>Image</option>
                         <option value="video" {{ old('type', $gallery->type) == 'video' ? 'selected' : '' }}>Video</option>
                     </select>
@@ -26,11 +26,24 @@
                     <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $gallery->sort_order) }}">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Replace File</label>
-                    @if($gallery->file_path)
-                        <div class="mb-1 text-muted small">Current: {{ $gallery->file_path }}</div>
-                    @endif
-                    <input type="file" name="file_path" class="form-control">
+                    <div id="image_file_wrap">
+                        <label class="form-label">Replace File (Image)</label>
+                        @if($gallery->file_path)
+                            <div class="mb-1 text-muted small">Current: {{ $gallery->file_path }}</div>
+                        @endif
+                        <input type="file" id="gallery_image_file_path" name="file_path" class="form-control" accept="image/*">
+                    </div>
+                    <x-video-uploader id="gallery_video_file_path" name="file_path" label="Replace File (Video)"
+                        :preview-video="old('type', $gallery->type) === 'video' && !empty($gallery->file_path) ? asset('storage/gallery/' . $gallery->file_path) : null"
+                        :required="false" :max-size="20" :allowed-types="['mp4', 'mov']" />
+                </div>
+                <div class="col-md-6">
+                    <div id="thumbnail_wrap">
+                        <x-image-uploader id="gallery_thumbnail_path" name="thumbnail_path" label="Thumbnail (for videos)"
+                            :preview-image="!empty($gallery->thumbnail_path) ? asset('storage/gallery/thumbnails/' . $gallery->thumbnail_path) : null"
+                            :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                            :enable-crop="false" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Status</label>

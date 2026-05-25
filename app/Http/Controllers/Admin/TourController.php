@@ -126,12 +126,24 @@ class TourController extends WebController
             $this->dbObject::beginTransaction();
             $this->tourRepository->updateData($id, $requestData);
 
-            // Replace gallery images if new ones uploaded
+            // Remove only selected existing gallery images
+            $removeIds = $request->input('remove_gallery_image_ids', []);
+            if (is_array($removeIds) && !empty($removeIds)) {
+                $imagesToRemove = $tour->images()->whereIn('id', $removeIds)->get();
+                foreach ($imagesToRemove as $oldImage) {
+                    if (!empty($oldImage->image_path)) {
+                        UserHelper::deleteImage('tours/gallery', $oldImage->image_path);
+                    }
+                }
+                $tour->images()->whereIn('id', $removeIds)->delete();
+            }
+
+            // Append new gallery images (do not remove old automatically)
             if ($request->hasFile('gallery_images')) {
-                $tour->images()->delete();
+                $nextOrder = (int) ($tour->images()->max('sort_order') ?? -1) + 1;
                 foreach ($request->file('gallery_images') as $index => $image) {
                     $path = basename(UserHelper::uploadImage($image, 'tours/gallery'));
-                    $tour->images()->create(['image_path' => $path, 'sort_order' => $index]);
+                    $tour->images()->create(['image_path' => $path, 'sort_order' => ($nextOrder + $index)]);
                 }
             }
 

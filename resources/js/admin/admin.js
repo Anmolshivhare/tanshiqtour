@@ -2,6 +2,8 @@ import "./bootstrap";
 import "laravel-datatables-vite";
 import "select2";
 import Swal from "sweetalert2";
+import Cropper from "cropperjs";
+import "cropperjs/dist/cropper.css";
 
 import {
     ClassicEditor,
@@ -12,6 +14,845 @@ import {
     Paragraph,
     SourceEditing,
 } from "ckeditor5";
+
+// image  upload start
+(($) => {
+    class ImageUploader {
+        constructor(element, options = {}) {
+            this.$root = $(element);
+            this.$input = this.$root.find(".image-uploader__input").first();
+            this.$dropzone = this.$root.find('[data-role="dropzone"]').first();
+
+            const resolvedPreviewSelector =
+                options.preview && typeof options.preview === "string"
+                    ? options.preview
+                    : options.previewSelector;
+
+            this.$preview = this.$root.find(resolvedPreviewSelector).first();
+            if (!this.$preview.length && resolvedPreviewSelector) {
+                this.$preview = $(resolvedPreviewSelector).first();
+            }
+
+            this.$error = this.$root.find(options.errorSelector).first();
+            this.$remove = this.$root.find(options.removeSelector).first();
+            this.$name = this.$root.find(options.fileNameSelector).first();
+            this.$size = this.$root.find(options.fileSizeSelector).first();
+            this.$loading = this.$root.find(options.loadingSelector).first();
+
+            this.options = {
+                ...options,
+                maxSize: Number(this.$root.data("max-size")) || Number(options.maxSize),
+                defaultImage: this.$root.data("default-image") || options.defaultImage || "",
+                previewImage: this.$root.data("preview-image") || options.previewImage || "",
+                allowedTypes: this.readAllowedTypes(options.allowedTypes) || options.allowedTypes,
+                enableCrop: String(this.$root.data("enable-crop")) === "1",
+                cropAspectRatio:
+                    this.$root.data("crop-aspect-ratio") !== ""
+                        ? Number(this.$root.data("crop-aspect-ratio"))
+                        : null,
+            };
+
+            this.currentImage = this.options.previewImage || this.options.defaultImage;
+            this.cropper = null;
+            this.currentFile = null;
+            this.ensureCropModal();
+            this.bindEvents();
+            this.resetMeta();
+            this.setPreview(this.currentImage);
+        }
+
+        readAllowedTypes(fallback) {
+            const attr = this.$root.data("allowed-types");
+            if (!attr || typeof attr !== "string") return fallback;
+
+            return attr
+                .split(",")
+                .map((type) => type.trim().toLowerCase())
+                .filter(Boolean);
+        }
+
+        bindEvents() {
+            this.$dropzone.on("click", (event) => {
+                if ($(event.target).is(".image-uploader__input")) return;
+                if ($(event.target).closest('[data-role="remove"]').length) return;
+                this.$input[0].click();
+            });
+
+            this.$input.on("click", (event) => {
+                event.stopPropagation();
+            });
+
+            this.$dropzone.on("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.$input.trigger("click");
+                }
+            });
+
+            this.$input.on("change", (event) => {
+                const file = event.target.files?.[0];
+                if (!file) {
+                    this.clearError();
+                    return;
+                }
+                this.handleFile(file);
+            });
+
+            this.$remove.on("click", (event) => {
+                event.preventDefault();
+                this.clear();
+            });
+
+            this.$dropzone.on("dragenter dragover", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.addClass("is-dragging");
+            });
+
+            this.$dropzone.on("dragleave dragend drop", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.removeClass("is-dragging");
+            });
+
+            this.$dropzone.on("drop", (event) => {
+                const file = event.originalEvent?.dataTransfer?.files?.[0];
+                if (!file) return;
+
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                this.$input[0].files = dt.files;
+                this.$input.trigger("change");
+            });
+        }
+
+        handleFile(file) {
+            const validationError = this.validate(file);
+            if (validationError) {
+                this.showError(validationError);
+                this.clearInput();
+                return;
+            }
+
+            this.clearError();
+            if (this.options.enableCrop) {
+                this.openCropModal(file);
+                return;
+            }
+
+            this.setLoading(true);
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                this.setPreview(event.target?.result || "");
+                this.setMeta(file.name, this.formatBytes(file.size));
+                this.setLoading(false);
+            };
+            reader.onerror = () => {
+                this.showError("Unable to render preview. Please try another image.");
+                this.setLoading(false);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        ensureCropModal() {
+            if ($("#imageUploaderCropModal").length) {
+                this.$cropModal = $("#imageUploaderCropModal");
+                return;
+            }
+
+            $("body").append(`
+                <div class="image-uploader-crop-modal d-none" id="imageUploaderCropModal">
+                    <div class="image-uploader-crop-modal__dialog">
+                        <div class="image-uploader-crop-modal__header">
+                            <h6 class="mb-0">Crop image</h6>
+                        </div>
+                        <div class="image-uploader-crop-modal__body">
+                            <img src="" alt="Crop preview" id="imageUploaderCropTarget">
+                        </div>
+                        <div class="image-uploader-crop-modal__footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-action="cancel-crop">Cancel</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-action="apply-crop">Apply Crop</button>
+                        </div>
+                    </div>
+                </div>
+            `);
+            this.$cropModal = $("#imageUploaderCropModal");
+        }
+
+        openCropModal(file) {
+            this.currentFile = file;
+            const imageUrl = URL.createObjectURL(file);
+            const $target = this.$cropModal.find("#imageUploaderCropTarget");
+            $target.attr("src", imageUrl);
+            this.$cropModal.removeClass("d-none");
+
+            if (this.cropper) {
+                this.cropper.destroy();
+            }
+
+            const aspectRatio =
+                this.options.cropAspectRatio && this.options.cropAspectRatio > 0
+                    ? this.options.cropAspectRatio
+                    : NaN;
+
+            this.cropper = new Cropper($target[0], {
+                aspectRatio,
+                viewMode: 1,
+                autoCropArea: 1,
+                responsive: true,
+                background: false,
+            });
+
+            this.$cropModal
+                .off("click.cropperActions")
+                .on("click.cropperActions", '[data-action="cancel-crop"]', () => {
+                    this.clearInput();
+                    this.closeCropModal();
+                })
+                .on("click.cropperActions", '[data-action="apply-crop"]', () => {
+                    this.applyCrop();
+                });
+        }
+
+        closeCropModal() {
+            this.$cropModal.addClass("d-none");
+            if (this.cropper) {
+                this.cropper.destroy();
+                this.cropper = null;
+            }
+        }
+
+        applyCrop() {
+            if (!this.cropper || !this.currentFile) return;
+            this.setLoading(true);
+
+            const cropData = this.cropper.getData(true);
+            const targetWidth = Math.max(1, Math.round(cropData.width || 1));
+            const targetHeight = Math.max(1, Math.round(cropData.height || 1));
+
+            const canvas = this.cropper.getCroppedCanvas({
+                width: targetWidth,
+                height: targetHeight,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: "high",
+            });
+            if (!canvas) {
+                this.showError("Unable to crop selected image.");
+                this.setLoading(false);
+                this.closeCropModal();
+                return;
+            }
+
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    this.showError("Unable to crop selected image.");
+                    this.setLoading(false);
+                    this.closeCropModal();
+                    return;
+                }
+
+                const croppedFile = new File([blob], this.currentFile.name, {
+                    type: this.currentFile.type,
+                    lastModified: Date.now(),
+                });
+
+                const dt = new DataTransfer();
+                dt.items.add(croppedFile);
+                this.$input[0].files = dt.files;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    this.setPreview(event.target?.result || "");
+                    this.setMeta(croppedFile.name, this.formatBytes(croppedFile.size));
+                    this.clearError();
+                    this.setLoading(false);
+                };
+                reader.onerror = () => {
+                    this.showError("Unable to render preview. Please try another image.");
+                    this.setLoading(false);
+                };
+                reader.readAsDataURL(croppedFile);
+
+                this.closeCropModal();
+            }, this.currentFile.type || "image/jpeg", 0.95);
+        }
+
+        validate(file) {
+            const extension = file.name.split(".").pop()?.toLowerCase() || "";
+            const allowed = (this.options.allowedTypes || []).map((type) => String(type).toLowerCase());
+
+            if (!allowed.includes(extension)) {
+                return `Allowed formats: ${allowed.join(", ").toUpperCase()}.`;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                return "Invalid image file.";
+            }
+
+            const maxBytes = Number(this.options.maxSize) * 1024 * 1024;
+            if (file.size > maxBytes) {
+                return `Image size must be ${this.options.maxSize}MB or less.`;
+            }
+
+            return "";
+        }
+
+        clear() {
+            this.clearInput();
+            this.clearError();
+            this.resetMeta();
+            this.currentImage = this.options.previewImage || this.options.defaultImage;
+            this.setPreview(this.currentImage);
+            this.$input.trigger("change");
+        }
+
+        clearInput() {
+            this.$input.val("");
+        }
+
+        resetMeta() {
+            this.setMeta("No file selected", "0 KB");
+        }
+
+        setMeta(name, size) {
+            this.$name.text(name);
+            this.$size.text(size);
+        }
+
+        setPreview(source) {
+            this.$preview.attr("src", source || this.options.defaultImage || "");
+        }
+
+        setLoading(state) {
+            this.$loading.toggleClass("d-none", !state);
+        }
+
+        showError(message) {
+            this.$error.removeClass("d-none").text(message);
+            this.$dropzone.addClass("is-invalid");
+        }
+
+        clearError() {
+            this.$error.addClass("d-none").text("");
+            this.$dropzone.removeClass("is-invalid");
+        }
+
+        formatBytes(bytes) {
+            if (bytes === 0) return "0 KB";
+            const k = 1024;
+            const sizes = ["B", "KB", "MB", "GB"];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+        }
+    }
+
+    $.fn.imageUploader = function (options = {}) {
+        const defaults = {
+            preview: null,
+            previewImage: "",
+            defaultImage: "",
+            maxSize: 2,
+            allowedTypes: ["jpg", "jpeg", "png", "webp"],
+            previewSelector: '[data-role="preview"]',
+            errorSelector: '[data-role="error"]',
+            removeSelector: '[data-role="remove"]',
+            fileNameSelector: '[data-role="file-name"]',
+            fileSizeSelector: '[data-role="file-size"]',
+            loadingSelector: '[data-role="loading"]',
+        };
+
+        return this.each(function initializeUploader() {
+            const $el = $(this);
+            const $root = $el.hasClass("image-uploader")
+                ? $el
+                : $el.closest(".image-uploader");
+
+            if (!$root.length || $root.data("imageUploader")) return;
+
+            const settings = { ...defaults, ...options };
+            const instance = new ImageUploader($root[0], settings);
+            $root.data("imageUploader", instance);
+        });
+    };
+})(window.jQuery);
+
+// image  upload end
+$(function () {
+    $(".image-uploader").imageUploader();
+});
+
+// video upload start
+(($) => {
+    class VideoUploader {
+        constructor(element, options = {}) {
+            this.$root = $(element);
+            this.$input = this.$root.find(".video-uploader__input").first();
+            this.$dropzone = this.$root.find('[data-role="dropzone"]').first();
+            this.$preview = this.$root.find('[data-role="preview"]').first();
+            this.$previewWrap = this.$root.find('[data-role="preview-wrap"]').first();
+            this.$placeholder = this.$root.find('[data-role="placeholder"]').first();
+            this.$error = this.$root.find('[data-role="error"]').first();
+            this.$remove = this.$root.find('[data-role="remove"]').first();
+            this.$name = this.$root.find('[data-role="file-name"]').first();
+            this.$size = this.$root.find('[data-role="file-size"]').first();
+            this.$loading = this.$root.find('[data-role="loading"]').first();
+
+            this.options = {
+                ...options,
+                maxSize: Number(this.$root.data("max-size")) || Number(options.maxSize) || 20,
+                allowedTypes: this.readAllowedTypes(options.allowedTypes) || options.allowedTypes || ["mp4", "mov", "jpg", "jpeg", "png", "webp"],
+                previewVideo: this.$root.data("preview-video") || options.previewVideo || "",
+                requiredType: this.$root.data("required-type") || options.requiredType || "",
+                requiredState: String(this.$root.data("required-state")) === "1",
+                typeSelector: options.typeSelector || "#gallery_type",
+            };
+
+            this.previewUrl = "";
+            this.bindEvents();
+            this.resetMeta();
+            this.updateTypeVisibility();
+            if (this.options.previewVideo) {
+                this.setPreview(this.options.previewVideo, false);
+                this.setMeta("Existing file", "--");
+            }
+        }
+
+        readAllowedTypes(fallback) {
+            const attr = this.$root.data("allowed-types");
+            if (!attr || typeof attr !== "string") return fallback;
+            return attr.split(",").map((type) => type.trim().toLowerCase()).filter(Boolean);
+        }
+
+        bindEvents() {
+            this.$dropzone.on("click", (event) => {
+                if ($(event.target).is(".video-uploader__input")) return;
+                if ($(event.target).closest('[data-role="remove"]').length) return;
+                this.$input[0].click();
+            });
+
+            this.$dropzone.on("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.$input[0].click();
+                }
+            });
+
+            this.$input.on("change", (event) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+                this.handleFile(file);
+            });
+
+            this.$remove.on("click", (event) => {
+                event.preventDefault();
+                this.clear();
+            });
+
+            this.$dropzone.on("dragenter dragover", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.addClass("is-dragging");
+            });
+
+            this.$dropzone.on("dragleave dragend drop", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.removeClass("is-dragging");
+            });
+
+            this.$dropzone.on("drop", (event) => {
+                const file = event.originalEvent?.dataTransfer?.files?.[0];
+                if (!file) return;
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                this.$input[0].files = dt.files;
+                this.$input.trigger("change");
+            });
+
+            const $typeEl = $(this.options.typeSelector);
+            if ($typeEl.length) {
+                $typeEl.on("change", () => this.updateTypeVisibility());
+            }
+        }
+
+        updateTypeVisibility() {
+            if (!this.options.requiredType) return;
+            const selectedType = $(this.options.typeSelector).val();
+            const shouldShow = selectedType === this.options.requiredType;
+            this.$root.toggleClass("d-none", !shouldShow);
+            this.$input.prop("required", shouldShow && this.options.requiredState);
+            this.$input.prop("disabled", !shouldShow);
+            if (!shouldShow) {
+                this.clear(false);
+            }
+        }
+
+        handleFile(file) {
+            const validationError = this.validate(file);
+            if (validationError) {
+                this.showError(validationError);
+                this.clearInput();
+                return;
+            }
+
+            this.clearError();
+            this.setLoading(true);
+            this.setMeta(file.name, this.formatBytes(file.size));
+
+            if (file.type.startsWith("video/")) {
+                this.setPreview(URL.createObjectURL(file), true);
+            } else {
+                this.clearPreview();
+                this.$placeholder
+                    .removeClass("d-none")
+                    .find("p")
+                    .text("Preview available only for video files");
+            }
+            this.setLoading(false);
+        }
+
+        validate(file) {
+            const extension = file.name.split(".").pop()?.toLowerCase() || "";
+            const allowed = (this.options.allowedTypes || []).map((type) => String(type).toLowerCase());
+            if (!allowed.includes(extension)) {
+                return `Allowed formats: ${allowed.join(", ").toUpperCase()}.`;
+            }
+
+            const maxBytes = Number(this.options.maxSize) * 1024 * 1024;
+            if (file.size > maxBytes) {
+                return `File size must be ${this.options.maxSize}MB or less.`;
+            }
+            return "";
+        }
+
+        clear(clearInput = true) {
+            if (clearInput) this.clearInput();
+            this.clearError();
+            this.resetMeta();
+            this.clearPreview();
+            this.$placeholder.removeClass("d-none").find("p").text("Video preview will appear here");
+        }
+
+        clearInput() {
+            this.$input.val("");
+        }
+
+        clearPreview() {
+            if (this.previewUrl) {
+                URL.revokeObjectURL(this.previewUrl);
+                this.previewUrl = "";
+            }
+            this.$preview.addClass("d-none").attr("src", "");
+            this.$preview[0].load();
+        }
+
+        setPreview(source, revokable = false) {
+            this.clearPreview();
+            if (revokable) this.previewUrl = source;
+            this.$preview.removeClass("d-none").attr("src", source);
+            this.$preview[0].load();
+            this.$placeholder.addClass("d-none");
+        }
+
+        resetMeta() {
+            this.setMeta("No file selected", "0 KB");
+        }
+
+        setMeta(name, size) {
+            this.$name.text(name);
+            this.$size.text(size);
+        }
+
+        setLoading(state) {
+            this.$loading.toggleClass("d-none", !state);
+        }
+
+        showError(message) {
+            this.$error.removeClass("d-none").text(message);
+            this.$dropzone.addClass("is-invalid");
+        }
+
+        clearError() {
+            this.$error.addClass("d-none").text("");
+            this.$dropzone.removeClass("is-invalid");
+        }
+
+        formatBytes(bytes) {
+            if (bytes === 0) return "0 KB";
+            const k = 1024;
+            const sizes = ["B", "KB", "MB", "GB"];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+        }
+    }
+
+    $.fn.videoUploader = function (options = {}) {
+        return this.each(function initializeUploader() {
+            const $root = $(this);
+            if (!$root.length || $root.data("videoUploader")) return;
+            const instance = new VideoUploader($root[0], options);
+            $root.data("videoUploader", instance);
+        });
+    };
+})(window.jQuery);
+
+$(function () {
+    $(".video-uploader").videoUploader();
+});
+// video upload end
+
+// multi image upload start
+(($) => {
+    class MultiImageUploader {
+        constructor(element, options = {}) {
+            this.$root = $(element);
+            this.$input = this.$root.find(".multi-image-uploader__input").first();
+            this.$dropzone = this.$root.find('[data-role="dropzone"]').first();
+            this.$error = this.$root.find('[data-role="error"]').first();
+            this.$grid = this.$root.find('[data-role="grid"]').first();
+            this.$meta = this.$root.find('[data-role="meta"]').first();
+            this.$loading = this.$root.find('[data-role="loading"]').first();
+
+            this.options = {
+                ...options,
+                maxSize: Number(this.$root.data("max-size")) || Number(options.maxSize) || 2,
+                maxFiles: Number(this.$root.data("max-files")) || Number(options.maxFiles) || 10,
+                allowedTypes: this.readAllowedTypes(options.allowedTypes) || options.allowedTypes || ["jpg", "jpeg", "png", "webp"],
+            };
+
+            this.files = [];
+            this.bindEvents();
+            this.renderMeta();
+        }
+
+        readAllowedTypes(fallback) {
+            const attr = this.$root.data("allowed-types");
+            if (!attr || typeof attr !== "string") return fallback;
+            return attr.split(",").map((type) => type.trim().toLowerCase()).filter(Boolean);
+        }
+
+        bindEvents() {
+            this.$dropzone.on("click", () => {
+                this.$input[0].click();
+            });
+
+            this.$dropzone.on("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.$input[0].click();
+                }
+            });
+
+            this.$input.on("change", async (event) => {
+                const selected = Array.from(event.target.files || []);
+                await this.addFiles(selected);
+            });
+
+            this.$dropzone.on("dragenter dragover", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.addClass("is-dragging");
+            });
+
+            this.$dropzone.on("dragleave dragend drop", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.$dropzone.removeClass("is-dragging");
+            });
+
+            this.$dropzone.on("drop", async (event) => {
+                const selected = Array.from(event.originalEvent?.dataTransfer?.files || []);
+                await this.addFiles(selected);
+            });
+
+            this.$grid.on("click", '[data-action="remove"]', (event) => {
+                const index = Number($(event.currentTarget).closest("[data-index]").data("index"));
+                this.removeAt(index);
+            });
+
+            this.$grid.on("dragstart", ".multi-image-uploader__item", (event) => {
+                const idx = Number($(event.currentTarget).data("index"));
+                event.originalEvent.dataTransfer.setData("text/plain", String(idx));
+                $(event.currentTarget).addClass("is-sorting");
+            });
+
+            this.$grid.on("dragend", ".multi-image-uploader__item", (event) => {
+                $(event.currentTarget).removeClass("is-sorting");
+            });
+
+            this.$grid.on("dragover", ".multi-image-uploader__item", (event) => {
+                event.preventDefault();
+                $(event.currentTarget).addClass("is-over");
+            });
+
+            this.$grid.on("dragleave", ".multi-image-uploader__item", (event) => {
+                $(event.currentTarget).removeClass("is-over");
+            });
+
+            this.$grid.on("drop", ".multi-image-uploader__item", (event) => {
+                event.preventDefault();
+                const from = Number(event.originalEvent.dataTransfer.getData("text/plain"));
+                const to = Number($(event.currentTarget).data("index"));
+                this.$grid.find(".multi-image-uploader__item").removeClass("is-over");
+                this.reorder(from, to);
+            });
+        }
+
+        async addFiles(newFiles) {
+            if (!newFiles.length) return;
+            this.clearError();
+
+            if (this.files.length + newFiles.length > this.options.maxFiles) {
+                this.showError(`You can upload a maximum of ${this.options.maxFiles} images.`);
+                this.$input.val("");
+                return;
+            }
+
+            this.setLoading(true);
+            for (const file of newFiles) {
+                const error = this.validate(file);
+                if (error) {
+                    this.showError(error);
+                    continue;
+                }
+
+                const preview = await this.readFile(file);
+                this.files.push({ file, preview });
+            }
+            this.setLoading(false);
+            this.syncInput();
+            this.renderGrid();
+            this.renderMeta();
+        }
+
+        validate(file) {
+            const extension = file.name.split(".").pop()?.toLowerCase() || "";
+            const allowed = (this.options.allowedTypes || []).map((type) => String(type).toLowerCase());
+
+            if (!allowed.includes(extension)) {
+                return `Allowed formats: ${allowed.join(", ").toUpperCase()}.`;
+            }
+            if (!file.type.startsWith("image/")) {
+                return "Invalid image file.";
+            }
+            const maxBytes = Number(this.options.maxSize) * 1024 * 1024;
+            if (file.size > maxBytes) {
+                return `Each image must be ${this.options.maxSize}MB or less.`;
+            }
+            return "";
+        }
+
+        readFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event.target?.result || "");
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        removeAt(index) {
+            this.files.splice(index, 1);
+            this.syncInput();
+            this.renderGrid();
+            this.renderMeta();
+            this.clearError();
+        }
+
+        reorder(from, to) {
+            if (Number.isNaN(from) || Number.isNaN(to) || from === to || from < 0 || to < 0) return;
+            const moved = this.files.splice(from, 1)[0];
+            this.files.splice(to, 0, moved);
+            this.syncInput();
+            this.renderGrid();
+        }
+
+        syncInput() {
+            const dt = new DataTransfer();
+            for (const entry of this.files) {
+                dt.items.add(entry.file);
+            }
+            this.$input[0].files = dt.files;
+            this.$input.trigger("change.multiUploaderSync");
+        }
+
+        renderGrid() {
+            this.$grid.empty();
+            this.files.forEach((entry, index) => {
+                this.$grid.append(`
+                    <div class="multi-image-uploader__item" data-index="${index}" draggable="true">
+                        <img src="${entry.preview}" alt="${entry.file.name}" class="multi-image-uploader__thumb">
+                        <div class="multi-image-uploader__item-bar">
+                            <span class="multi-image-uploader__handle" title="Drag to reorder"><i class="bi bi-grip-vertical"></i></span>
+                            <small class="text-truncate">${entry.file.name}</small>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-action="remove">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        renderMeta() {
+            this.$meta.text(`${this.files.length} image(s) selected`);
+        }
+
+        setLoading(state) {
+            this.$loading.toggleClass("d-none", !state);
+        }
+
+        showError(message) {
+            this.$error.removeClass("d-none").text(message);
+            this.$dropzone.addClass("is-invalid");
+        }
+
+        clearError() {
+            this.$error.addClass("d-none").text("");
+            this.$dropzone.removeClass("is-invalid");
+        }
+    }
+
+    $.fn.multiImageUploader = function (options = {}) {
+        return this.each(function initMultiUploader() {
+            const $el = $(this);
+            if ($el.data("multiImageUploader")) return;
+            const instance = new MultiImageUploader(this, options);
+            $el.data("multiImageUploader", instance);
+        });
+    };
+})(window.jQuery);
+
+// multi image upload end
+$(function () {
+    $(".multi-image-uploader").multiImageUploader();
+});
+
+$(function () {
+    const $typeEl = $("#gallery_type");
+    if (!$typeEl.length) return;
+
+    const $thumbWrap = $("#thumbnail_wrap");
+    const $thumbInput = $("#gallery_thumbnail_path");
+    const $imageWrap = $("#image_file_wrap");
+    const $imageInput = $("#gallery_image_file_path");
+    const $videoWrap = $("#gallery_video_file_path-wrapper");
+    const $videoInput = $("#gallery_video_file_path");
+    const isEditForm = $typeEl.closest("form").find('input[name="_method"][value="PUT"]').length > 0;
+
+    const updateByType = () => {
+        const isVideo = $typeEl.val() === "video";
+        $thumbWrap.toggleClass("d-none", !isVideo);
+        $thumbInput.prop("disabled", !isVideo);
+        $imageWrap.toggleClass("d-none", isVideo);
+        $imageInput.prop("disabled", isVideo).prop("required", !isVideo);
+        $videoWrap.toggleClass("d-none", !isVideo);
+        $videoInput.prop("disabled", !isVideo).prop("required", isVideo && !isEditForm);
+    };
+
+    $typeEl.on("change", updateByType);
+    updateByType();
+});
 
 //role and permission nestedtree
 $(function () {

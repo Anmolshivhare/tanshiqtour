@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label required">Type</label>
-                    <select name="type" class="form-select">
+                    <select name="type" id="gallery_type" class="form-select">
                         <option value="image" {{ old('type') == 'image' ? 'selected' : '' }}>Image</option>
                         <option value="video" {{ old('type') == 'video' ? 'selected' : '' }}>Video</option>
                     </select>
@@ -29,13 +29,22 @@
                     <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', 0) }}" min="0">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label required">File (Image/Video)</label>
-                    <input type="file" name="file_path" class="form-control @error('file_path') is-invalid @enderror">
-                    @error('file_path') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    <div id="image_file_wrap">
+                        <label class="form-label required">File (Image)</label>
+                        <input type="file" id="gallery_image_file_path" name="file_path"
+                            class="form-control @error('file_path') is-invalid @enderror" accept="image/*">
+                        @error('file_path') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    </div>
+                    <x-video-uploader id="gallery_video_file_path" name="file_path" label="File (Video)"
+                        :required="true" :max-size="20"
+                        :allowed-types="['mp4', 'mov']" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Thumbnail (for videos)</label>
-                    <input type="file" name="thumbnail_path" class="form-control" accept="image/*">
+                    <div id="thumbnail_wrap">
+                        <x-image-uploader id="gallery_thumbnail_path" name="thumbnail_path" label="Thumbnail (for videos)"
+                            :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                            :enable-crop="false" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Destination (optional)</label>

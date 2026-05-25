@@ -18,7 +18,7 @@ class CreateRequest extends FormRequest
             'price_per_person' => 'nullable|numeric|min:0',
             'description'      => 'nullable|string',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
-            'gallery_images'   => 'nullable|array',
+            'gallery_images'   => 'nullable|array|max:10',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
             'destination_id'   => 'nullable|exists:destinations,id',
             'max_persons'      => 'nullable|integer|min:1',

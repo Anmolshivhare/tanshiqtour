@@ -44,13 +44,14 @@
                         @endforeach
                     </select>
                 </div>
+               
                 <div class="col-md-6">
-                    <label class="form-label">Featured Image</label>
-                    @if($blog->featured_image)
-                        <div class="mb-1"><img src="{{ asset('storage/blogs/' . $blog->featured_image) }}" height="60"></div>
-                    @endif
-                    <input type="file" name="featured_image" class="form-control" accept="image/*">
+                    <x-image-uploader id="featured_image" name="featured_image" label="Featured Image"
+                        :preview-image="$blog->featured_image ? asset('storage/blogs/' . $blog->featured_image) : null"
+                        :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                        :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                 </div>
+
                 <div class="col-md-6">
                     <label class="form-label">Publish Date</label>
                     <input type="datetime-local" name="published_at" class="form-control" value="{{ old('published_at', $blog->published_at?->format('Y-m-d\TH:i')) }}">

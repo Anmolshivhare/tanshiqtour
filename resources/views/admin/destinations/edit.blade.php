@@ -44,23 +44,22 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="featured_image" class="form-label">Featured Image</label>
-                    @if($destination->featured_image)
-                        <div class="mb-2"><img src="{{ asset('storage/destinations/' . $destination->featured_image) }}" height="60" alt="Featured"></div>
-                    @endif
-                    <input type="file" name="featured_image" id="featured_image" class="form-control" accept="image/*">
-                </div>
-                <div class="col-md-6">
-                    <label for="banner_image" class="form-label">Banner Image</label>
-                    @if($destination->banner_image)
-                        <div class="mb-2"><img src="{{ asset('storage/destinations/' . $destination->banner_image) }}" height="60" alt="Banner"></div>
-                    @endif
-                    <input type="file" name="banner_image" id="banner_image" class="form-control" accept="image/*">
-                </div>
-                <div class="col-md-6">
                     <label for="short_description" class="form-label">Short Description</label>
                     <input type="text" name="short_description" id="short_description" class="form-control" value="{{ old('short_description', $destination->short_description) }}">
                 </div>
+                <div class="col-md-6">
+                    <x-image-uploader id="featured_image" name="featured_image" label="Featured Image"
+                        :preview-image="$destination->featured_image ? asset('storage/destinations/' . $destination->featured_image) : null"
+                        :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                        :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                </div>
+                <div class="col-md-6">
+                    <x-image-uploader id="banner_image" name="banner_image" label="Banner Image"
+                        :preview-image="$destination->banner_image ? asset('storage/destinations/' . $destination->banner_image) : null"
+                        :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2"
+                        :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                </div>
+                
                 <div class="col-md-12">
                     <label for="description" class="form-label">Description</label>
                     <textarea name="description" id="description" class="form-control" rows="5">{{ old('description', $destination->description) }}</textarea>
@@ -74,3 +73,5 @@
     </div>
 </div>
 @endsection
+
+
