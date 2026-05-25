@@ -96,6 +96,10 @@ class GalleryController extends WebController
                 if (!empty($gallery->file_path)) UserHelper::deleteImage('gallery', $gallery->file_path);
                 $requestData['file_path'] = basename(UserHelper::uploadImage($request->file('file_path'), 'gallery'));
             }
+            if ($request->hasFile('thumbnail_path')) {
+                if (!empty($gallery->thumbnail_path)) UserHelper::deleteImage('gallery/thumbnails', $gallery->thumbnail_path);
+                $requestData['thumbnail_path'] = basename(UserHelper::uploadImage($request->file('thumbnail_path'), 'gallery/thumbnails'));
+            }
             $this->dbObject::beginTransaction();
             $this->galleryRepository->updateData($id, $requestData);
             $this->dbObject::commit();

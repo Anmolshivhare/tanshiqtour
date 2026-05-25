@@ -56,7 +56,7 @@ class BlogDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
-            ->orderBy('3', 'desc');
+            ->orderBy('5', 'desc');
 
         $buttons = [];
         if ($userCreate) {
