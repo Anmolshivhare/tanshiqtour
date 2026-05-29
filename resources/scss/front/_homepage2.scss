@@ -166,137 +166,79 @@
 }
 
 // ================================================
-// DESTINATION CARD SLIDER (image reference design)
+// DESTINATION CARD SLIDER
+// Bootstrap 5.3 handles: position, overflow, rounded, d-flex,
+// gap, align-items, justify-content, w-100, h-100,
+// object-fit-cover, text-white, fw-bold, text-center, border,
+// bg-white, bottom-0, start-0, top-0
+// Custom CSS: only what Bootstrap cannot do
 // ================================================
-.tt-dest-slider-wrap {
-    margin-top: 0.5rem;
-}
 
-.tt-dest-slider-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-
-.tt-dest-slider-subtitle {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #1f1f1f;
-    margin: 0;
-}
-
-.tt-dest-arrows {
-    display: flex;
-    gap: 0.5rem;
-}
-
+// Arrow hover (Bootstrap has no hover state utilities)
 .tt-dest-arrow-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(#1f1f1f, 0.18);
-    background: #fff;
-    color: #1f1f1f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
-    transition: background 0.22s, color 0.22s, border-color 0.22s, box-shadow 0.22s;
+    transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+    color: #1f1f1f;
     font-size: 0.85rem;
 
     &:hover {
-        background: #1f1f1f;
-        color: #fff;
-        border-color: #1f1f1f;
+        background: #1f1f1f !important;
+        color: #fff !important;
+        border-color: #1f1f1f !important;
         box-shadow: 0 6px 16px rgba(#1f1f1f, 0.18);
     }
 }
 
-// The card itself
+// Card: fixed height + hover animation (no BS utility for these)
 .tt-dest-card {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    // Fixed height — ALL cards same regardless of source image
-    height: 380px;
-    width: 100%;
+    height: 380px;     // fixed — ensures ALL cards same size regardless of image
     cursor: pointer;
-    box-shadow: 0 8px 28px rgba(#1f1f1f, 0.14);
+    box-shadow: 0 8px 28px rgba(#1f1f1f, 0.12);
     transition: transform 0.35s ease, box-shadow 0.35s ease;
 
     &:hover {
         transform: translateY(-8px);
-        box-shadow: 0 24px 48px rgba(#1f1f1f, 0.24);
+        box-shadow: 0 24px 48px rgba(#1f1f1f, 0.22);
     }
 
-    &:hover img {
+    &:hover .tt-dest-card__img {
         transform: scale(1.07);
     }
 }
 
+// Image zoom on hover (cannot be done with utilities)
 .tt-dest-card__img {
-    position: absolute;   // stretch to fill card absolutely
-    inset: 0;
-    width: 100%;
-    height: 100%;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;    // always crops to fill — no distortion
-        object-position: center;
-        display: block;
-        transition: transform 0.55s ease;
-    }
+    transition: transform 0.55s ease;
+    object-position: center;
 }
 
+// Gradient overlay (no Bootstrap utility for multi-stop gradient)
 .tt-dest-card__overlay {
-    position: absolute;
-    inset: 0;
     z-index: 1;
-    // Stronger gradient so text stays readable over any image
     background: linear-gradient(
         180deg,
         rgba(#000, 0.0)  30%,
-        rgba(#000, 0.3)  60%,
-        rgba(#000, 0.72) 100%
+        rgba(#000, 0.28) 60%,
+        rgba(#000, 0.70) 100%
     );
 }
 
+// City label: font-size, text-shadow, padding, z-index (no BS utilities)
 .tt-dest-card__label {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
     padding: 1.4rem 1.3rem 1.2rem;
-    color: #fff;
-    // Large bold city name matching second reference image
     font-size: 1.45rem;
-    font-weight: 800;
     font-family: 'Poppins', sans-serif;
     letter-spacing: -0.01em;
-    line-height: 1.15;
+    line-height: 1.2;
     text-shadow: 0 3px 12px rgba(#000, 0.55);
     z-index: 2;
-
-    i {
-        font-size: 0.78rem;
-        opacity: 0.8;
-        margin-right: 3px;
-    }
 }
 
-// See All button
+// See All button: brand colour pill (not a standard BS colour)
 .tt-dest-see-all {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     border: 1.5px solid #1f9c84;
     color: #1f9c84;
-    background: transparent;
-    padding: 0.6rem 1.9rem;
+    padding: 0.6rem 2rem;
     border-radius: 999px;
     font-size: 0.93rem;
     font-weight: 600;
@@ -468,81 +410,124 @@
     50% { transform: translateY(-9px) rotate(var(--r, 0deg)); }
 }
 
-@media (max-width: 991px) {
+// --- Destinations responsive (Bootstrap 5.3 breakpoints: lg=992, md=768, sm=576) ---
+@media (max-width: 991.98px) {                // < lg
     .tt-destinations-swiper { padding-left: 0 !important; padding-right: 0 !important; }
     .tt-dest-card { height: 320px; }
 }
 
-@media (max-width: 575px) {
-    .tt-destinations .tt-section-title { font-size: clamp(1.8rem, 7vw, 2.2rem); }
-    .tt-destinations-swiper { padding-left: 0 !important; padding-right: 0 !important; }
-    .tt-dest-card { height: 260px; }
-    .tt-dest-card__label { font-size: 1.2rem; padding: 1rem 1rem 0.9rem; }
+@media (max-width: 767.98px) {                // < md  (tablet portrait)
+    .tt-dest-card { height: 280px; }
+    .tt-dest-card__label { font-size: 1.25rem; padding: 1.1rem 1rem 1rem; }
+}
+
+@media (max-width: 575.98px) {                // < sm  (mobile)
+    .tt-destinations .tt-section-title { font-size: clamp(1.6rem, 7vw, 2rem); }
+    .tt-dest-card { height: 240px; }
+    .tt-dest-card__label { font-size: 1.1rem; padding: 0.9rem 0.9rem 0.85rem; }
+    .tt-dest-arrow-btn { display: none !important; }  // hidden on mobile — swipe instead
     .tt-flight-path--one,
-    .tt-flight-path--two {
-        opacity: 0.5;
-        width: 95vw;
-    }
-    .tt-dest-arrow-btn { display: none; }
+    .tt-flight-path--two { opacity: 0.4; width: 95vw; }
 }
 
 // ================================================
-// WHY CHOOSE US
 // ================================================
-.tt-why { background: #fff; }
-
-.tt-why-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-
-    @media (max-width: 991px) { grid-template-columns: repeat(2, 1fr); }
-    @media (max-width: 575px) { grid-template-columns: 1fr; }
+// WHY CHOOSE US  — redesigned with deco images
+// ================================================
+.tt-why {
+    background: linear-gradient(160deg, #f0faf4 0%, #f8f8f0 50%, #f0f4fa 100%);
+    padding: 5rem 0 18rem;
+    isolation: isolate;
 }
 
+// Decorative images (balloon left, airplane right)
+.tt-why__deco {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    opacity: 0.92;
+}
+
+.tt-why__deco--left {
+    left: 0px;
+    bottom: 0;
+    width: clamp(200px, 18vw, 300px);
+    // Gentle float animation
+    animation: ttWhyFloat 5s ease-in-out infinite;
+}
+
+.tt-why__deco--right {
+    right: -10px;
+    top: calc(50% - 160px);   // pre-offset so float doesn't displace centering
+    width: clamp(220px, 20vw, 320px);
+    animation: ttWhyFloat 6s ease-in-out 0.8s infinite;
+}
+
+@keyframes ttWhyFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-18px); }
+}
+
+// Card redesign
 .tt-why-card {
     background: #fff;
-    border: 1.5px solid rgba($brand-primary, 0.08);
-    border-radius: 20px;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    border: 1.5px solid rgba($brand-primary, 0.09);
+    border-radius: 24px;
+    padding: 2.5rem 1.75rem 2rem;
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.32s ease,
+                border-color 0.32s ease;
 
-    &::before {
-        content: '';
+    // Bottom glow strip (hidden by default)
+    .tt-why-card__glow {
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba($brand-primary, 0.03), transparent);
+        bottom: 0; left: 0; right: 0;
+        height: 4px;
+        border-radius: 0 0 24px 24px;
         opacity: 0;
-        transition: opacity 0.3s;
+        transition: opacity 0.3s ease;
     }
 
     &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 50px rgba($brand-primary, 0.12);
-        border-color: rgba($brand-accent, 0.4);
-        &::before { opacity: 1; }
-        .tt-why-card__icon { transform: scale(1.1) rotate(-5deg); }
+        transform: translateY(-10px);
+        box-shadow: 0 24px 56px rgba($brand-primary, 0.13);
+        border-color: transparent;
+
+        .tt-why-card__glow { opacity: 1; }
+        .tt-why-card__icon { transform: scale(1.12) rotate(-6deg); }
     }
 
+    // Icon circle
     &__icon {
-        width: 68px; height: 68px;
-        border-radius: 18px;
-        background: rgba(var(--c), 0.1);
-        display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 1.25rem;
-        transition: transform 0.3s;
-
-        i {
-            font-size: 1.6rem;
-            color: var(--c);
-        }
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        font-size: 1.75rem;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
     }
 
-    h3 { font-size: 1rem; font-weight: 700; color: $brand-primary; margin-bottom: 0.6rem; }
-    p  { font-size: 0.875rem; color: #6b7280; line-height: 1.65; margin: 0; }
+    // Title
+    &__title {
+        font-size: 1.05rem;
+        color: $brand-primary;
+        letter-spacing: -0.01em;
+    }
+
+    // Colored divider line
+    &__divider {
+        width: 36px;
+        height: 3px;
+        border-radius: 999px;
+    }
+
+    // Description
+    &__desc {
+        font-size: 0.875rem;
+        color: #6b7280;
+        line-height: 1.7;
+    }
 }
 
 // ================================================

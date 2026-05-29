@@ -165,7 +165,9 @@
 {{-- ============================================================
      POPULAR DESTINATIONS
 ============================================================ --}}
-<section class="tt-section tt-destinations" id="destinations">
+<section class="tt-section tt-destinations position-relative overflow-hidden" id="destinations">
+
+    {{-- Animated background decorations --}}
     <div class="tt-destinations__bg" aria-hidden="true">
         <svg class="tt-flight-path tt-flight-path--one" viewBox="0 0 720 240" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 210C140 112 256 34 418 70C565 102 655 168 705 28" />
@@ -177,53 +179,71 @@
         <i class="fa-solid fa-plane tt-floating-plane tt-floating-plane--two"></i>
         <i class="fa-solid fa-plane tt-floating-plane tt-floating-plane--three"></i>
     </div>
+
     <div class="container">
-        <div class="tt-section-head text-center" data-aos="fade-up">
-            <span class="tt-kicker-v2"><i class="fas fa-globe me-1"></i> Popular Destination</span>
-            <h2 class="tt-section-title">Popular <span class="tt-accent">Destinations</span></h2>
-            <p class="tt-section-sub">Explore iconic escapes with luxury-crafted itineraries designed for unforgettable journeys.</p>
+
+        {{-- Section heading --}}
+        <div class="text-center mb-4" data-aos="fade-up">
+            <span class="tt-kicker-v2">
+                <i class="fas fa-globe me-1"></i> Popular Destination
+            </span>
+            <h2 class="tt-section-title mt-2 mb-2">
+                Popular <span class="tt-accent">Destinations</span>
+            </h2>
+            <p class="tt-section-sub mx-auto">
+                Explore iconic escapes with luxury-crafted itineraries designed for unforgettable journeys.
+            </p>
         </div>
 
-        {{-- Filter tabs (optional, hidden by default – keep for JS hook) --}}
-        {{-- Destination Swiper --}}
-        <div class="tt-dest-slider-wrap" data-aos="fade-up" data-aos-delay="100">
+        {{-- Slider wrap --}}
+        <div data-aos="fade-up" data-aos-delay="100">
 
-            {{-- Header row: sub-title left + arrows right --}}
-            <div class="tt-dest-slider-header">
-                <p class="tt-dest-slider-subtitle">Top Destination For Your Next Vacation</p>
-                <div class="tt-dest-arrows">
-                    <button class="tt-destinations-prev tt-dest-arrow-btn" aria-label="Previous destination">
+            {{-- Header row: subtitle left + arrow buttons right --}}
+            <div class="d-flex  justify-content-between flex-wrap gap-2 mb-3">
+                <p class="fw-bold fs-6 text-dark mb-0">Top Destination For Your Next Vacation</p>
+                <div class="d-flex gap-2">
+                    <button class="tt-destinations-prev tt-dest-arrow-btn border rounded-circle bg-yellow d-flex align-items-center justify-content-center"
+                            aria-label="Previous destination" style="width:40px;height:40px;">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="tt-destinations-next tt-dest-arrow-btn" aria-label="Next destination">
+                    <button class="tt-destinations-next tt-dest-arrow-btn border rounded-circle bg-yellow d-flex align-items-center justify-content-center"
+                            aria-label="Next destination" style="width:40px;height:40px;">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
 
-            {{-- Swiper wrapper --}}
+            {{-- Swiper --}}
             <div class="swiper tt-destinations-swiper" id="destSwiper">
                 <div class="swiper-wrapper">
 
                     @foreach ([
-                        ['city'=>'Tokyo',     'country'=>'Japan',        'region'=>'asia',    'img'=>'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80'],
-                        ['city'=>'Bali',      'country'=>'Indonesia',    'region'=>'asia',    'img'=>'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80'],
-                        ['city'=>'Bangkok',   'country'=>'Thailand',     'region'=>'asia',    'img'=>'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80'],
-                        ['city'=>'Cancun',    'country'=>'Mexico',       'region'=>'americas','img'=>'https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&q=80'],
-                        ['city'=>'Paris',     'country'=>'France',       'region'=>'europe',  'img'=>'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'],
-                        ['city'=>'Dubai',     'country'=>'UAE',          'region'=>'middle',  'img'=>'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80'],
-                        ['city'=>'Maldives',  'country'=>'Maldives',     'region'=>'asia',    'img'=>'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80'],
-                        ['city'=>'Switzerland','country'=>'Switzerland', 'region'=>'europe',  'img'=>'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'],
-                        ['city'=>'Kashmir',   'country'=>'India',        'region'=>'asia',    'img'=>'https://images.unsplash.com/photo-1566837945700-30057527ade0?w=600&q=80'],
-                        ['city'=>'Kenya',     'country'=>'Africa',       'region'=>'africa',  'img'=>'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80'],
+                        ['city'=>'Tokyo',      'country'=>'Japan',        'region'=>'asia',     'img'=>'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80'],
+                        ['city'=>'Bali',       'country'=>'Indonesia',    'region'=>'asia',     'img'=>'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80'],
+                        ['city'=>'Bangkok',    'country'=>'Thailand',     'region'=>'asia',     'img'=>'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80'],
+                        ['city'=>'Cancun',     'country'=>'Mexico',       'region'=>'americas', 'img'=>'https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&q=80'],
+                        ['city'=>'Paris',      'country'=>'France',       'region'=>'europe',   'img'=>'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'],
+                        ['city'=>'Dubai',      'country'=>'UAE',          'region'=>'middle',   'img'=>'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80'],
+                        ['city'=>'Maldives',   'country'=>'Maldives',     'region'=>'asia',     'img'=>'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80'],
+                        ['city'=>'Switzerland','country'=>'Switzerland',  'region'=>'europe',   'img'=>'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'],
+                        ['city'=>'Kashmir',    'country'=>'India',        'region'=>'asia',     'img'=>'https://images.unsplash.com/photo-1566837945700-30057527ade0?w=600&q=80'],
+                        ['city'=>'Kenya',      'country'=>'Africa',       'region'=>'africa',   'img'=>'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80'],
                     ] as $dest)
                     <div class="swiper-slide" data-region="{{ $dest['region'] }}">
-                        <div class="tt-dest-card">
-                            <div class="tt-dest-card__img">
-                                <img src="{{ $dest['img'] }}" alt="{{ $dest['city'] }}, {{ $dest['country'] }}" loading="lazy">
-                                <div class="tt-dest-card__overlay"></div>
-                            </div>
-                            <div class="tt-dest-card__label">
+                        {{-- Card: position-relative + overflow-hidden + rounded for Bootstrap, fixed height via custom --}}
+                        <div class="tt-dest-card position-relative overflow-hidden rounded-4 w-100">
+
+                            {{-- Image fills entire card --}}
+                            <img src="{{ $dest['img'] }}"
+                                 alt="{{ $dest['city'] }}, {{ $dest['country'] }}"
+                                 loading="lazy"
+                                 class="tt-dest-card__img position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
+
+                            {{-- Gradient overlay --}}
+                            <div class="tt-dest-card__overlay position-absolute top-0 start-0 w-100 h-100"></div>
+
+                            {{-- City label — bottom-left --}}
+                            <div class="tt-dest-card__label position-absolute bottom-0 start-0 w-100 text-white fw-bold">
                                 {{ $dest['city'] }}
                             </div>
                         </div>
@@ -231,69 +251,111 @@
                     @endforeach
 
                 </div>
+                {{-- Swiper pagination dots --}}
                 <div class="swiper-pagination tt-destinations-pagination"></div>
             </div>
 
             {{-- See All CTA --}}
-            <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="200">
-                <a href="{{ route('front.tours') }}" class="tt-dest-see-all">
+            <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="150">
+                <a href="{{ route('front.tours') }}"
+                   class="tt-dest-see-all d-inline-flex align-items-center justify-content-center">
                     See All Destination
                 </a>
             </div>
-        </div>
-    </div>
+
+        </div>{{-- /slider wrap --}}
+    </div>{{-- /container --}}
 </section>
-
-
-{{-- <section class="tt-section tt-destinations" id="destinations">
-    <div class="tt-destinations__bg" aria-hidden="true">
-        <svg class="tt-flight-path tt-flight-path--one" viewBox="0 0 720 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 210C140 112 256 34 418 70C565 102 655 168 705 28" />
-        </svg>
-        <svg class="tt-flight-path tt-flight-path--two" viewBox="0 0 760 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 45C120 120 230 150 320 210C460 300 610 220 748 100" />
-        </svg>
-        <i class="fa-solid fa-plane tt-floating-plane tt-floating-plane--one"></i>
-        <i class="fa-solid fa-plane tt-floating-plane tt-floating-plane--two"></i>
-        <i class="fa-solid fa-plane tt-floating-plane tt-floating-plane--three"></i>
-    </div>
-    <div class="container">
-        <div class="tt-section-head text-center" data-aos="fade-up">
-            <span class="tt-kicker-v2"><i class="fas fa-globe me-1"></i> Popular Destination</span>
-            <h2 class="tt-section-title">Popular <span class="tt-accent">Destinations</span></h2>
-            <p class="tt-section-sub">Explore iconic escapes with luxury-crafted itineraries designed for unforgettable journeys.</p>
-        </div>
-
-        
-    </div>
-</section> --}}
 
 {{-- ============================================================
      WHY CHOOSE US
 ============================================================ --}}
-<section class="tt-section tt-why" id="why-us">
-    <div class="container">
-        <div class="tt-section-head text-center" data-aos="fade-up">
-            <span class="tt-kicker-v2"><i class="fas fa-award me-1"></i> Our Promise</span>
-            <h2 class="tt-section-title">Why Choose <span class="tt-accent">Tanishq Tours</span></h2>
-            <p class="tt-section-sub">We combine personalized planning with transparent pricing for unforgettable journeys.</p>
+<section class="tt-why position-relative overflow-hidden" id="why-us">
+
+    {{-- LEFT decorative: Hot Air Balloon --}}
+    <img src="{{ Vite::asset('resources/images/perasut-1-1.webp') }}"
+         alt=""
+         aria-hidden="true"
+         class="tt-why__deco tt-why__deco--left d-none d-lg-block" >
+
+    {{-- RIGHT decorative: Cartoon Airplane --}}
+    <img src="{{ Vite::asset('resources/images/plane.webp') }}"
+         alt=""
+         aria-hidden="true"
+         class="tt-why__deco tt-why__deco--right d-none d-lg-block">
+
+    <div class="container position-relative" style="z-index:2;">
+
+        {{-- Section heading --}}
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="tt-kicker-v2">
+                <i class="fas fa-award me-1"></i> Our Promise
+            </span>
+            <h2 class="tt-section-title mt-2 mb-3">
+                Why Choose <span class="tt-accent">Tanishq Tours</span>
+            </h2>
+            <p class="tt-section-sub mx-auto">
+                We combine personalized planning with transparent pricing for unforgettable journeys.
+            </p>
         </div>
-        <div class="tt-why-grid">
+
+        {{-- Feature cards grid --}}
+        <div class="row g-4 justify-content-center">
             @foreach ([
-                ['icon'=>'fa-solid fa-tag','title'=>'Best Price Guarantee','desc'=>'We match or beat any competitor price. Your dream trip, at the best value every single time.','color'=>'#022179'],
-                ['icon'=>'fa-solid fa-user-tie','title'=>'Expert Guides','desc'=>'Our certified travel experts bring decades of experience to craft your perfect itinerary.','color'=>'#FFBE00'],
-                ['icon'=>'fa-solid fa-headset','title'=>'24/7 Support','desc'=>'Round-the-clock assistance at every step of your journey, wherever you are in the world.','color'=>'#022179'],
-                ['icon'=>'fa-solid fa-sliders','title'=>'Customized Tours','desc'=>'Tailor-made packages built around your preferences, timeline, and budget — 100% flexible.','color'=>'#FFBE00'],
-            ] as $i => $feat)
-            <div class="tt-why-card" data-aos="zoom-in" data-aos-delay="{{ $i * 100 }}">
-                <div class="tt-why-card__icon" style="--c: {{ $feat['color'] }}">
-                    <i class="{{ $feat['icon'] }}"></i>
+                [
+                    'icon'  => 'fa-solid fa-tag',
+                    'title' => 'Best Price Guarantee',
+                    'desc'  => 'We match or beat any competitor price. Your dream trip, at the best value every single time.',
+                    'color' => '#022179',
+                    'bg'    => 'rgba(2,33,121,0.08)',
+                    'delay' => 0,
+                ],
+                [
+                    'icon'  => 'fa-solid fa-user-tie',
+                    'title' => 'Expert Guides',
+                    'desc'  => 'Our certified travel experts bring decades of experience to craft your perfect itinerary.',
+                    'color' => '#FFBE00',
+                    'bg'    => 'rgba(255,190,0,0.12)',
+                    'delay' => 100,
+                ],
+                [
+                    'icon'  => 'fa-solid fa-headset',
+                    'title' => '24/7 Support',
+                    'desc'  => 'Round-the-clock assistance at every step of your journey, wherever you are in the world.',
+                    'color' => '#022179',
+                    'bg'    => 'rgba(2,33,121,0.08)',
+                    'delay' => 200,
+                ],
+                [
+                    'icon'  => 'fa-solid fa-sliders',
+                    'title' => 'Customized Tours',
+                    'desc'  => 'Tailor-made packages built around your preferences, timeline, and budget — 100% flexible.',
+                    'color' => '#FFBE00',
+                    'bg'    => 'rgba(255,190,0,0.12)',
+                    'delay' => 300,
+                ],
+            ] as $feat)
+            <div class="col-12 col-sm-6 col-lg-3" data-aos="zoom-in" data-aos-delay="{{ $feat['delay'] }}">
+                <div class="tt-why-card h-100 text-center position-relative overflow-hidden">
+                    {{-- Icon circle --}}
+                    <div class="tt-why-card__icon mx-auto mb-4 d-flex align-items-center justify-content-center"
+                         style="background:{{ $feat['bg'] }}; color:{{ $feat['color'] }};">
+                        <i class="{{ $feat['icon'] }}"></i>
+                    </div>
+                    {{-- Title --}}
+                    <h3 class="tt-why-card__title fw-bold mb-3">{{ $feat['title'] }}</h3>
+                    {{-- Divider --}}
+                    <div class="tt-why-card__divider mx-auto mb-3"
+                         style="background:{{ $feat['color'] }};"></div>
+                    {{-- Description --}}
+                    <p class="tt-why-card__desc mb-0">{{ $feat['desc'] }}</p>
+                    {{-- Hover bottom glow strip --}}
+                    <div class="tt-why-card__glow" style="background:{{ $feat['color'] }};"></div>
                 </div>
-                <h3>{{ $feat['title'] }}</h3>
-                <p>{{ $feat['desc'] }}</p>
             </div>
             @endforeach
         </div>
+
     </div>
 </section>
 
@@ -325,9 +387,7 @@
                 ['title'=>'African Safari','loc'=>'Kenya','days'=>'10D/9N','rating'=>'5.0','price'=>'₹1,45,000','cat'=>'wildlife','img'=>'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80'],
                 ['title'=>'Maldives Paradise','loc'=>'Maldives','days'=>'5D/4N','rating'=>'5.0','price'=>'₹55,000','cat'=>'beach','img'=>'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80'],
                 ['title'=>'Paris City Highlights','loc'=>'France','days'=>'7D/6N','rating'=>'4.8','price'=>'₹89,999','cat'=>'cultural','img'=>'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'],
-                ['title'=>'Dubai City Highlights','loc'=>'UAE','days'=>'5D/4N','rating'=>'4.8','price'=>'₹32,999','cat'=>'adventure','img'=>'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80'],
-                ['title'=>'Swiss Alps Tour','loc'=>'Switzerland','days'=>'9D/8N','rating'=>'4.9','price'=>'₹1,10,000','cat'=>'adventure','img'=>'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'],
-                ['title'=>'Jim Corbett Safari','loc'=>'Uttarakhand','days'=>'4D/3N','rating'=>'4.6','price'=>'₹18,999','cat'=>'wildlife','img'=>'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=600&q=80'],
+              
             ] as $i => $pkg)
             <div class="tt-pkg-card" data-cat="{{ $pkg['cat'] }}" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
                 <div class="tt-pkg-card__img">

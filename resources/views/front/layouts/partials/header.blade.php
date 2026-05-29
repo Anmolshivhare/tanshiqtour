@@ -42,7 +42,7 @@
                 <li><a href="{{ route('front.destinations') }}" class="tt-nav__link {{ Request::routeIs('front.destinations') ? 'active' : '' }}">Destinations</a></li>
                 <li><a href="{{ route('front.tours') }}" class="tt-nav__link {{ Request::routeIs('front.tours') ? 'active' : '' }}">Tour Packages</a></li>
                 <li><a href="{{ route('front.careers') }}" class="tt-nav__link {{ Request::routeIs('front.careers') ? 'active' : '' }}">Careers</a></li>
-                <li><a href="{{ route('front.contact') }}" class="tt-nav__link {{ Request::routeIs('front.contact') ? 'active' : '' }}">Contact Us</a></li>7
+                <li><a href="{{ route('front.contact') }}" class="tt-nav__link {{ Request::routeIs('front.contact') ? 'active' : '' }}">Contact Us</a></li>
             </ul>
 
             {{-- Nav Actions --}}
