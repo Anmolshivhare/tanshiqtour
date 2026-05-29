@@ -7,7 +7,7 @@
     </button>
 
     <div class="fab-actions" id="fab-actions">
-        <a href="https://www.instagram.com/primostravellers/" target="_blank" class="fab-action fab-instagram" data-bs-toggle="tooltip"
+        <a href="https://www.instagram.com/tanishqtourandtravels/" target="_blank" class="fab-action fab-instagram" data-bs-toggle="tooltip"
             data-bs-placement="left" title="instagram">
             <i class="fab fa-instagram"></i>
         </a>
@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
                 <a class="navbar-brand fw-bold logo-container mb-3" href="{{ route('home') }}">
-                    <img src="{{ Vite::asset('resources/images/footer_logo.svg') }}" alt="Primos Travellers Logo"
+                    <img src="{{ Vite::asset('resources/images/footer_logo.svg') }}" alt="Tanishq Tour & Travel Logo"
                         width="120" height="100">
                 </a>
                 <p class="text-white text-justify small lh-lg">
@@ -68,16 +68,16 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5 class="text-uppercase fw-bolder mb-5">Contact Info</h5>
 
-                <p class="text-white lh-lg mb-2"><a href="mailto:info@primostravellers.com" class="text-white"
-                        target="_blank"><i class="fas fa-envelope me-3"></i> info@primostravellers.com </a></p>
-                <p class="text-white lh-lg mb-2"><a href="mailto:support@primostravellers.com" class="text-white"
-                        target="_blank"><i class="fas fa-envelope me-3"></i> support@primostravellers.com </a></p>
+                <p class="text-white lh-lg mb-2"><a href="mailto:info@tanishqtourandtravels.com" class="text-white"
+                        target="_blank"><i class="fas fa-envelope me-3"></i> info@tanishqtourandtravels.com </a></p>
+                <p class="text-white lh-lg mb-2"><a href="mailto:support@tanishqtourandtravels.com" class="text-white"
+                        target="_blank"><i class="fas fa-envelope me-3"></i> support@tanishqtourandtravels.com </a></p>
                 <p class="text-white lh-lg mb-2"> <a href="tel:+918445542594" class="text-white">
                         <i class="fa fa-phone me-3"></i> +91-8445542594
                     </a>
                 </p>
-                <p class="text-white lh-lg mb-2"> <a href="https://primostravellers.com" class="text-white">
-                        <i class="fas fa-globe-americas me-3"></i> www.primostravellers.com
+                <p class="text-white lh-lg mb-2"> <a href="https://tanishqtourandtravels.com" class="text-white">
+                        <i class="fas fa-globe-americas me-3"></i> www.tanishqtourandtravels.com
                     </a>
                 </p>
                 <div class="d-flex">
@@ -107,7 +107,7 @@
         <div class="col-12 text-center my-3">
             <p class="mb-0 text-white fw-bolder ">&copy; <span id="currentYear"></span> Copyrights All Rights Reserved
                 by
-                Primos Travellers. </p>
+                Tanishq Tour & Travel. </p>
         </div>
     </div>
 </footer>

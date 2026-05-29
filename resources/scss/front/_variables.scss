@@ -17,18 +17,28 @@ $font-size-xs: $font-size-base * .75;
 
 //colors
 $primary-white: #ffffff; //used
-$primary: #00004F; //used
+$brand-primary: #022179;
+$brand-accent: #FFBE00;
+$brand-primary-hover: lighten($brand-primary, 7%);
+$brand-primary-soft: rgba($brand-primary, 0.08);
+$brand-accent-hover: darken($brand-accent, 8%);
+$brand-accent-soft: rgba($brand-accent, 0.16);
+$brand-border: rgba($brand-primary, 0.2);
+$brand-on-primary: #ffffff;
+$brand-on-accent: #0f172a;
+
+$primary: $brand-primary; //used
 $dark: #172029; //used
 $primary-text: #5C6066;
-$primary-gradient: linear-gradient(360.02deg, #00004F 2.02%, #00004F 100%); //used
+$primary-gradient: linear-gradient(360.02deg, $brand-primary 2.02%, $brand-primary-hover 100%); //used
 $secondary: #5C6066; //used
 $secondary-bg: #181F2C; //used
-$secondary-gradient: linear-gradient(95.02deg, #313F4E 7.02%, #313F4E 95.7%);
+$secondary-gradient: linear-gradient(95.02deg, $brand-accent 7.02%, $brand-accent-hover 95.7%);
 $profile-text-color: #8C8C8C;
 $success: #2ACE58; 
-$warning: #ffc107; 
-$dark-warning:#ff9800;
-$error: #ff5733; 
+$warning: $brand-accent;
+$dark-warning: $brand-accent-hover;
+$error: $brand-accent-hover;
 $danger: $error;
 $info: #2A7FCE;
 $black: #000000;
@@ -43,7 +53,8 @@ $body-bg: $primary-white; //used
 $body-color: $secondary; //used
 
 // Typography
-$font-family-sans-serif: 'Montserrat', sans-serif; //used
+$font-family-sans-serif: 'Outfit', sans-serif; //used
+$font-family-serif: 'Playfair Display', serif; //used for headings
 $font-family-base: $font-family-sans-serif !default; //used
 
 //container variable
@@ -66,12 +77,12 @@ $btn-link-color: $primary-white;
 $btn-link-hover-color: $primary-white;
 $btn-primary-color: $primary-white;
 $btn-bg: $primary; //used
-$btn-gradient: linear-gradient(95.02deg, #5C5524 7.02%, #5C5524 95.7%); //used
+$btn-gradient: linear-gradient(95.02deg, $brand-accent 7.02%, $brand-accent-hover 95.7%); //used
 $btn-box-shadow: inset 0rem 0.216rem 0.216rem rgba(0, 0, 0, 0.25), inset -0.5rem -0.5rem 0.8rem rgba(0, 0, 0, 0.3), inset 0.5rem 0.5rem 0.8rem rgba(255, 255, 255, 0.1);
 $btn-border-radius: 0.313rem;
 $btn-transition: all .3s linear;
 $btn-border-width: 0px;
-$input-focus-box-shadow: 0 0 0 0.125rem rgba(146, 208, 80, 0.25);
+$input-focus-box-shadow: 0 0 0 0.125rem rgba($brand-primary, 0.25);
 $btn-font-weight: bold;
 
 // Nav pills Variables
@@ -101,7 +112,7 @@ $navbar-dark-disabled-color:        rgba($primary-white, .25);
 $navbar-dark-toggler-icon-bg:       url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
 $navbar-dark-toggler-border-color:  rgba($primary-white, .1);
 
-$yellow-box-shadow: -1px -1px 20px 14px #ff9800b0;
+$yellow-box-shadow: -1px -1px 20px 14px rgba($brand-accent, 0.7);
 
 // ========= card start ==========
 $card-spacer-y:                     .5rem;

@@ -25,6 +25,8 @@ Route::get('/home', [HomeController::class, 'index']);
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
+Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
+Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
 
 // Frontend Authentication Routes
 Route::get('/login', [FrontAuthController::class, 'showLogin'])->name('front.login');
