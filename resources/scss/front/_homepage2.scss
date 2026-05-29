@@ -176,17 +176,45 @@
 
 // Arrow hover (Bootstrap has no hover state utilities)
 .tt-dest-arrow-btn {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #ffbe00;
+    color: #fff;
     cursor: pointer;
-    transition: background 0.22s, color 0.22s, box-shadow 0.22s;
-    color: #1f1f1f;
     font-size: 0.85rem;
+    box-shadow: 0 8px 18px rgba(#ffbe00, 0.45);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+
+    i {
+        color: #fff;
+        font-size: 0.95rem;
+    }
 
     &:hover {
-        background: #1f1f1f !important;
-        color: #fff !important;
-        border-color: #1f1f1f !important;
-        box-shadow: 0 6px 16px rgba(#1f1f1f, 0.18);
+        background: darken(#ffbe00, 6%) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(#ffbe00, 0.55);
     }
+}
+
+.tt-destinations__topbar {
+    align-items: center;
+}
+
+.tt-destinations__nav {
+    align-items: center;
+}
+
+.tt-destinations__nav .tt-destinations-prev,
+.tt-destinations__nav .tt-destinations-next {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    margin: 0;
 }
 
 // Card: fixed height + hover animation (no BS utility for these)
@@ -658,7 +686,7 @@
 // ================================================
 .tt-stats {
     position: relative;
-    padding: 5rem 0;
+    padding: 8rem 0;
     overflow: hidden;
 
     &__bg {
@@ -727,6 +755,21 @@
     position: relative;
 }
 
+.tt-testi-toolbar {
+    align-items: center;
+}
+
+.tt-testi-toolbar__nav {
+    align-items: center;
+    gap: 12px !important;
+}
+
+.tt-testi-toolbar__nav .tt-dest-arrow-btn {
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 8px 16px rgba(#000, 0.14);
+}
+
 .tt-testi-card {
     background: rgba(#fff, 0.8);
     backdrop-filter: blur(14px);
@@ -737,6 +780,9 @@
     box-shadow: 0 8px 32px rgba($brand-primary, 0.08);
     transition: all 0.3s;
     height: 100%;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
 
     &__stars { color: $brand-accent; font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
 
@@ -746,12 +792,14 @@
         line-height: 1.75;
         font-style: italic;
         margin-bottom: 1.5rem;
+        flex-grow: 1;
     }
 
     &__author {
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        margin-top: auto;
     }
 
     &__avatar {
@@ -769,16 +817,27 @@
     &__loc  { font-size: 0.78rem; color: #9ca3af; i { color: $brand-accent; } }
 }
 
-.tt-testi-prev, .tt-testi-next {
-    width: 44px !important; height: 44px !important;
-    background: #fff !important;
-    border-radius: 50% !important;
-    box-shadow: 0 4px 16px rgba($brand-primary, 0.12) !important;
-    color: $brand-primary !important;
+@media (max-width: 767.98px) {
+    .tt-testi-card {
+        min-height: 220px;
+    }
+}
 
-    &::after { font-size: 0.9rem !important; font-weight: 900 !important; }
+.tt-testi-prev,
+.tt-testi-next {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    margin: 0 !important;
 
-    &:hover { background: $brand-primary !important; color: #fff !important; }
+    &::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    i { font-size: 0.95rem; }
 }
 
 .tt-testi-pagination {
