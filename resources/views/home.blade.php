@@ -435,8 +435,21 @@
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)
 ============================================================ --}}
-<section class="tt-section tt-packages" id="packages">
-    <div class="container">
+<section class="tt-section tt-packages position-relative overflow-hidden" id="packages">
+
+    {{-- ── Top-Left decorative: Suitcase ── --}}
+    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}"
+         alt=""
+         aria-hidden="true"
+         class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
+
+    {{-- ── Bottom-Right decorative: Beach Palm ── --}}
+    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}"  
+         alt=""
+         aria-hidden="true"
+         class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
+
+    <div class="container position-relative" style="z-index:2;">
         <div class="tt-section-head text-center" data-aos="fade-up">
             <span class="tt-kicker-v2"><i class="fas fa-suitcase-rolling me-1"></i> Best Deals</span>
             <h2 class="tt-section-title">Featured <span class="tt-accent">Tour Packages</span></h2>
@@ -493,6 +506,7 @@
         </div>
     </div>
 </section>
+
 
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)

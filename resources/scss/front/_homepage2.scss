@@ -888,7 +888,58 @@
 // ================================================
 // TOUR PACKAGES WITH FILTER
 // ================================================
-.tt-packages { background: linear-gradient(180deg, #f8faff 0%, #fff 100%); }
+// ── Packages section: gradient bg matching reference images ──────
+.tt-packages {
+    background:
+        radial-gradient(ellipse 55% 50% at 0% 0%,   rgba(180, 215, 180, 0.45) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 50% at 100% 100%, rgba(255, 210, 170, 0.35) 0%, transparent 70%),
+        linear-gradient(160deg, #f0f8f0 0%, #fefefe 50%, #fff8f2 100%);
+    position: relative;
+}
+
+// ── Decorative corner images ──────────────────────────────────────
+.tt-pkg-deco {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    opacity: 0.92;
+
+    // Top-Left: Suitcase illustration
+    &--tl {
+        top: 2rem;
+        left: 2rem;
+        width: clamp(200px, 17vw, 280px);
+        transform: rotate(-8deg);
+        animation: ttPkgFloat 5.5s ease-in-out infinite;
+        filter: drop-shadow(0 12px 28px rgba(0,0,0,0.12));
+    }
+
+    // Bottom-Right: Beach/Palm illustration
+    &--br {
+        bottom: 0rem;
+        right: 0.5rem;
+        width: clamp(200px, 18vw, 290px);
+        transform: rotate(6deg);
+        animation: ttPkgFloat 6.5s ease-in-out 0.9s infinite;
+        filter: drop-shadow(0 12px 28px rgba(0,0,0,0.10));
+    }
+}
+
+@keyframes ttPkgFloat {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50%       { transform: translateY(-14px) rotate(-8deg); }
+}
+
+// BR image has opposite rotation
+.tt-pkg-deco--br {
+    @keyframes ttPkgFloatBr {
+        0%, 100% { transform: translateY(0) rotate(6deg); }
+        50%       { transform: translateY(-14px) rotate(6deg); }
+    }
+    animation-name: ttPkgFloatBr !important;
+}
+
 
 .tt-filter-tabs {
     display: flex;
