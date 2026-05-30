@@ -3,6 +3,168 @@
 @section('content')
 
 {{-- ============================================================
+     BANNER SLIDER SECTION
+============================================================ --}}
+<section class="tt-banner-slider" id="bannerSlider" aria-label="Tanishq Tours Featured Destinations">
+
+    <div id="ttBannerCarousel"
+         class="carousel slide carousel-fade tt-banner-carousel"
+         data-bs-ride="carousel"
+         data-bs-interval="5000">
+
+        {{-- ── Indicators ── --}}
+        <div class="carousel-indicators tt-banner-indicators">
+            @foreach ([0,1,2,3,4] as $idx)
+            <button type="button"
+                    data-bs-target="#ttBannerCarousel"
+                    data-bs-slide-to="{{ $idx }}"
+                    class="{{ $idx === 0 ? 'active' : '' }}"
+                    aria-current="{{ $idx === 0 ? 'true' : 'false' }}"
+                    aria-label="Slide {{ $idx + 1 }}">
+            </button>
+            @endforeach
+        </div>
+
+        {{-- ── Slides ── --}}
+        <div class="carousel-inner">
+
+            {{-- Slide 1 – Kashmir --}}
+            <div class="carousel-item active" id="banner-slide-1">
+                <div class="tt-banner-slide"
+                     style="background-image:url('{{ Vite::asset('resources/images/banner1.webp') }}')">
+                    <div class="tt-banner-slide__overlay"></div>
+                    <div class="container tt-banner-slide__content">
+                        <div class="tt-banner-tag">
+                            <i class="fa-solid fa-location-dot me-1"></i> India
+                        </div>
+                        <h2 class="tt-banner-slide__title">
+                            Heaven on <span>Earth</span>
+                        </h2>
+                        <p class="tt-banner-slide__sub">
+                            Discover the breathtaking valleys, lakes and mountain meadows of Kashmir.
+                        </p>
+                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-1">
+                            <i class="fas fa-compass me-2"></i>Explore Kashmir
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slide 2 – Bali --}}
+            <div class="carousel-item" id="banner-slide-2">
+                <div class="tt-banner-slide"
+                     style="background-image:url('{{ Vite::asset('resources/images/banner2.webp') }}')">
+                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--teal"></div>
+                    <div class="container tt-banner-slide__content">
+                        <div class="tt-banner-tag">
+                            <i class="fa-solid fa-location-dot me-1"></i> Indonesia
+                        </div>
+                        <h2 class="tt-banner-slide__title">
+                            Bali <span>Beach Escape</span>
+                        </h2>
+                        <p class="tt-banner-slide__sub">
+                            Pristine beaches, lush rice terraces and vibrant culture await you in paradise.
+                        </p>
+                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-2">
+                            <i class="fas fa-compass me-2"></i>Explore Bali
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slide 3 – Dubai --}}
+            <div class="carousel-item" id="banner-slide-3">
+                <div class="tt-banner-slide"
+                     style="background-image:url('{{ Vite::asset('resources/images/banner3.webp') }}')">
+                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--gold"></div>
+                    <div class="container tt-banner-slide__content">
+                        <div class="tt-banner-tag">
+                            <i class="fa-solid fa-location-dot me-1"></i> UAE
+                        </div>
+                        <h2 class="tt-banner-slide__title">
+                            Dubai <span>Luxury</span>
+                        </h2>
+                        <p class="tt-banner-slide__sub">
+                            Iconic skylines, desert safaris and world-class hospitality in the City of Gold.
+                        </p>
+                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-3">
+                            <i class="fas fa-compass me-2"></i>Explore Dubai
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slide 4 – Switzerland --}}
+            <div class="carousel-item" id="banner-slide-4">
+                <div class="tt-banner-slide"
+                     style="background-image:url('{{ Vite::asset('resources/images/banner4.webp') }}')">
+                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--blue"></div>
+                    <div class="container tt-banner-slide__content">
+                        <div class="tt-banner-tag">
+                            <i class="fa-solid fa-location-dot me-1"></i> Europe
+                        </div>
+                        <h2 class="tt-banner-slide__title">
+                            Swiss <span>Alps Dream</span>
+                        </h2>
+                        <p class="tt-banner-slide__sub">
+                            Snow-capped peaks, charming villages and crystal-clear lakes of Switzerland.
+                        </p>
+                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-4">
+                            <i class="fas fa-compass me-2"></i>Explore Switzerland
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slide 5 – Maldives --}}
+            <div class="carousel-item" id="banner-slide-5">
+                <div class="tt-banner-slide"
+                     style="background-image:url('{{ Vite::asset('resources/images/banner5.webp') }}')">
+                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--cyan"></div>
+                    <div class="container tt-banner-slide__content">
+                        <div class="tt-banner-tag">
+                            <i class="fa-solid fa-location-dot me-1"></i> Maldives
+                        </div>
+                        <h2 class="tt-banner-slide__title">
+                            Maldives <span>Paradise</span>
+                        </h2>
+                        <p class="tt-banner-slide__sub">
+                            Overwater bungalows, turquoise lagoons and the world's most stunning sunsets.
+                        </p>
+                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-5">
+                            <i class="fas fa-compass me-2"></i>Explore Maldives
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>{{-- /carousel-inner --}}
+
+        {{-- ── Prev / Next Controls ── --}}
+        <button class="carousel-control-prev tt-banner-ctrl" type="button"
+                data-bs-target="#ttBannerCarousel" data-bs-slide="prev"
+                id="banner-prev" aria-label="Previous slide">
+            <span class="tt-banner-ctrl__icon" aria-hidden="true">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        </button>
+        <button class="carousel-control-next tt-banner-ctrl" type="button"
+                data-bs-target="#ttBannerCarousel" data-bs-slide="next"
+                id="banner-next" aria-label="Next slide">
+            <span class="tt-banner-ctrl__icon" aria-hidden="true">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </button>
+
+        {{-- ── Slide Counter ── --}}
+        <div class="tt-banner-counter" aria-live="polite">
+            <span id="tt-current-slide">1</span> / <span>5</span>
+        </div>
+
+    </div>{{-- /carousel --}}
+</section>
+
+{{-- ============================================================
      HERO SECTION
 ============================================================ --}}
 <section class="tt-hero-v2" id="hero">
@@ -564,5 +726,16 @@
 <script>
     // Page-specific init handled by front.js
     document.dispatchEvent(new Event('tt:home:ready'));
+
+    // ── Banner Slide Counter ──────────────────────────────────────
+    (function () {
+        const carousel = document.getElementById('ttBannerCarousel');
+        const currentEl = document.getElementById('tt-current-slide');
+        if (!carousel || !currentEl) return;
+
+        carousel.addEventListener('slid.bs.carousel', function (e) {
+            currentEl.textContent = e.to + 1;
+        });
+    })();
 </script>
 @endpush

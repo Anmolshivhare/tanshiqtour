@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
                 <a class="navbar-brand fw-bold logo-container mb-3" href="{{ route('home') }}">
-                    <img src="{{ Vite::asset('resources/images/footer_logo.svg') }}" alt="Tanishq Tour & Travel Logo"
+                    <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="Tanishq Tour & Travel Logo"
                         width="120" height="100">
                 </a>
                 <p class="text-white text-justify small lh-lg">

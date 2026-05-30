@@ -47,42 +47,12 @@
 
             {{-- Nav Actions --}}
 
-            {{--  <div class="tt-nav__actions">
-                @auth
-                    <div class="dropdown">
-                        <a class="tt-nav__user dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if (auth()->user()->profile_pic)
-                                <img src="{{ Storage::url('profile_images/' . auth()->user()->profile_pic) }}" alt="Profile" class="tt-nav__avatar">
-                            @else
-                                <div class="tt-nav__avatar tt-nav__avatar--initials">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
-                            @endif
-                            <span class="d-none d-lg-inline">{{ Str::words(auth()->user()->name, 1, '') }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="userDropdown">
-                            <li class="px-3 py-2 border-bottom">
-                                <div class="fw-bold small">{{ auth()->user()->name }}</div>
-                                <small class="text-muted">{{ auth()->user()->email }}</small>
-                            </li>
-                            <li><a class="dropdown-item py-2" href="{{ route('front.profile') }}"><i class="fa-solid fa-user me-2 text-primary"></i>My Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item py-2 text-danger" href="{{ route('front.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
-                        </ul>
-                    </div>
-                @else
-                    <a href="{{ route('front.login') }}" class="tt-nav__btn-outline">
-                        <i class="fa-solid fa-right-to-bracket me-1"></i> Login
-                    </a>
-                @endauth
-                <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary">
-                    <i class="fa-solid fa-compass me-1"></i> Book Now
-                </a>
-
-                
+             <div class="tt-nav__actions">
                 <button class="tt-hamburger" id="tt-hamburger" aria-label="Toggle navigation" aria-expanded="false">
                     <span></span><span></span><span></span>
                 </button>
             </div>
-               --}}
+              
         </nav>
     </div>
 </header>
@@ -96,16 +66,19 @@
     </div>
     <nav class="tt-drawer__nav">
         <a href="{{ route('home') }}" class="tt-drawer__link {{ Request::routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> Home</a>
-        <a href="{{ route('front.tours') }}" class="tt-drawer__link {{ Request::routeIs('front.tours') ? 'active' : '' }}"><i class="fas fa-map-marked-alt"></i> Tours</a>
         <a href="{{ route('front.about') }}" class="tt-drawer__link {{ Request::routeIs('front.about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="{{ route('front.tours') }}" class="tt-drawer__link {{ Request::routeIs('front.tours') ? 'active' : '' }}"><i class="fas fa-map-marked-alt"></i> Tour packages</a>
+        <a href="{{ route('front.destinations') }}" class="tt-drawer__link {{ Request::routeIs('front.destinations') ? 'active' : '' }}"><i class="fas fa-map-marker-alt"></i> Destinations</a>
+        <a href="{{ route('front.careers') }}" class="tt-drawer__link {{ Request::routeIs('front.careers') ? 'active' : '' }}"><i class="fas fa-briefcase"></i> Careers</a>
         <a href="{{ route('front.contact') }}" class="tt-drawer__link {{ Request::routeIs('front.contact') ? 'active' : '' }}"><i class="fas fa-phone-alt"></i> Contact</a>
+        
     </nav>
-    <div class="tt-drawer__footer">
+    {{-- <div class="tt-drawer__footer">
         <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary w-100 text-center"><i class="fas fa-compass me-1"></i> Book Now</a>
         <div class="tt-drawer__socials">
             <a href="https://www.facebook.com/profile.php?id=61584292436038" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/tanishqtourandtravels/" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://wa.me/918445542594" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
-    </div>
+    </div> --}}
 </aside>

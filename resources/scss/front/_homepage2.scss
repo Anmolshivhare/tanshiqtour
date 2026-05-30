@@ -1,4 +1,331 @@
 // ================================================
+// BANNER SLIDER — Bootstrap 5.3 + Custom CSS
+// ================================================
+
+.tt-banner-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tt-banner-carousel {
+    width: 100%;
+    // Smooth crossfade transition (Bootstrap's carousel-fade handles animation,
+    // but we tweak the duration here)
+    .carousel-item {
+        transition: opacity 0.9s ease-in-out !important;
+    }
+}
+
+// ── Individual Slide ──────────────────────────────────────────────
+.tt-banner-slide {
+    position: relative;
+    width: 100%;
+    height: clamp(480px, 100vh, 750px);   // responsive height
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+
+    // Ken-Burns subtle zoom on active slide
+    .carousel-item.active & {
+        animation: ttBannerZoom 8s ease-in-out forwards;
+    }
+}
+
+@keyframes ttBannerZoom {
+    0%   { background-size: 110%; }
+    100% { background-size: 100%; }
+}
+
+// ── Gradient Overlays (one per colour scheme) ─────────────────────
+.tt-banner-slide__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        rgba(2, 33, 121, 0.75) 0%,
+        rgba(2, 33, 121, 0.35) 55%,
+        rgba(0, 0, 0, 0.10)    100%
+    );
+    z-index: 1;
+
+    &--teal {
+        background: linear-gradient(
+            120deg,
+            rgba(2, 80, 80, 0.78) 0%,
+            rgba(2, 80, 80, 0.35) 55%,
+            rgba(0, 0, 0, 0.10)   100%
+        );
+    }
+
+    &--gold {
+        background: linear-gradient(
+            120deg,
+            rgba(60, 40, 0, 0.82) 0%,
+            rgba(100, 70, 0, 0.38) 55%,
+            rgba(0, 0, 0, 0.10)    100%
+        );
+    }
+
+    &--blue {
+        background: linear-gradient(
+            120deg,
+            rgba(0, 30, 80, 0.80) 0%,
+            rgba(0, 60, 120, 0.35) 55%,
+            rgba(0, 0, 0, 0.10)    100%
+        );
+    }
+
+    &--cyan {
+        background: linear-gradient(
+            120deg,
+            rgba(0, 60, 80, 0.82) 0%,
+            rgba(0, 100, 130, 0.38) 55%,
+            rgba(0, 0, 0, 0.08)     100%
+        );
+    }
+}
+
+// ── Slide Content (text + button) ─────────────────────────────────
+.tt-banner-slide__content {
+    position: relative;
+    z-index: 2;
+    padding-top: 0;
+    padding-bottom: 0;
+    max-width: 620px;   // cap text column width
+
+    // Animate content in when slide becomes active
+    .carousel-item.active & {
+        animation: ttBannerFadeUp 0.85s ease 0.15s both;
+    }
+}
+
+@keyframes ttBannerFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Country / Region Tag ──────────────────────────────────────────
+.tt-banner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba($brand-accent, 0.22);
+    border: 1.5px solid rgba($brand-accent, 0.55);
+    color: $brand-accent;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+
+    i { color: $brand-accent; }
+}
+
+// ── Main Heading ──────────────────────────────────────────────────
+.tt-banner-slide__title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.35);
+
+    span {
+        color: $brand-accent;
+        font-style: italic;
+    }
+}
+
+// ── Sub-description ───────────────────────────────────────────────
+.tt-banner-slide__sub {
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    color: rgba(#fff, 0.88);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 480px;
+}
+
+// ── CTA Button ───────────────────────────────────────────────────
+.tt-banner-slide__btn {
+    display: inline-flex;
+    align-items: center;
+    background: $brand-accent;
+    color: $brand-primary;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba($brand-accent, 0.5);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    i { color: $brand-primary; }
+
+    &:hover {
+        background: darken($brand-accent, 8%);
+        color: $brand-primary;
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 14px 36px rgba($brand-accent, 0.65);
+    }
+}
+
+// ── Price Badge (bottom-right corner) ────────────────────────────
+.tt-banner-slide__badge {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    z-index: 3;
+    background: rgba(#fff, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(#fff, 0.30);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.55rem 1.2rem;
+    border-radius: 50px;
+    letter-spacing: 0.03em;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+
+    @media (max-width: 575.98px) { display: none; }
+}
+
+// ── Custom Prev / Next Arrow Buttons ─────────────────────────────
+.tt-banner-ctrl {
+    // Let Bootstrap keep its full-height abs positioning (top:0, bottom:0)
+    // and its built-in flexbox align-items:center — that is what centres the icon.
+    // We only override width and left/right positions.
+    width: 70px !important;      // narrow column so it doesn't eat text area
+    opacity: 1 !important;
+    top: 0 !important;           // full height — Bootstrap default
+    bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    &.carousel-control-prev { left: 0; }
+    &.carousel-control-next { right: 0; }
+
+    // Hide default Bootstrap chevron span icons
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon { display: none; }
+}
+
+.tt-banner-ctrl__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(#fff, 0.18);
+    border: 1.5px solid rgba(#fff, 0.40);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.28s ease;
+
+    i { color: #fff; }
+
+    .tt-banner-ctrl:hover & {
+        background: $brand-accent;
+        border-color: $brand-accent;
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba($brand-accent, 0.55);
+        i { color: $brand-primary; }
+    }
+}
+
+// ── Custom Dot Indicators ─────────────────────────────────────────
+.tt-banner-indicators {
+    bottom: 20px !important;
+    margin-bottom: 0;
+    gap: 6px;
+
+    button {
+        width: 10px !important;
+        height: 10px !important;
+        border-radius: 50% !important;
+        background-color: rgba(#fff, 0.45) !important;
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        margin: 0 4px !important;
+        opacity: 1 !important;
+        transition: all 0.3s ease !important;
+
+        &.active {
+            width: 30px !important;
+            border-radius: 50px !important;
+            background-color: $brand-accent !important;
+            box-shadow: 0 2px 10px rgba($brand-accent, 0.6) !important;
+        }
+    }
+}
+
+// ── Slide Counter (bottom-right) ──────────────────────────────────
+.tt-banner-counter {
+    position: absolute;
+    bottom: 22px;
+    right: 28px;
+    z-index: 10;
+    color: rgba(#fff, 0.75);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    background: rgba(#000, 0.28);
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+    backdrop-filter: blur(6px);
+
+    @media (max-width: 575.98px) { display: none; }
+}
+
+// ── Responsive ───────────────────────────────────────────────────
+@media (max-width: 991.98px) {
+    .tt-banner-slide {
+        height: clamp(400px, 60vh, 600px);
+    }
+    .tt-banner-slide__content {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .tt-banner-slide {
+        height: clamp(360px, 55vh, 500px);
+        align-items: flex-end;
+        padding-bottom: 3rem;
+    }
+    .tt-banner-ctrl__icon {
+        width: 38px;
+        height: 38px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .tt-banner-slide {
+        height: clamp(320px, 55vh, 450px);
+        align-items: flex-end;
+        padding-bottom: 4rem;
+    }
+    .tt-banner-slide__title {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+    }
+    .tt-banner-slide__sub {
+        display: none;   // hide desc on very small screens to reduce clutter
+    }
+    .tt-banner-ctrl { display: none !important; }  // rely on swipe gestures
+}
+
+// ================================================
 // SECTION COMMON
 // ================================================
 .tt-section {
