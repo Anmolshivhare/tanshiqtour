@@ -418,19 +418,27 @@
             </div>
 
             {{-- See All CTA --}}
-            <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="150">
+            {{-- <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="150">
                 <a href="{{ route('front.tours') }}"
                    class="tt-dest-see-all d-inline-flex align-items-center justify-content-center">
                     See All Destination
                 </a>
-            </div>
+            </div> --}}
+
+            <div class="text-center mt-4" data-aos="fade-up">
+            <a href="{{ route('front.tours') }}" class="tt-btn-hero-primary">
+                <i class="fas fa-th-large me-2"></i>   See All Destination
+            </a>
+        </div>
 
         </div>{{-- /slider wrap --}}
     </div>{{-- /container --}}
 </section>
 
-{{-- ============================================================
-0
+ {{-- ============================================================
+     POPULAR DESTINATIONS END
+============================================================ --}}
+
 
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)

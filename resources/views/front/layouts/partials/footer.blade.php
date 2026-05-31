@@ -101,13 +101,12 @@
             </div>
         </div>
     </div>
-    <hr class="my-3 text-secondary">
-
-    <div class="row me-0 ">
+  
+</footer>
+ <div class="row me-0 footer-copyright">
         <div class="col-12 text-center my-3">
             <p class="mb-0 text-white fw-bolder ">&copy; <span id="currentYear"></span> Copyrights All Rights Reserved
                 by
                 Tanishq Tour & Travel. </p>
         </div>
-    </div>
-</footer>
+ </div>

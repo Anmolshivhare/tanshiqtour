@@ -21,7 +21,7 @@ use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index'])->name('front.home');
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
