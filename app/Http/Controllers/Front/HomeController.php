@@ -49,6 +49,20 @@ class HomeController extends Controller
     public function destinations(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $destinations = $search === ''
+                ? $this->destinationRepository->getActiveDestinationsPaginated('', 9)
+                : $this->destinationRepository->getActiveDestinationsFiltered($search);
+
+            return response()->json([
+                'html' => view('front.destinations.results', compact('destinations', 'search'))->render(),
+                'count' => $destinations instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator
+                    ? $destinations->total()
+                    : $destinations->count(),
+            ]);
+        }
+
         $destinations = $this->destinationRepository->getActiveDestinationsPaginated($search);
 
         return view('destinations', compact('destinations', 'search'));

@@ -639,6 +639,89 @@ $(function () {
     });
 })();
 
+// ---- Destination Search (Live Filter) ----
+(function () {
+    const form = document.getElementById("destination-search-form");
+    const input = document.getElementById("destination-search-input");
+    const clearBtn = document.getElementById("destination-clear-btn");
+    const resultsWrap = document.getElementById("destination-results");
+
+    if (!form || !input || !clearBtn || !resultsWrap) {
+        return;
+    }
+
+    const searchUrl = form.getAttribute("action");
+    let debounceTimer = null;
+    let activeRequest = null;
+    const defaultResultsHtml = resultsWrap.innerHTML;
+
+    function renderResults(payload) {
+        if (payload && typeof payload.html === "string") {
+            resultsWrap.innerHTML = payload.html;
+            resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
+                element.classList.add("aos-animate");
+            });
+        }
+    }
+
+    function setClearState(query) {
+        clearBtn.classList.toggle("d-none", query.trim().length === 0);
+    }
+
+    function runSearch(rawQuery) {
+        const query = rawQuery.trim();
+
+        if (activeRequest && activeRequest.readyState !== 4) {
+            activeRequest.abort();
+        }
+
+        setClearState(query);
+
+        activeRequest = $.ajax({
+            url: searchUrl,
+            method: "GET",
+            data: { q: query },
+            dataType: "json",
+            success(response) {
+                renderResults(response);
+            },
+            error(xhr, status) {
+                if (status === "abort") {
+                    return;
+                }
+
+                if (!query) {
+                    resultsWrap.innerHTML = defaultResultsHtml;
+                }
+            },
+        });
+    }
+
+    input.addEventListener("input", function () {
+        setClearState(this.value);
+        window.clearTimeout(debounceTimer);
+        debounceTimer = window.setTimeout(() => {
+            runSearch(input.value);
+        }, 250);
+    });
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        window.clearTimeout(debounceTimer);
+        runSearch(input.value);
+    });
+
+    clearBtn.addEventListener("click", function () {
+        input.value = "";
+        setClearState("");
+        window.clearTimeout(debounceTimer);
+        runSearch("");
+        input.focus();
+    });
+
+    setClearState(input.value);
+})();
+
 // ---- GSAP Airplane SVG Path Animation ----
 (function () {
     const plane = document.getElementById("svgPlane");

@@ -37,6 +37,7 @@ return [
     'company_logo' => 'resources/images/admin_logo.svg', 
     'company_logo_favicon' => 'resources/images/admin_logo_favicon.svg', 
     'default_image' => 'resources/images/user-avtar.svg',
+    'destination_default_image' => 'resources/images/SRINAGAR.jpg',
 
     // Tour configuration
     'tour_image_path' => 'tour_images',

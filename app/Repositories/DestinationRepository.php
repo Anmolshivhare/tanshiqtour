@@ -39,15 +39,40 @@ class DestinationRepository extends BaseRepository
     }
 
     /**
-     * Get paginated active destinations with an optional search term.
+     * Get all active destinations matching an optional search term.
      */
-    public function getActiveDestinationsPaginated(string $search = '', int $perPage = 9)
+    public function getActiveDestinationsFiltered(string $search = '')
     {
         return $this->model->query()
             ->active()
             ->whereNotNull('slug')
             ->when($search !== '', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where(function ($searchQuery) use ($search) {
+                    $searchQuery->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('city', 'like', '%' . $search . '%')
+                        ->orWhere('state', 'like', '%' . $search . '%')
+                        ->orWhere('country', 'like', '%' . $search . '%');
+                });
+            })
+            ->latest('id')
+            ->get();
+    }
+
+    /**
+     * Get paginated active destinations with an optional search term.
+     */
+    public function getActiveDestinationsPaginated(string $search = '', int $perPage = 6)
+    {
+        return $this->model->query()
+            ->active()
+            ->whereNotNull('slug')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($searchQuery) use ($search) {
+                    $searchQuery->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('city', 'like', '%' . $search . '%')
+                        ->orWhere('state', 'like', '%' . $search . '%')
+                        ->orWhere('country', 'like', '%' . $search . '%');
+                });
             })
             ->latest('id')
             ->paginate($perPage)

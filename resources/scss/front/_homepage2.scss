@@ -2818,12 +2818,14 @@
         display: inline-flex;
         align-items: center;
         padding: 0 1.1rem;
+        appearance: none;
         border-radius: 12px;
         text-decoration: none;
         font-weight: 700;
         color: $brand-primary;
         border: 1.5px solid rgba($brand-primary, 0.2);
         background: #fff;
+        cursor: pointer;
 
         &:hover {
             color: #fff;
