@@ -564,6 +564,7 @@
 // Image zoom on hover (cannot be done with utilities)
 .tt-dest-card__img {
     transition: transform 0.55s ease;
+    object-fit: cover;
     object-position: center;
 }
 
@@ -2468,7 +2469,7 @@
     &__bg {
         position: absolute;
         inset: 0;
-        background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=70') center center / cover no-repeat;
+        background: url('../../images/contact-hero.webp') center center / cover no-repeat;
         transform: scale(1.04);
         transition: transform 8s ease;
     }
@@ -2746,4 +2747,205 @@
     .tt-contact-form-wrap { padding: 1.5rem 1rem; }
     .tt-contact-map iframe { min-height: 260px; }
     .tt-contact-card { padding: 1.75rem 1.25rem; }
+}
+
+// ============================================================
+// DESTINATION PAGE: Search + Theme Pagination
+// ============================================================
+.tt-destination-search-wrap {
+    margin: 0 auto 2rem;
+    max-width: 760px;
+}
+
+.tt-destination-search {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &__input-wrap {
+        flex: 1 1 420px;
+        min-height: 52px;
+        background: #fff;
+        border: 1.5px solid rgba($brand-primary, 0.12);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        padding: 0 0.9rem;
+        transition: all 0.25s ease;
+
+        i {
+            color: $brand-accent;
+            margin-right: 0.55rem;
+            font-size: 0.9rem;
+        }
+
+        &:focus-within {
+            border-color: $brand-primary;
+            box-shadow: 0 0 0 3px rgba($brand-primary, 0.08);
+        }
+    }
+
+    &__input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.94rem;
+        color: #374151;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    &__btn {
+        border: none;
+        min-height: 52px;
+        padding: 0 1.4rem;
+        border-radius: 12px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, $brand-primary, lighten($brand-primary, 12%));
+        transition: all 0.25s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba($brand-primary, 0.28);
+        }
+    }
+
+    &__reset {
+        min-height: 52px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 1.1rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        color: $brand-primary;
+        border: 1.5px solid rgba($brand-primary, 0.2);
+        background: #fff;
+
+        &:hover {
+            color: #fff;
+            background: $brand-primary;
+            border-color: $brand-primary;
+        }
+    }
+}
+
+.tt-destination-empty {
+    background: #fff;
+    border-radius: 18px;
+    border: 1.5px solid rgba($brand-primary, 0.08);
+    padding: 2rem 1.25rem;
+
+    h3 {
+        color: $brand-primary;
+        font-size: 1.25rem;
+        margin-bottom: 0.45rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin: 0;
+        color: #6b7280;
+    }
+}
+
+.tt-theme-pagination-wrap {
+    .pagination {
+        justify-content: center;
+        gap: 0.45rem;
+    }
+
+    .page-item .page-link {
+        border: 1.5px solid rgba($brand-primary, 0.15);
+        border-radius: 10px;
+        min-width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: $brand-primary;
+        background: #fff;
+        transition: all 0.2s ease;
+    }
+
+    .page-item .page-link:hover {
+        background: rgba($brand-primary, 0.06);
+        border-color: rgba($brand-primary, 0.35);
+        color: $brand-primary;
+    }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, $brand-accent, darken($brand-accent, 10%));
+        border-color: transparent;
+        color: $brand-primary;
+        box-shadow: 0 8px 20px rgba($brand-accent, 0.45);
+    }
+
+    .page-item.disabled .page-link {
+        opacity: 0.5;
+        color: #9ca3af;
+        border-color: rgba(#9ca3af, 0.35);
+    }
+}
+
+// ============================================================
+// DESTINATION DETAILS PAGE
+// ============================================================
+.tt-destination-details {
+    background: #f8faff;
+}
+
+.tt-destination-details__media {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1.5px solid rgba($brand-primary, 0.08);
+    box-shadow: 0 10px 30px rgba($brand-primary, 0.1);
+
+    img {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+.tt-destination-details__content {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1.5px solid rgba($brand-primary, 0.08);
+    box-shadow: 0 8px 26px rgba($brand-primary, 0.08);
+}
+
+.tt-destination-details__short,
+.tt-destination-details__long {
+    h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: $brand-primary;
+        margin-bottom: 0.55rem;
+    }
+
+    p {
+        color: #4b5563;
+        font-size: 0.95rem;
+        line-height: 1.75;
+        margin-bottom: 0;
+    }
+}
+
+.tt-destination-details__long-text {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.8;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
 }

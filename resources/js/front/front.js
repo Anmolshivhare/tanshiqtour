@@ -220,23 +220,6 @@ $(function () {
 });
 
 // ==========================================
-// Navbar Scroll Effect
-// ==========================================
-$(function () {
-    $(window).on("scroll", function () {
-        if ($(window).scrollTop() > 50) {
-            $("#main-nav").addClass("scrolled");
-        } else {
-            $("#main-nav").removeClass("scrolled");
-        }
-    });
-
-    if ($(window).scrollTop() > 50) {
-        $("#main-nav").addClass("scrolled");
-    }
-});
-
-// ==========================================
 // Contact FAB Button
 // ==========================================
 $(function () {
@@ -509,9 +492,26 @@ $(function () {
 (function () {
     const navbar = document.getElementById("tt-navbar");
     if (!navbar) return;
+
+    let isScrolled = false;
+    const addAt = 90;
+    const removeAt = 40;
+
     function handleScroll() {
-        navbar.classList.toggle("scrolled", window.scrollY > 60);
+        const y = window.scrollY || window.pageYOffset;
+
+        if (!isScrolled && y >= addAt) {
+            isScrolled = true;
+            navbar.classList.add("scrolled");
+            return;
+        }
+
+        if (isScrolled && y <= removeAt) {
+            isScrolled = false;
+            navbar.classList.remove("scrolled");
+        }
     }
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 })();
@@ -578,25 +578,34 @@ $(function () {
 
 // ---- Destinations Swiper (Capsule Center Focus) ----
 (function () {
-    const el = document.querySelector(".tt-destinations-swiper");
-    if (!el) return;
+    const section = document.querySelector(".tt-destinations");
+    if (!section) return;
+
+    const el = section.querySelector(".tt-destinations-swiper");
+    const prevEl = section.querySelector(".tt-destinations-prev");
+    const nextEl = section.querySelector(".tt-destinations-next");
+    if (!el || !prevEl || !nextEl) return;
+
+    const slideCount = el.querySelectorAll(".swiper-wrapper > .swiper-slide").length;
+    const clampSlides = (value) => Math.max(1, Math.min(value, slideCount || 1));
 
     const destSwiper = new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
         centeredSlides: false,
-        slidesPerView: 1.25,
+        slidesPerView: slideCount > 1 ? Math.min(1.25, slideCount) : 1,
         spaceBetween: 16,
-        loop: true,
-        loopAdditionalSlides: 4,
+        loop: slideCount > 1,
+        loopAdditionalSlides: Math.min(4, slideCount),
         speed: 700,
         grabCursor: true,
         autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
         pagination: { el: ".tt-destinations-pagination", clickable: true },
-        navigation: { prevEl: ".tt-destinations-prev", nextEl: ".tt-destinations-next" },
+        navigation: { prevEl, nextEl },
+        watchOverflow: true,
         breakpoints: {
-            480: { slidesPerView: 2,   spaceBetween: 16 },
-            768: { slidesPerView: 3,   spaceBetween: 18 },
-            1024:{ slidesPerView: 4,   spaceBetween: 20 },
+            480: { slidesPerView: clampSlides(2), spaceBetween: 16 },
+            768: { slidesPerView: clampSlides(3), spaceBetween: 18 },
+            1024: { slidesPerView: clampSlides(4), spaceBetween: 20 },
         },
     });
 

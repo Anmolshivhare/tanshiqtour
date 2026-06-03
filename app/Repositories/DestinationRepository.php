@@ -39,11 +39,38 @@ class DestinationRepository extends BaseRepository
     }
 
     /**
+     * Get paginated active destinations with an optional search term.
+     */
+    public function getActiveDestinationsPaginated(string $search = '', int $perPage = 9)
+    {
+        return $this->model->query()
+            ->active()
+            ->whereNotNull('slug')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
+    /**
      * Get a destination by its slug.
      */
     public function getBySlug(string $slug): ?Destination
     {
         return $this->model->where('slug', $slug)->first();
+    }
+
+    /**
+     * Get an active destination by its slug.
+     */
+    public function getActiveBySlug(string $slug): Destination
+    {
+        return $this->model->query()
+            ->active()
+            ->where('slug', $slug)
+            ->firstOrFail();
     }
 
     /**

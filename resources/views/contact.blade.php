@@ -26,10 +26,10 @@
 
     {{-- Wave divider --}}
     <div class="tt-contact-hero__wave">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg viewBox="0 0 1440 80" fill="none"  preserveAspectRatio="none">
             <path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
         </svg>
-    </div>
+    </div>  
 </section>
 
 {{-- ============================================================
