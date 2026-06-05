@@ -24,6 +24,24 @@
                                 <td>{{ $authorData->name ?? 'N/A' }}</td>
                             </tr>
                             <tr>
+                                <th class="table-head">{{ __('labels.email') }}</th>
+                                <td>{{ $authorData->email ?? 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-head">{{ __('labels.image') }}</th>
+                                <td>
+                                    @if(!empty($authorData->profile_image))
+                                        <img src="{{ asset('storage/authors/' . $authorData->profile_image) }}" alt="Author Image" height="60">
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="table-head">{{ __('labels.description') }}</th>
+                                <td>{{ $authorData->bio ?? 'N/A' }}</td>
+                            </tr>
+                            <tr>
                                 <th class="table-head">{{ __('labels.status') }}</th>
                                 <td>{{ $authorData->StatusName->name ?? 'N/A' }}</td>
                             </tr>

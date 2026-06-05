@@ -1,6 +1,13 @@
-import "./bootstrap";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
+import { gsap } from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import Swiper from "swiper";
+import { EffectCoverflow, Pagination, Autoplay, Navigation } from "swiper/modules";
+
+gsap.registerPlugin(MotionPathPlugin);
+
+const BRAND_PRIMARY = "#022179";
 
 // ==========================================
 // Profile Image Cropper
@@ -212,23 +219,6 @@ $(function () {
 });
 
 // ==========================================
-// Navbar Scroll Effect
-// ==========================================
-$(function () {
-    $(window).on("scroll", function () {
-        if ($(window).scrollTop() > 50) {
-            $("#main-nav").addClass("scrolled");
-        } else {
-            $("#main-nav").removeClass("scrolled");
-        }
-    });
-
-    if ($(window).scrollTop() > 50) {
-        $("#main-nav").addClass("scrolled");
-    }
-});
-
-// ==========================================
 // Contact FAB Button
 // ==========================================
 $(function () {
@@ -248,7 +238,7 @@ $(function () {
 
         if (isOpen) {
             $iconElement.removeClass(defaultIconClass).addClass(closeIconClass);
-            $fabMain.css({ "background-color": "#00004F", transform: "none" });
+            $fabMain.css({ "background-color": BRAND_PRIMARY, transform: "none" });
         } else {
             $iconElement.removeClass(closeIconClass).addClass(defaultIconClass);
             $fabMain.css({ transform: "none" });
@@ -449,7 +439,7 @@ $(function () {
             order_id: orderData.order_id,
             prefill: orderData.prefill,
             notes: orderData.notes,
-            theme: { color: "#0d6efd" },
+            theme: { color: BRAND_PRIMARY },
             handler: function (response) {
                 loadingModal.show();
                 const redirectUrl =
@@ -492,3 +482,365 @@ $(function () {
         rzp.open();
     }
 });
+
+// ==========================================
+// HOMEPAGE: Swiper, GSAP, Navbar, Drawer, AOS
+// ==========================================
+
+// ---- Navbar Sticky + Shrink ----
+(function () {
+    const navbar = document.getElementById("tt-navbar");
+    if (!navbar) return;
+
+    let isScrolled = false;
+    const addAt = 90;
+    const removeAt = 40;
+
+    function handleScroll() {
+        const y = window.scrollY || window.pageYOffset;
+
+        if (!isScrolled && y >= addAt) {
+            isScrolled = true;
+            navbar.classList.add("scrolled");
+            return;
+        }
+
+        if (isScrolled && y <= removeAt) {
+            isScrolled = false;
+            navbar.classList.remove("scrolled");
+        }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+})();
+
+// ---- Mobile Drawer ----
+(function () {
+    const hamburger = document.getElementById("tt-hamburger");
+    const drawer    = document.getElementById("tt-drawer");
+    const overlay   = document.getElementById("tt-drawer-overlay");
+    const close     = document.getElementById("tt-drawer-close");
+    if (!hamburger) return;
+
+    function openDrawer() {
+        drawer.classList.add("open");
+        overlay.classList.add("open");
+        hamburger.classList.add("open");
+        hamburger.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+    }
+    function closeDrawer() {
+        drawer.classList.remove("open");
+        overlay.classList.remove("open");
+        hamburger.classList.remove("open");
+        hamburger.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+    }
+    hamburger.addEventListener("click", openDrawer);
+    close && close.addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+})();
+
+// ---- Hero Swiper (Coverflow) ----
+(function () {
+    const el = document.querySelector(".tt-hero-swiper");
+    if (!el) return;
+    new Swiper(el, {
+        modules: [EffectCoverflow, Pagination, Autoplay],
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        loop: true,
+        autoplay: { delay: 3000, disableOnInteraction: false },
+        coverflowEffect: { rotate: 30, stretch: 0, depth: 120, modifier: 1, slideShadows: true },
+        pagination: { el: ".tt-hero-pagination", clickable: true },
+    });
+})();
+
+// ---- Testimonials Swiper ----
+(function () {
+    const el = document.querySelector(".tt-testi-swiper");
+    if (!el) return;
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 24,
+        loop: true,
+        autoplay: { delay: 4500, disableOnInteraction: false },
+        pagination: { el: ".tt-testi-pagination", clickable: true },
+        navigation: { prevEl: ".tt-testi-prev", nextEl: ".tt-testi-next" },
+        breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+    });
+})();
+
+// ---- Destinations Swiper (Capsule Center Focus) ----
+(function () {
+    const section = document.querySelector(".tt-destinations");
+    if (!section) return;
+
+    const el = section.querySelector(".tt-destinations-swiper");
+    const prevEl = section.querySelector(".tt-destinations-prev");
+    const nextEl = section.querySelector(".tt-destinations-next");
+    if (!el || !prevEl || !nextEl) return;
+
+    const slideCount = el.querySelectorAll(".swiper-wrapper > .swiper-slide").length;
+    const clampSlides = (value) => Math.max(1, Math.min(value, slideCount || 1));
+
+    const destSwiper = new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        centeredSlides: false,
+        slidesPerView: slideCount > 1 ? Math.min(1.25, slideCount) : 1,
+        spaceBetween: 16,
+        loop: slideCount > 1,
+        loopAdditionalSlides: Math.min(4, slideCount),
+        speed: 700,
+        grabCursor: true,
+        autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
+        pagination: { el: ".tt-destinations-pagination", clickable: true },
+        navigation: { prevEl, nextEl },
+        watchOverflow: true,
+        breakpoints: {
+            480: { slidesPerView: clampSlides(2), spaceBetween: 16 },
+            768: { slidesPerView: clampSlides(3), spaceBetween: 18 },
+            1024: { slidesPerView: clampSlides(4), spaceBetween: 20 },
+        },
+    });
+
+    const tabs = document.querySelectorAll(".tt-dest-filter__btn");
+    const originalSlides = Array.from(
+        el.querySelectorAll(".swiper-wrapper > .swiper-slide:not(.swiper-slide-duplicate)"),
+    );
+
+    if (!tabs.length || !originalSlides.length) return;
+    const defaultIndex = originalSlides.findIndex(
+        (slide) => slide.dataset.region === "asia",
+    );
+    if (defaultIndex >= 0) {
+        destSwiper.slideToLoop(defaultIndex, 0);
+    }
+
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            tabs.forEach((btn) => btn.classList.remove("active"));
+            tab.classList.add("active");
+
+            const region = tab.dataset.region;
+            const targetIndex = originalSlides.findIndex(
+                (slide) => slide.dataset.region === region,
+            );
+
+            if (targetIndex >= 0) {
+                destSwiper.slideToLoop(targetIndex, 650);
+            }
+        });
+    });
+})();
+
+// ---- Destination Search (Live Filter) ----
+(function () {
+    const form = document.getElementById("destination-search-form");
+    const input = document.getElementById("destination-search-input");
+    const clearBtn = document.getElementById("destination-clear-btn");
+    const resultsWrap = document.getElementById("destination-results");
+
+    if (!form || !input || !clearBtn || !resultsWrap) {
+        return;
+    }
+
+    const searchUrl = form.getAttribute("action");
+    let debounceTimer = null;
+    let activeRequest = null;
+    const defaultResultsHtml = resultsWrap.innerHTML;
+
+    function renderResults(payload) {
+        if (payload && typeof payload.html === "string") {
+            resultsWrap.innerHTML = payload.html;
+            resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
+                element.classList.add("aos-animate");
+            });
+        }
+    }
+
+    function setClearState(query) {
+        clearBtn.classList.toggle("d-none", query.trim().length === 0);
+    }
+
+    function runSearch(rawQuery) {
+        const query = rawQuery.trim();
+
+        if (activeRequest && activeRequest.readyState !== 4) {
+            activeRequest.abort();
+        }
+
+        setClearState(query);
+
+        activeRequest = $.ajax({
+            url: searchUrl,
+            method: "GET",
+            data: { q: query },
+            dataType: "json",
+            success(response) {
+                renderResults(response);
+            },
+            error(xhr, status) {
+                if (status === "abort") {
+                    return;
+                }
+
+                if (!query) {
+                    resultsWrap.innerHTML = defaultResultsHtml;
+                }
+            },
+        });
+    }
+
+    input.addEventListener("input", function () {
+        setClearState(this.value);
+        window.clearTimeout(debounceTimer);
+        debounceTimer = window.setTimeout(() => {
+            runSearch(input.value);
+        }, 250);
+    });
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        window.clearTimeout(debounceTimer);
+        runSearch(input.value);
+    });
+
+    clearBtn.addEventListener("click", function () {
+        input.value = "";
+        setClearState("");
+        window.clearTimeout(debounceTimer);
+        runSearch("");
+        input.focus();
+    });
+
+    setClearState(input.value);
+})();
+
+// ---- GSAP Airplane SVG Path Animation ----
+(function () {
+    const plane = document.getElementById("svgPlane");
+    const path  = document.getElementById("planePath");
+    if (!plane || !path) return;
+    gsap.to(plane, {
+        duration: 8, repeat: -1, ease: "none",
+        motionPath: { path: path, align: path, autoRotate: true, alignOrigin: [0.5, 0.5] },
+    });
+})();
+
+// ---- Stagger Hero Reveal ----
+document.addEventListener("tt:home:ready", function () {
+    const items = ["#hero-badge","#hero-title","#hero-desc","#hero-ctas","#hero-search"];
+    gsap.from(items, { opacity: 0, y: 40, stagger: 0.15, duration: 0.75, ease: "power3.out", delay: 0.2 });
+    gsap.from("#hero-carousel", { opacity: 0, x: 60, duration: 1, ease: "power3.out", delay: 0.4 });
+});
+
+// ---- Mouse Parallax ----
+(function () {
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+    hero.addEventListener("mousemove", (e) => {
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width  / 2) / r.width;
+        const y = (e.clientY - r.top  - r.height / 2) / r.height;
+        gsap.to(".tt-deco-icon", { x: x * 18, y: y * 14, duration: 0.6, ease: "power1.out" });
+        gsap.to(".tt-cloud",     { x: x * -10, y: y * -6, duration: 0.8, ease: "power1.out" });
+    });
+})();
+
+// ---- CTA Parallax ----
+(function () {
+    const bg = document.getElementById("cta-bg");
+    if (!bg) return;
+    window.addEventListener("scroll", () => {
+        const r = bg.parentElement.getBoundingClientRect();
+        bg.style.transform = `translateY(${-r.top * 0.25}px)`;
+    }, { passive: true });
+})();
+
+// ---- Package Filter Tabs ----
+(function () {
+    const tabs  = document.querySelectorAll(".tt-filter-tab");
+    const cards = document.querySelectorAll(".tt-pkg-card");
+    if (!tabs.length) return;
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            tabs.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+            const filter = tab.dataset.filter;
+            cards.forEach((card) => {
+                const match = filter === "all" || card.dataset.cat === filter;
+                card.classList.toggle("hide", !match);
+                if (match) gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+            });
+        });
+    });
+})();
+
+// ---- Animated Counters ----
+(function () {
+    const counters = document.querySelectorAll(".tt-counter");
+    const section  = document.getElementById("stats");
+    if (!counters.length || !section) return;
+    let triggered = false;
+    new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !triggered) {
+            triggered = true;
+            counters.forEach((el) => {
+                const target = parseInt(el.dataset.target, 10);
+                gsap.fromTo(el,
+                    { innerText: 0 },
+                    {
+                        innerText: target, duration: 2.2, ease: "power2.out",
+                        snap: { innerText: 1 },
+                        onUpdate() { el.innerText = Math.ceil(parseFloat(el.innerText)).toLocaleString(); },
+                    }
+                );
+            });
+        }
+    }, { threshold: 0.4 }).observe(section);
+})();
+
+// ---- Scroll AOS ----
+(function () {
+    const elements = document.querySelectorAll("[data-aos]");
+    if (!elements.length) return;
+    new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const delay = parseInt(entry.target.dataset.aosDelay || "0", 10);
+                setTimeout(() => entry.target.classList.add("aos-animate"), delay);
+            }
+        });
+    }, { threshold: 0.12 }).observe(document.body);
+
+    // Simpler per-element observer
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+            if (e.isIntersecting) {
+                const d = parseInt(e.target.dataset.aosDelay || "0", 10);
+                setTimeout(() => e.target.classList.add("aos-animate"), d);
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    elements.forEach((el) => io.observe(el));
+})();
+
+// ---- Newsletter ----
+(function () {
+    const form = document.getElementById("newsletter-form");
+    if (!form) return;
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const btn = form.querySelector(".tt-newsletter__btn");
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check me-1"></i> Subscribed!';
+        btn.style.background = "linear-gradient(135deg,#2ACE58,#1aab42)";
+        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ""; form.reset(); }, 3000);
+    });
+})();

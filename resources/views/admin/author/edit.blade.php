@@ -28,6 +28,33 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label for="email" class="form-label">{{ __('labels.email') }}</label>
+                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
+                            value="{{ old('email', $authorData->email) }}" placeholder="{{ __('labels.email') }}">
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label for="profile_image" class="form-label">{{ __('labels.image') }}</label>
+                        @if(!empty($authorData->profile_image))
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/authors/' . $authorData->profile_image) }}" alt="Author Image" height="60">
+                            </div>
+                        @endif
+                        <input type="file" name="profile_image" id="profile_image" class="form-control @error('profile_image') is-invalid @enderror" accept="image/*">
+                        @error('profile_image')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-12">
+                        <label for="bio" class="form-label">{{ __('labels.description') }}</label>
+                        <textarea name="bio" id="bio" rows="4" class="form-control @error('bio') is-invalid @enderror" placeholder="Bio">{{ old('bio', $authorData->bio) }}</textarea>
+                        @error('bio')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
                         <label for="status" class="form-label required">{{ __('labels.status') }}</label>
                         <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
                             <option value="">{{ __('labels.select') }}</option>

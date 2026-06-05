@@ -1,100 +1,107 @@
 @extends('admin.layouts.app')
-@section('title')
-    {{ __('labels.create_page', ['action' => __('labels.tour')]) }}
-@endsection
+@section('title') Create Tour @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="gap-2 pb-2 mb-4 d-flex align-items-center">
-            <h3 class="page-title">{{ __('labels.create_page', ['action' => __('labels.tour')]) }}</h3>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                @if (session('error'))
-                    <div class="mx-4 mt-3 mb-0 alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                <form class="row g-3" action="{{ route('admin.tours.store') }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="col-md-6">
-                        <label for="title" class="form-label required">{{ __('labels.tour_title') }}</label>
-                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror"
-                            value="{{ old('title') }}" placeholder="{{ __('labels.tour_title') }}">
-                        @error('title')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label for="location" class="form-label required">{{ __('labels.location') }}</label>
-                        <input type="text" name="location" id="location"
-                            class="form-control @error('location') is-invalid @enderror" value="{{ old('location') }}"
-                            placeholder="{{ __('labels.location') }}">
-                        @error('location')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label for="duration" class="form-label required">{{ __('labels.duration') }}</label>
-                        <input type="text" name="duration" id="duration"
-                            class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration') }}"
-                            placeholder="e.g., 5 Days 4 Nights">
-                        @error('duration')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label for="price_per_person"
-                            class="form-label required">{{ __('labels.price_per_person') }}</label>
-                        <div class="input-group">
-                            <span class="input-group-text">₹</span>
-                            <input type="number" step="0.01" min="0" name="price_per_person" id="price_per_person"
-                                class="form-control @error('price_per_person') is-invalid @enderror"
-                                value="{{ old('price_per_person') }}" placeholder="0.00">
-                            @error('price_per_person')
-                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                            @enderror
+<div class="container-fluid">
+    <div class="gap-2 pb-2 mb-4 d-flex align-items-center">
+        <h3 class="page-title">Create Tour Package</h3>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            <form class="row g-3" action="{{ route('admin.tours.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{-- Basic Info --}}
+                <h5 class="col-12 border-bottom pb-2">Basic Information</h5>
+                <div class="col-md-6">
+                    <label class="form-label required">Tour Title</label>
+                    <input type="text" name="title" class="form-control makeSlug @error('title') is-invalid @enderror" value="{{ old('title') }}">
+                    @error('title') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Slug</label>
+                    <input type="text" name="slug" class="form-control pageSlug" value="{{ old('slug') }}" placeholder="Auto-generated if empty" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="{{ old('location') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Duration</label>
+                    <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="e.g. 5D/4N">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Max Persons</label>
+                    <input type="number" name="max_persons" class="form-control" value="{{ old('max_persons') }}" min="1">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Price Per Person (₹)</label>
+                    <input type="number" name="price_per_person" class="form-control" value="{{ old('price_per_person') }}" step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Destination</label>
+                    <select name="destination_id" class="form-select">
+                        <option value="">Select Destination</option>
+                        @foreach($destinations as $id => $name)
+                            <option value="{{ $id }}" {{ old('destination_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                        @endforeach
+                    </select>
+                </div>  
+               
+                <div class="col-lg-6 col-md-6">
+                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :default-image="Vite::asset(config('constants.company_logo'))"
+                            :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                </div>
+                <div class="col-md-6">
+                    <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Multiple)"
+                        :max-size="2" :max-files="10" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="6">{{ old('description') }}</textarea>
+                </div>
+
+                {{-- Itinerary --}}
+                <h5 class="col-12 border-bottom pb-2 mt-3">Itinerary Days</h5>
+                @php
+                    $itineraryRows = old('itinerary');
+                    if (!is_array($itineraryRows) || empty($itineraryRows)) {
+                        $itineraryRows = [[]];
+                    }
+                @endphp
+                <div class="col-12" id="itinerary-container">
+                    @foreach($itineraryRows as $i => $day)
+                    <div class="itinerary-day card mb-3 p-3" data-day="{{ $i + 1 }}">
+                        <h6>Day {{ $i + 1 }}</h6>
+                        <input type="hidden" name="itinerary[{{ $i }}][day_number]" value="{{ $i + 1 }}">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input type="text" name="itinerary[{{ $i }}][title]" class="form-control" value="{{ $day['title'] ?? '' }}" placeholder="Day title">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="itinerary[{{ $i }}][accommodation]" class="form-control" value="{{ $day['accommodation'] ?? '' }}" placeholder="Accommodation">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="itinerary[{{ $i }}][meals_included]" class="form-control" value="{{ $day['meals_included'] ?? '' }}" placeholder="Meals (B/L/D)">
+                            </div>
+                            <div class="col-12">
+                                <textarea name="itinerary[{{ $i }}][description]" class="form-control" rows="2" placeholder="Day description">{{ $day['description'] ?? '' }}</textarea>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="status_id" class="form-label required">{{ __('labels.status') }}</label>
-                        <select name="status_id" id="status_id"
-                            class="form-select @error('status_id') is-invalid @enderror">
-                            <option value="">{{ __('labels.select') }}</option>
-                            @foreach($statuses as $status)
-                                <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
-                                    {{ $status->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('status_id')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label for="featured_image" class="form-label">{{ __('labels.featured_image') }}</label>
-                        <input type="file" name="featured_image" id="featured_image"
-                            class="form-control @error('featured_image') is-invalid @enderror" accept="image/*">
-                        @error('featured_image')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-12">
-                        <label for="description" class="form-label">{{ __('labels.description') }}</label>
-                        <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                            id="description" rows="5"
-                            placeholder="{{ __('labels.description') }}">{{ old('description') }}</textarea>
-                        @error('description')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-12">
-                        <a href="{{ route('admin.tours.index') }}" class="btn btn-secondary mt-2 mt-sm-0">
-                            {{ __('labels.cancel') }}
-                        </a>
-                        <button type="submit" class="btn btn-primary">{{ __('buttons.create') }}</button>
-                    </div>
-                </form>
-            </div>
+                    @endforeach
+                </div>
+                <div class="col-12">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="add-day-btn">+ Add Day</button>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <a href="{{ route('admin.tours.index') }}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">{{ __('buttons.create') }}</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 @endsection
