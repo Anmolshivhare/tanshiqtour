@@ -21,10 +21,13 @@ use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index'])->name('front.home');
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
+Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
+Route::get('/destinations/{slug}', [HomeController::class, 'destinationDetails'])->name('front.destination-details');
+Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
 
 // Frontend Authentication Routes
 Route::get('/login', [FrontAuthController::class, 'showLogin'])->name('front.login');

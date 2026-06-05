@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/outfit':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource/playfair-display':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@fortawesome/fontawesome-free':
         specifier: ^7.1.0
         version: 7.2.0
@@ -47,6 +53,9 @@ importers:
       daterangepicker:
         specifier: ^3.1.0
         version: 3.1.0
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       install:
         specifier: ^0.13.0
         version: 0.13.0
@@ -68,6 +77,9 @@ importers:
       sweetalert2:
         specifier: ^11.26.17
         version: 11.26.24
+      swiper:
+        specifier: ^12.1.4
+        version: 12.1.4
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.0.0
@@ -434,6 +446,12 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource/outfit@5.2.8':
+    resolution: {integrity: sha512-rXC6g0MqD7cOBjht0bMqc43qM6lRqDLML9KXsmg9uykz0wLQhy8Z/ajrMG6iyoT3NJR+MYgU+OEHp7uHoTb+Yw==}
+
+  '@fontsource/playfair-display@5.2.8':
+    resolution: {integrity: sha512-fUEhib70SszNhQVsGbUMSsWJhr7Je0rdeuZdtGpDNu0GKF1xJM8QhpI/y0pckU25GcChXm9TLOmeZupkvvZo2g==}
 
   '@fortawesome/fontawesome-free@7.2.0':
     resolution: {integrity: sha512-3DguDv/oUE+7vjMeTSOjCSG+KeawgVQOHrKRnvUuqYh1mfArrh7s+s8hXW3e4RerBA1+Wh+hBqf8sJNpqNrBWg==}
@@ -1036,6 +1054,9 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
+
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -1587,6 +1608,10 @@ packages:
   sweetalert2@11.26.24:
     resolution: {integrity: sha512-SLgukW4wicewpW5VOukSXY5Z6DL/z7HCOK2ODSjmQPiSphCN8gJAmh9npoceXOtBRNoDN0xIz+zHYthtfiHmjg==}
 
+  swiper@12.1.4:
+    resolution: {integrity: sha512-bihiwoKMOQwW8FfdUbo1DgkVH25E+4ZELIq0oopL1KTKBteLuaTMi/wwFjMxtlhTkk45k3XQ89D1Fvv0spSqBA==}
+    engines: {node: '>= 4.7.0'}
+
   sync-child-process@1.0.2:
     resolution: {integrity: sha512-8lD+t2KrrScJ/7KXCSyfhT3/hRq78rC0wBFqNJXv3mZyn6hW2ypM05JmlSvtqRbeq6jqA94oHbxAr2vYsJ8vDA==}
     engines: {node: '>=16.0.0'}
@@ -1729,6 +1754,8 @@ snapshots:
       '@ckeditor/ckeditor5-core': 47.7.2
       '@ckeditor/ckeditor5-upload': 47.7.2
       ckeditor5: 47.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-alignment@47.7.2':
     dependencies:
@@ -1831,12 +1858,16 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       '@ckeditor/ckeditor5-widget': 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-cloud-services@47.7.2':
     dependencies:
       '@ckeditor/ckeditor5-core': 47.7.2
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-code-block@47.7.2':
     dependencies:
@@ -1879,6 +1910,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-editor-classic@47.7.2':
     dependencies:
@@ -1888,6 +1921,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-editor-decoupled@47.7.2':
     dependencies:
@@ -1897,6 +1932,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-editor-inline@47.7.2':
     dependencies:
@@ -1938,6 +1975,8 @@ snapshots:
     dependencies:
       '@ckeditor/ckeditor5-utils': 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-enter@47.7.2':
     dependencies:
@@ -1966,6 +2005,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-font@47.7.2':
     dependencies:
@@ -2021,6 +2062,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-html-embed@47.7.2':
     dependencies:
@@ -2047,8 +2090,6 @@ snapshots:
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-icons@47.7.2': {}
 
@@ -2079,8 +2120,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 47.7.2
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-language@47.7.2':
     dependencies:
@@ -2105,8 +2144,6 @@ snapshots:
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-list@47.7.2':
     dependencies:
@@ -2121,8 +2158,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-markdown-gfm@47.7.2':
     dependencies:
@@ -2160,8 +2195,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-mention@47.7.2':
     dependencies:
@@ -2181,8 +2214,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 47.7.2
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-page-break@47.7.2':
     dependencies:
@@ -2192,8 +2223,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-paragraph@47.7.2':
     dependencies:
@@ -2242,8 +2271,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 47.7.2
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-source-editing@47.7.2':
     dependencies:
@@ -2274,8 +2301,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-table@47.7.2':
     dependencies:
@@ -2288,8 +2313,6 @@ snapshots:
       '@ckeditor/ckeditor5-widget': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-theme-lark@47.7.2':
     dependencies:
@@ -2365,8 +2388,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.7.2
       ckeditor5: 47.7.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@esbuild/aix-ppc64@0.27.7':
     optional: true
@@ -2445,6 +2466,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.27.7':
     optional: true
+
+  '@fontsource/outfit@5.2.8': {}
+
+  '@fontsource/playfair-display@5.2.8': {}
 
   '@fortawesome/fontawesome-free@7.2.0': {}
 
@@ -3039,6 +3064,8 @@ snapshots:
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
+
+  gsap@3.15.0: {}
 
   has-flag@4.0.0: {}
 
@@ -3833,6 +3860,8 @@ snapshots:
       has-flag: 4.0.0
 
   sweetalert2@11.26.24: {}
+
+  swiper@12.1.4: {}
 
   sync-child-process@1.0.2:
     dependencies:

@@ -6,10 +6,60 @@
 // Footer
 @import "footer";
 
+// Homepage Premium Sections
+@import "homepage";
+@import "homepage2";
+
 // Bootstrap
 @import "bootstrap/scss/bootstrap";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Swiper
+@import "swiper/swiper-bundle.css";
+
+:root {
+    --brand-primary: #{$brand-primary};
+    --brand-accent: #{$brand-accent};
+    --brand-primary-soft: #{$brand-primary-soft};
+    --brand-accent-soft: #{$brand-accent-soft};
+    --brand-on-primary: #{$brand-on-primary};
+    --brand-on-accent: #{$brand-on-accent};
+}
+
+.bg-brand-primary {
+    background-color: $brand-primary !important;
+}
+
+.bg-brand-accent {
+    background-color: $brand-accent !important;
+}
+
+.text-brand-primary {
+    color: $brand-primary !important;
+}
+
+.text-brand-accent {
+    color: $brand-accent !important;
+}
+
+.section-brand-soft {
+    background-color: $brand-primary-soft;
+}
+
+.badge-brand-accent {
+    background: $brand-accent;
+    color: $brand-on-accent;
+}
+
+.focus-brand:focus-visible {
+    outline: 2px solid $brand-accent;
+    outline-offset: 2px;
+}
+
+.footer-copyright{
+    background-color: $warning;
+}
 
 // Common Css
 .divide-border-1 {
@@ -409,17 +459,17 @@ footer {
 }
 
 .navbar.scrolled .nav-link {
-    color: #00004f !important;
+    color: $brand-primary !important;
     /* Text color becomes black */
 }
 .navbar.scrolled .nav-link.active {
-    color: #00004f !important;
+    color: $brand-primary !important;
     /* Text color becomes black */
 }
 
 .nav-link:hover,
 .nav-link:focus {
-    color: #ff4b04 !important;
+    color: $brand-accent !important;
 }
 
 .nav-link {
@@ -429,7 +479,7 @@ footer {
 
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link.show {
-    color: #ff4b04 !important;
+    color: $brand-accent !important;
 }
 /* Card image for tour packages */
 .card-img-top {
@@ -502,7 +552,7 @@ footer {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: #00004f; /* Purple color from your image */
+    background-color: $brand-primary;
     color: white;
     font-size: 30px;
     border: none;
@@ -589,7 +639,7 @@ footer {
     position: absolute;
     right: 66px; /* Position to the left of the main button */
     padding: 8px 15px;
-    background-color: #00004f;
+    background-color: $brand-primary;
     border-radius: 20px;
     color: #fff;
     font-size: 16px;
@@ -629,7 +679,7 @@ footer {
 
 /* Rotate the main button to show 'X' when open */
 .contact-fab-container.open .fab-main {
-    background-color: #9370db; /* Keep purple */
+    background-color: $brand-primary-hover;
     transform: rotate(
         45deg
     ); /* This creates the 'X' effect if your icon is a '+' */
@@ -762,12 +812,12 @@ footer {
 .custom-underline {
     width: 80px;
     height: 3px;
-    background-color: #ff5733; /* Red color from the image */
+    background-color: $brand-accent;
 }
 
 /* Icon Color (since Bootstrap doesn't have a red-hot color by default) */
 .text-danger {
-    color: #ff5733 !important; /* Forces the specific red color */
+    color: $brand-accent !important;
 }
 
 .carousel-img-responsive {
@@ -941,5 +991,342 @@ footer {
     .cropper-crop-box,
     .cropper-modal {
         z-index: auto;
+    }
+}
+
+.tt-hero {
+    position: relative;
+    background:
+        radial-gradient(circle at 80% 20%, rgba($brand-accent, 0.22), transparent 45%),
+        linear-gradient(135deg, rgba($brand-primary, 0.95), rgba($brand-primary, 0.78)),
+        url("/resources/images/pexels-photo-225630-700x466.jpeg") center/cover no-repeat;
+    overflow: hidden;
+}
+
+.tt-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.4));
+}
+
+.tt-hero__title {
+    color: $primary-white;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.15;
+}
+
+.tt-hero__subtitle {
+    color: rgba($primary-white, 0.88);
+    max-width: 38rem;
+}
+
+.tt-chip {
+    background: rgba($brand-accent, 0.16);
+    border: 1px solid rgba($brand-accent, 0.4);
+    color: $brand-accent;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+}
+
+.tt-btn-outline {
+    border: 1px solid rgba($primary-white, 0.8);
+    color: $primary-white;
+    background: transparent;
+}
+
+.tt-btn-outline:hover {
+    background: $primary-white;
+    color: $brand-primary;
+}
+
+.tt-search-card {
+    background: rgba($primary-white, 0.96);
+    backdrop-filter: blur(6px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.tt-kicker {
+    display: inline-flex;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $brand-accent-hover;
+}
+
+.tt-stat-card {
+    background: $primary-white;
+    border-radius: 0.85rem;
+    border: 1px solid $brand-border;
+    padding: 1.35rem 1rem;
+}
+
+.tt-stat-card h4 {
+    color: $brand-primary;
+    font-weight: 800;
+}
+
+.tt-stat-card p {
+    color: $secondary;
+}
+
+.tt-destination-card {
+    background: $primary-white;
+    border: 1px solid $brand-border;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tt-destination-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba($brand-primary, 0.16);
+}
+
+.tt-destination-card__media {
+    height: 180px;
+    background:
+        linear-gradient(160deg, rgba($brand-primary, 0.7), rgba($brand-accent, 0.45)),
+        url("/resources/images/pexels-photo-225630-700x466.jpeg") center/cover no-repeat;
+}
+
+.tt-destination-card__content {
+    padding: 1rem;
+}
+
+.tt-package-wrap {
+    background: linear-gradient(180deg, #ffffff 0%, $brand-primary-soft 100%);
+}
+
+.tt-package-card {
+    background: $primary-white;
+    border: 1px solid $brand-border;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tt-package-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 36px rgba($brand-primary, 0.16);
+}
+
+.tt-package-card__img {
+    height: 220px;
+    background:
+        linear-gradient(160deg, rgba($brand-primary, 0.65), rgba($brand-accent, 0.35)),
+        url("/resources/images/pexels-photo-225630-700x466.jpeg") center/cover no-repeat;
+}
+
+.tt-feature-card {
+    background: $primary-white;
+    border: 1px solid $brand-border;
+    border-radius: 0.9rem;
+    padding: 1.25rem;
+    height: 100%;
+    text-align: center;
+}
+
+.tt-feature-card i {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $brand-primary;
+    background: $brand-accent-soft;
+    font-size: 1.35rem;
+}
+
+.tt-review-card {
+    background: $primary-white;
+    border: 1px solid $brand-border;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 14px 35px rgba($brand-primary, 0.08);
+}
+
+.tt-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, $brand-primary, $brand-accent);
+}
+
+.tt-cta {
+    background: linear-gradient(130deg, $brand-primary 0%, $brand-primary-hover 55%, rgba($brand-accent, 0.4) 100%);
+}
+
+@media (max-width: 991px) {
+    .tt-hero .min-vh-100 {
+        min-height: auto !important;
+    }
+
+    .tt-hero {
+        padding: 3rem 0;
+    }
+}
+
+.tt-hero-visual {
+    position: relative;
+}
+
+.tt-hero-mini {
+    position: absolute;
+    background: $primary-white;
+    border: 1px solid $brand-border;
+    border-radius: 999px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $brand-primary;
+    box-shadow: 0 8px 18px rgba($brand-primary, 0.14);
+    animation: ttFloatUpDown 3.5s ease-in-out infinite;
+    z-index: 3;
+}
+
+.tt-hero-mini i {
+    color: $brand-accent-hover;
+}
+
+.tt-hero-mini--top {
+    top: -18px;
+    right: 20px;
+}
+
+.tt-hero-mini--bottom {
+    bottom: -18px;
+    left: 16px;
+    animation-delay: 0.6s;
+}
+
+.tt-hero-ring {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 2px dashed rgba($brand-accent, 0.65);
+    border-radius: 50%;
+    right: -30px;
+    top: -35px;
+    animation: ttRotate 14s linear infinite;
+    z-index: 1;
+}
+
+.tt-hero-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $brand-accent;
+    left: -18px;
+    top: 22%;
+    animation: ttPulse 2s ease-in-out infinite;
+}
+
+.tt-float {
+    position: absolute;
+    z-index: 2;
+    color: rgba($brand-accent, 0.95);
+    font-size: 1.3rem;
+    filter: drop-shadow(0 8px 16px rgba($brand-primary, 0.16));
+    --tt-rotate: 0deg;
+    animation: ttFloatUpDown 4s ease-in-out infinite;
+}
+
+.tt-float--plane-left {
+    left: 2.5%;
+    top: 19%;
+    --tt-rotate: -26deg;
+}
+
+.tt-float--pin-left {
+    left: 4%;
+    bottom: 18%;
+    color: rgba($brand-primary, 0.9);
+    animation-delay: 0.9s;
+}
+
+.tt-float--compass-right {
+    right: 7%;
+    top: 24%;
+    color: rgba($brand-primary, 0.85);
+    animation-delay: 0.4s;
+}
+
+.tt-float--plane-right {
+    right: 3%;
+    bottom: 14%;
+    --tt-rotate: 18deg;
+    animation-delay: 1.1s;
+}
+
+.tt-float--mid-left {
+    left: -20px;
+    top: -20px;
+    --tt-rotate: -12deg;
+}
+
+.tt-float--mid-right {
+    right: -20px;
+    bottom: -20px;
+    color: rgba($brand-primary, 0.85);
+    animation-delay: 0.8s;
+}
+
+@keyframes ttFloatUpDown {
+    0% {
+        transform: translateY(0) rotate(var(--tt-rotate));
+    }
+    50% {
+        transform: translateY(-10px) rotate(var(--tt-rotate));
+    }
+    100% {
+        transform: translateY(0) rotate(var(--tt-rotate));
+    }
+}
+
+@keyframes ttRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ttPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.25);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 991px) {
+    .tt-float,
+    .tt-hero-ring {
+        display: none;
+    }
+
+    .tt-hero-mini--top,
+    .tt-hero-mini--bottom {
+        position: static;
+        display: inline-flex;
+        margin-top: 0.75rem;
+    }
+
+    .tt-hero-mini--bottom {
+        margin-left: 0.5rem;
     }
 }

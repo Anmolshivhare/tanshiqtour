@@ -4,3 +4,18 @@
 @font-face {font-family: 'Work Sans';src: url('./fonts/WorkSans-SemiBold.ttf');src: url('./fonts/WorkSans-SemiBold.ttf') format('truetype');font-weight: 600;}
 @font-face {font-family: 'Work Sans';src: url('./fonts/WorkSans-Bold.ttf');src: url('./fonts/WorkSans-Bold.ttf') format('truetype');font-weight: 700;}
 @font-face {font-family: 'Mulish';src: url('./fonts/Mulish-SemiBold.ttf');src: url('./fonts/Mulish-SemiBold.ttf') format('truetype');font-weight: 600;}
+
+// ── Outfit (body font) – from @fontsource package, no CDN ──
+@import "@fontsource/outfit/300.css";
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+@import "@fontsource/outfit/600.css";
+@import "@fontsource/outfit/700.css";
+@import "@fontsource/outfit/800.css";
+@import "@fontsource/outfit/900.css";
+
+// ── Playfair Display (heading font) – from @fontsource package, no CDN ──
+@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/playfair-display/700.css";
+@import "@fontsource/playfair-display/800.css";
+
