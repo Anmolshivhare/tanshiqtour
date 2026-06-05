@@ -1,4 +1,3 @@
-import "./bootstrap";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 import { gsap } from "gsap";

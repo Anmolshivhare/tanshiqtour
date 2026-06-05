@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import path from 'path';
 import laravel from "laravel-vite-plugin";
 
 export default defineConfig({
@@ -6,7 +7,7 @@ export default defineConfig({
         laravel({
             input: [
                 "resources/scss/front/front.scss",
-                "resources/js/front/front.js",
+                "resources/js/front/custom.js",
                 "resources/scss/admin/admin.scss",
                 "resources/js/admin/admin.js",
             ],
@@ -16,6 +17,7 @@ export default defineConfig({
     resolve: {
         alias: {
             vue: "vue/dist/vue.esm-bundler.js",
+            '@modules': path.resolve(__dirname, 'resources/js/front/modules'),
         },
     },
     build: {

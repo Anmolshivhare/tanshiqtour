@@ -28,7 +28,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
 
     <!-- Scripts -->
-    @vite(['resources/scss/front/front.scss', 'resources/js/front/front.js'])
+    @vite(['resources/scss/front/front.scss', 'resources/js/front/custom.js'])
 </head>
 
 <body>
