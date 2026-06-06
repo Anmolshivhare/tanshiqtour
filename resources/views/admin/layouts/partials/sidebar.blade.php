@@ -8,7 +8,7 @@
                 <div class="sidebar-logo-area">
                     <div class="full-logo text-center tansition-opacity">
                         <a href="{{ route('admin.dashboard.index') }}" class="m-auto w-75">
-                            <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="Logo" class="m-auto img-fluid w-75" />
+                            <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.company_logo')) }}" alt="Logo" class="m-auto img-fluid w-75" />
                         </a>
                     </div>
                 </div>
@@ -66,6 +66,15 @@
                             </div>
                         </li>
                     @endcan
+
+                    {{-- Banners --}}
+                    <li class="accordion-item">
+                        <a class="accordion-button cursor-pointer no-arrow @if (Request::routeIs('admin.banners.*')) @else collapsed @endif"
+                            href="{{ route('admin.banners.index') }}">
+                            <i class="fa-solid fa-image"></i>
+                            <span class="sidebar-menus-name ms-2 tansition-opacity text-primary">Banners</span>
+                        </a>
+                    </li>
 
                     {{-- Destinations --}}
                     <li class="accordion-item">
@@ -170,7 +179,7 @@
                         <img src="{{ Storage::url('profile_images/' . $user->profile_pic) }}" alt="User Avatar"
                             class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove">
                     @else
-                        <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="User Avatar"
+                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.company_logo')) }}" alt="User Avatar"
                             class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove">
                     @endif
                     <span class="d-block user-name text-nowrap cursor-pointer tansition-opacity text-white ms-2">{{ $user->name ?? '' }}</span>

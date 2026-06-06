@@ -43,7 +43,7 @@
     </div>
 </section>
 
-<section class="tt-section tt-destination-details">
+<section class="tt-section tt-destination-details mb-5">
     <div class="container">
         <div class="row g-4 align-items-start">
             <div class="col-lg-5" data-aos="fade-right">
@@ -84,4 +84,13 @@
         </div>
     </div>
 </section>
+
+{{-- ============================================================
+     POPULAR DESTINATIONS
+============================================================ --}}
+@include('base-destination')
+
+{{-- ============================================================
+     POPULAR DESTINATIONS End
+============================================================ --}}
 @endsection

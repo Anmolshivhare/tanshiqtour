@@ -8,12 +8,7 @@
             <div class="row justify-content-center flex-column align-items-center">
                 <div class="mb-4 col-xl-4 col-lg-6">
                     <div class="text-center d-block card-image">
-                        @if (!empty($settingData->admin_panel_logo_img))
-                            <img src="{{ asset('storage/setting_images/' . $settingData->admin_panel_logo_img) }}" alt="logo"
-                                class="img-fluid" />
-                        @else
-                            <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="logo" class="img-fluid" />
-                        @endif
+                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.company_logo')) }}" alt="logo" class="img-fluid" />
                     </div>
                 </div>
                 <div class="col-xl-6 col-xxl-4 col-lg-8">

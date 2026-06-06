@@ -46,6 +46,14 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'destination-edit',   'parent_id' => $destPerm->id]);
         Permission::create(['name' => 'destination-delete', 'parent_id' => $destPerm->id]);
         Permission::create(['name' => 'destination-show',   'parent_id' => $destPerm->id]);
+        
+        // ── Banners ───────────────────────────────────────────────────────────────
+        $bannerPerm = Permission::create(['name' => 'banner-management']);
+        Permission::create(['name' => 'banner-list',   'parent_id' => $bannerPerm->id]);
+        Permission::create(['name' => 'banner-create', 'parent_id' => $bannerPerm->id]);
+        Permission::create(['name' => 'banner-edit',   'parent_id' => $bannerPerm->id]);
+        Permission::create(['name' => 'banner-delete', 'parent_id' => $bannerPerm->id]);
+        Permission::create(['name' => 'banner-show',   'parent_id' => $bannerPerm->id]);
 
         // ── Tours ─────────────────────────────────────────────────────────────────
         $tourPerm = Permission::create(['name' => 'tour-management']);

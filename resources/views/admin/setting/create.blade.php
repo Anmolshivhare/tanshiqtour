@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+{{-- @extends('admin.layouts.app')
 @section('title')
     {{ __('labels.general_setting') }}
 @endsection
@@ -32,8 +32,8 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                         @if (!empty($settingData->sidebar_logo_img))
-                            <a href="{{ asset('storage/setting_images/' . $settingData['sidebar_logo_img']) }}" target="_blank">
-                                <img src="{{ asset('storage/setting_images/' . $settingData['sidebar_logo_img']) }}"
+                            <a href="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.default_image')) }}" target="_blank">
+                                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.default_image')) }}"
                                     style="width:70px;height:70px;border: 1px solid black; cursor: pointer;"
                                     class="rounded-circle mt-2" alt="sidebar logo">
                             </a>
@@ -51,8 +51,8 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                         @if (!empty($settingData->header_logo_img))
-                            <a href="{{ asset('storage/setting_images/' . $settingData['header_logo_img']) }}" target="_blank">
-                                <img src="{{ asset('storage/setting_images/' . $settingData['header_logo_img']) }}"
+                            <a href="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo_img', config('constants.default_image')) }}" target="_blank">
+                                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo_img', config('constants.default_image')) }}"
                                     style="width:70px;height:70px;border: 1px solid black; cursor: pointer;"
                                     class="rounded-circle mt-2" alt="header logo">
                             </a>
@@ -70,9 +70,9 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                         @if (!empty($settingData->admin_panel_logo_img))
-                            <a href="{{ asset('storage/setting_images/' . $settingData['admin_panel_logo_img']) }}"
+                            <a href="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.default_image')) }}"
                                 target="_blank">
-                                <img src="{{ asset('storage/setting_images/' . $settingData['admin_panel_logo_img']) }}"
+                                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.default_image')) }}"
                                     style="width:70px;height:70px;border: 1px solid black; cursor: pointer;"
                                     class="rounded-circle mt-2" alt="header logo">
                             </a>
@@ -91,9 +91,9 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                         @if (!empty($settingData->header_banner_img))
-                            <a href="{{ asset('storage/setting_images/' . $settingData['header_banner_img']) }}"
+                            <a href="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_banner_img', config('constants.default_image')) }}"
                                 target="_blank">
-                                <img src="{{ asset('storage/setting_images/' . $settingData['header_banner_img']) }}"
+                                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_banner_img', config('constants.default_image')) }}"
                                     style="width:70px;height:70px;border: 1px solid black; cursor: pointer;"
                                     class="rounded-circle mt-2" alt="header logo">
                             </a>
@@ -186,7 +186,7 @@
                         @enderror
                     </div>
 
-                    <input type="hidden" value="{{ config('constants.company_name') }}" name="company_name">
+                    <input type="hidden" value="{{ old('company_name', $settingData['company_name'] ?? 'Tanishq Tour & Travel') }}" name="company_name">
 
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">{{ __('buttons.update') }}</button>
@@ -195,4 +195,4 @@
             </div>
         </div>
     </div>
-@endsection
+@endsection --}}

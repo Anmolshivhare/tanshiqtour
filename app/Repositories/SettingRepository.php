@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Helpers\SiteSettingHelper;
 use App\Models\Setting;
 
 class SettingRepository extends BaseRepository
@@ -24,7 +25,7 @@ class SettingRepository extends BaseRepository
      */
     public function getAsKeyValue(): array
     {
-        return $this->model->pluck('value', 'key')->toArray();
+        return SiteSettingHelper::values();
     }
 
     /**
