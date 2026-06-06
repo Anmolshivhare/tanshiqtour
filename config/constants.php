@@ -13,7 +13,7 @@ return [
     'category_name' => 'Live News',
     'category_slug_name' => 'live-news',
     'category_status_name' => 'category',
-    'setting_image_path' => 'setting_images',
+    'setting_image_path' => 'settings',
     'category_image_path' => 'category_images',
     'news_post_image_path' => 'news_post_images',
     'company_name' => 'G9News',

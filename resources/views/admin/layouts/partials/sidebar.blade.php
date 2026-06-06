@@ -8,7 +8,7 @@
                 <div class="sidebar-logo-area">
                     <div class="full-logo text-center tansition-opacity">
                         <a href="{{ route('admin.dashboard.index') }}" class="m-auto w-75">
-                            <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="Logo" class="m-auto img-fluid w-75" />
+                            <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.company_logo')) }}" alt="Logo" class="m-auto img-fluid w-75" />
                         </a>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                         <img src="{{ Storage::url('profile_images/' . $user->profile_pic) }}" alt="User Avatar"
                             class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove">
                     @else
-                        <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="User Avatar"
+                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.company_logo')) }}" alt="User Avatar"
                             class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove">
                     @endif
                     <span class="d-block user-name text-nowrap cursor-pointer tansition-opacity text-white ms-2">{{ $user->name ?? '' }}</span>

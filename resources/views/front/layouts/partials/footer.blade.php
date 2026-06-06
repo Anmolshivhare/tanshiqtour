@@ -1,4 +1,11 @@
 <div class="contact-fab-container">
+    @php
+        $facebookUrl = $settingData->facebook_url ?? '';
+        $instagramUrl = $settingData->instagram_url ?? '';
+        $youtubeUrl = $settingData->youtube_url ?? '';
+        $phone = $settingData->contact_phone ?? '';
+        $whatsappNumber = preg_replace('/\D+/', '', (string) ($settingData->whatsapp_number ?? ''));
+    @endphp
 
     <a href="#" class="contact-label text-decoration-none border border-white" id="contact-label">Contact us</a>
 
@@ -7,23 +14,23 @@
     </button>
 
     <div class="fab-actions" id="fab-actions">
-        <a href="https://www.instagram.com/tanishqtourandtravels/" target="_blank" class="fab-action fab-instagram" data-bs-toggle="tooltip"
+        <a href="{{ $instagramUrl }}" target="_blank" class="fab-action fab-instagram" data-bs-toggle="tooltip"
             data-bs-placement="left" title="instagram">
             <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://www.facebook.com/profile.php?id=61584292436038" target="_blank" class="fab-action fab-facebook" data-bs-toggle="tooltip"
+        <a href="{{ $facebookUrl }}" target="_blank" class="fab-action fab-facebook" data-bs-toggle="tooltip"
             data-bs-placement="left" title="facebook">
             <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://www.youtube.com/" target="_blank" class="fab-action fab-youtube" data-bs-toggle="tooltip"
+        <a href="{{ $youtubeUrl }}" target="_blank" class="fab-action fab-youtube" data-bs-toggle="tooltip"
             data-bs-placement="left" title="youtube">
             <i class="fab fa-youtube"></i>
         </a>
-        <a href="tel:918445542594" class="fab-action fab-phone" data-bs-toggle="tooltip" data-bs-placement="left"
+        <a href="tel:{{ $phone }}" class="fab-action fab-phone" data-bs-toggle="tooltip" data-bs-placement="left"
             title="Call Us">
             <i class="fas fa-phone-alt"></i>
         </a>
-        <a href="https://wa.me/918445542594" target="_blank" class="fab-action fab-whatsapp" data-bs-toggle="tooltip"
+        <a href="https://wa.me/{{ $whatsappNumber }}" target="_blank" class="fab-action fab-whatsapp" data-bs-toggle="tooltip"
             data-bs-placement="left" title="WhatsApp Us">
             <i class="fab fa-whatsapp"></i>
         </a>
@@ -36,7 +43,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
                 <a class="navbar-brand fw-bold logo-container mb-3" href="{{ route('home') }}">
-                    <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="Tanishq Tour & Travel Logo"
+                    <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('footer_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Tanishq Tour & Travel Logo"
                         width="120" height="100">
                 </a>
                 <p class="text-white text-justify small lh-lg">
@@ -44,9 +51,9 @@
                     globe.
                 </p>
                 <div class="d-flex mt-3">
-                    <a href="javascript:void(0)" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="javascript:void(0)" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="javascript:void(0)" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="{{ $facebookUrl }}" class="text-white me-3" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="{{ $settingData->twitter_url ?? '' }}" class="text-white me-3" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="{{ $instagramUrl }}" class="text-white me-3" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
 
@@ -68,16 +75,16 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5 class="text-uppercase fw-bolder mb-5">Contact Info</h5>
 
-                <p class="text-white lh-lg mb-2"><a href="mailto:info@tanishqtourandtravels.com" class="text-white"
-                        target="_blank"><i class="fas fa-envelope me-3"></i> info@tanishqtourandtravels.com </a></p>
-                <p class="text-white lh-lg mb-2"><a href="mailto:support@tanishqtourandtravels.com" class="text-white"
-                        target="_blank"><i class="fas fa-envelope me-3"></i> support@tanishqtourandtravels.com </a></p>
-                <p class="text-white lh-lg mb-2"> <a href="tel:+918445542594" class="text-white">
-                        <i class="fa fa-phone me-3"></i> +91-8445542594
+                <p class="text-white lh-lg mb-2"><a href="mailto:{{ $settingData->contact_email ?? '' }}" class="text-white"
+                        target="_blank"><i class="fas fa-envelope me-3"></i> {{ $settingData->contact_email ?? '' }} </a></p>
+                <p class="text-white lh-lg mb-2"><a href="mailto:{{ $settingData->support_email ?? 'support@tanishqtourandtravels.com' }}" class="text-white"
+                        target="_blank"><i class="fas fa-envelope me-3"></i> {{ $settingData->support_email ?? 'support@tanishqtourandtravels.com' }} </a></p>
+                <p class="text-white lh-lg mb-2"> <a href="tel:{{ $phone }}" class="text-white">
+                        <i class="fa fa-phone me-3"></i> {{ $phone }}
                     </a>
                 </p>
-                <p class="text-white lh-lg mb-2"> <a href="https://tanishqtourandtravels.com" class="text-white">
-                        <i class="fas fa-globe-americas me-3"></i> www.tanishqtourandtravels.com
+                <p class="text-white lh-lg mb-2"> <a href="{{ $settingData->website_url ?? 'https://tanishqtourandtravels.com' }}" class="text-white">
+                        <i class="fas fa-globe-americas me-3"></i> {{ $settingData->website_url ?? 'www.tanishqtourandtravels.com' }}
                     </a>
                 </p>
                 <div class="d-flex">
@@ -86,7 +93,7 @@
                     </div>
                     <div>
                         <p class="text-white lh-lg mb-2">
-                            220, Udyog Vihar Phase 4 rd phase 3rd Udyog Vihar sector 18 gurugram Shahpur Haryana 122019
+                            {{ $settingData->address ?? '' }}
                         </p>
                     </div>
                 </div>
@@ -105,8 +112,6 @@
 </footer>
  <div class="row me-0 footer-copyright">
         <div class="col-12 text-center my-3">
-            <p class="mb-0 text-white fw-bolder ">&copy; <span id="currentYear"></span> Copyrights All Rights Reserved
-                by
-                Tanishq Tour & Travel. </p>
+            <p class="mb-0 text-white fw-bolder ">{{ $settingData->copyright ?? 'Copyright 2026 Tanishq Tour' }}</p>
         </div>
  </div>

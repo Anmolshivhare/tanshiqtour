@@ -82,23 +82,38 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
+                        <label class="form-label">Admin Sidebar Logo</label>
+                        @if(!empty($settings['sidebar_logo_img']))
+                            <div class="mb-2"><img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.company_logo')) }}" height="50"></div>
+                        @else
+                            <div class="mb-2"><img src="{{ Vite::asset(config('constants.company_logo')) }}" height="50"></div>
+                        @endif
+                        <input type="file" name="sidebar_logo_img" class="form-control" accept="image/*">
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Header Logo</label>
                         @if(!empty($settings['header_logo']))
-                            <div class="mb-2"><img src="{{ asset('storage/settings/' . $settings['header_logo']) }}" height="50"></div>
+                            <div class="mb-2"><img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', config('constants.company_logo')) }}" height="50"></div>
+                        @else
+                            <div class="mb-2"><img src="{{ Vite::asset(config('constants.company_logo')) }}" height="50"></div>
                         @endif
                         <input type="file" name="header_logo" class="form-control" accept="image/*">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Footer Logo</label>
                         @if(!empty($settings['footer_logo']))
-                            <div class="mb-2"><img src="{{ asset('storage/settings/' . $settings['footer_logo']) }}" height="50"></div>
+                            <div class="mb-2"><img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('footer_logo', config('constants.company_logo')) }}" height="50"></div>
+                        @else
+                            <div class="mb-2"><img src="{{ Vite::asset(config('constants.company_logo')) }}" height="50"></div>
                         @endif
                         <input type="file" name="footer_logo" class="form-control" accept="image/*">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Favicon</label>
                         @if(!empty($settings['favicon']))
-                            <div class="mb-2"><img src="{{ asset('storage/settings/' . $settings['favicon']) }}" height="32"></div>
+                            <div class="mb-2"><img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}" height="32"></div>
+                        @else
+                            <div class="mb-2"><img src="{{ Vite::asset(config('constants.company_logo_favicon')) }}" height="32"></div>
                         @endif
                         <input type="file" name="favicon" class="form-control" accept="image/*">
                     </div>
