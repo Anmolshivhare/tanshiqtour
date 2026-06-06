@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AuthorController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -92,6 +93,9 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
 
     // Authors
     Route::resource('authors', AuthorController::class);
+
+    //Banners
+    Route::resource('banners', BannerController::class);
 
     // Blog Posts
     Route::resource('blogs', BlogController::class);

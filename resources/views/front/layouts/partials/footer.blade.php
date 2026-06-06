@@ -52,8 +52,9 @@
                 </p>
                 <div class="d-flex mt-3">
                     <a href="{{ $facebookUrl }}" class="text-white me-3" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="{{ $settingData->twitter_url ?? '' }}" class="text-white me-3" target="_blank"><i class="fab fa-twitter"></i></a>
                     <a href="{{ $instagramUrl }}" class="text-white me-3" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="{{ $youtubeUrl }}" class="text-white me-3" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://wa.me/{{ $whatsappNumber }}" class="text-white me-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -62,10 +63,12 @@
                 <ul class="list-unstyled ps-lg-5 ps-2">
                     <li class="mb-2"><a href="{{ route('home') }}"
                             class="text-white lh-lg text-decoration-none">Home</a></li>
-                    <li class="mb-2"><a href="{{ route('front.tours') }}"
-                            class="text-white lh-lg text-decoration-none">Tours</a></li>
                     <li class="mb-2"><a href="{{ route('front.about') }}"
-                            class="text-white lh-lg text-decoration-none">About Us</a></li>
+                                    class="text-white lh-lg text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="{{ route('front.destinations') }}"
+                                    class="text-white lh-lg text-decoration-none">Destinations</a></li>
+                    <li class="mb-2"><a href="{{ route('front.tours') }}"
+                            class="text-white lh-lg text-decoration-none">Tour Packages</a></li>
                     <li class="mb-2"><a href="{{ route('front.contact') }}"
                             class="text-white lh-lg text-decoration-none">Contact Us</a></li>
 
