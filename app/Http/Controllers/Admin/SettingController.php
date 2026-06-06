@@ -31,7 +31,7 @@ class SettingController extends WebController
             // Handle file uploads
             foreach ($data as $key => $value) {
                 if ($request->hasFile($key)) {
-                    $path = UserHelper::uploadImage($request->file($key), 'settings');
+                    $path = UserHelper::uploadImage($request->file($key), config('constants.setting_image_path'));
                     $data[$key] = basename($path);
                 }
             }

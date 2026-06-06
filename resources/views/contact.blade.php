@@ -1,6 +1,11 @@
 @extends('front.layouts.app')
 
 @section('content')
+    @php
+        $phone = $settingData->contact_phone ?? '';
+        $email = $settingData->contact_email ?? '';
+        $address = $settingData->address ?? '';
+    @endphp
 
 {{-- ============================================================
      CONTACT HERO BANNER
@@ -46,7 +51,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <h3 class="tt-contact-card__title">Our Address</h3>
-                    <p class="tt-contact-card__text">2464 Royal Ln. Mesa, New Jersey 45463.</p>
+                    <p class="tt-contact-card__text">{{ $address }}</p>
                 </div>
             </div>
 
@@ -56,7 +61,7 @@
                     <div class="tt-contact-card__icon">
                         <i class="fas fa-envelope-open-text"></i>
                     </div>
-                    <h3 class="tt-contact-card__title">info@gotur.com</h3>
+                    <h3 class="tt-contact-card__title">{{ $email }}</h3>
                     <p class="tt-contact-card__text">Email us anytime for any kind of query.</p>
                 </div>
             </div>
@@ -67,7 +72,7 @@
                     <div class="tt-contact-card__icon">
                         <i class="fas fa-phone-volume"></i>
                     </div>
-                    <h3 class="tt-contact-card__title">Hot: +208-666-0112</h3>
+                    <h3 class="tt-contact-card__title">Hot: {{ $phone }}</h3>
                     <p class="tt-contact-card__text">Call us any kind support we will wait for it.</p>
                 </div>
             </div>
@@ -192,4 +197,3 @@
 </section>
 
 @endsection
-

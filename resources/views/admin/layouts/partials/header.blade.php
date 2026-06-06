@@ -23,7 +23,7 @@
                     @if (!empty($user->profile_pic))
                         <img src="{{ Storage::url('profile_images/' . $user->profile_pic) }}" alt="Profile" class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove" width="32" height="32">
                     @else
-                        <img src="{{ Vite::asset(config('constants.company_logo')) }}" alt="Profile" class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove" width="32" height="32">
+                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.company_logo')) }}" alt="Profile" class="rounded-circle img-fluid auth-imgs me-2 cursor-pointer tansition-opacity object-fit-cove" width="32" height="32">
                     @endif
                 </div>
                 <!-- ==== Profile list start ==== -->
