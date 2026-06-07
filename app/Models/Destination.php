@@ -25,6 +25,7 @@ class Destination extends Model
         'short_description',
         'featured_image',
         'banner_image',
+        'is_featured',
         'status',
         'created_by',
         'updated_by',
@@ -33,7 +34,7 @@ class Destination extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly([
-            'name', 'slug', 'country', 'status',
+            'name', 'slug', 'country', 'status', 'is_featured',
         ])->useLogName('Destination');
     }
 

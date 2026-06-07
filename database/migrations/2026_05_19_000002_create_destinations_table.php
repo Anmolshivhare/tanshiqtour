@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('short_description')->nullable();
             $table->string('featured_image')->nullable();
             $table->string('banner_image')->nullable();
+            $table->boolean('is_featured')->default(false);
             $table->unsignedBigInteger('status')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

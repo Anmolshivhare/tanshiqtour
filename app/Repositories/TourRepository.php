@@ -25,6 +25,7 @@ class TourRepository extends BaseRepository
             'description',
             'featured_image',
             'destination_id',
+            'is_featured',
             'max_persons',
             'status',
         ]);

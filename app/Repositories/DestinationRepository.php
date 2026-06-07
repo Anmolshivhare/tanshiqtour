@@ -25,6 +25,7 @@ class DestinationRepository extends BaseRepository
             'description',
             'short_description',
             'featured_image',
+            'is_featured',
             'banner_image',
             'status',
         ]);
@@ -36,6 +37,19 @@ class DestinationRepository extends BaseRepository
     public function getActiveDestinations()
     {
         return $this->model->active()->get();
+    }
+
+    /**
+     * Get all active featured destinations.
+     */
+    public function getFeaturedDestinations()
+    {
+        return $this->model->query()
+            ->active()
+            ->where('is_featured', true)
+            ->whereNotNull('slug')
+            ->latest('id')
+            ->get();
     }
 
     /**
