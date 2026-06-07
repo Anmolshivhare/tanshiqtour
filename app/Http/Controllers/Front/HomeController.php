@@ -26,7 +26,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $destinationsData = $this->destinationRepository->getActiveDestinations();
+        $destinationsData = $this->destinationRepository->getFeaturedDestinations();
         $banners = $this->bannerRepository->getActiveBanners();
         $fallbackSlides = collect([
             [

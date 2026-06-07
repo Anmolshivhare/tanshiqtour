@@ -34,6 +34,9 @@ class DestinationDataTable extends DataTable
             ->editColumn('status', function ($row) {
                 return $row->statusName?->name ?? 'N/A';
             })
+            ->editColumn('is_featured', function ($row) {
+                return $row->is_featured ? 'Yes' : 'No';
+            })
             ->filterColumn('status', function ($query, $keyword) {
                 $query->whereHas('statusName', function ($statusQuery) use ($keyword) {
                     $statusQuery->where('name', 'like', "%{$keyword}%");
@@ -79,6 +82,7 @@ class DestinationDataTable extends DataTable
             Column::make('country')->title('Country')->addClass('text-center'),
             Column::make('city')->title('City')->addClass('text-center'),
             Column::make('status')->title(__('labels.status'))->addClass('text-center'),
+            Column::make('is_featured')->title(__('labels.featured'))->addClass('text-center'),
             Column::make('created_at')->title(__('labels.created_at'))->addClass('text-center'),
             Column::computed('action')->title(__('labels.action'))
                 ->exportable(false)->printable(false)->width(60)->addClass('text-center'),

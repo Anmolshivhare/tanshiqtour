@@ -25,6 +25,7 @@ class Tour extends Model
         'featured_image',
         'destination_id',
         'max_persons',
+        'is_featured',
         'status',
         'created_by',
         'updated_by',

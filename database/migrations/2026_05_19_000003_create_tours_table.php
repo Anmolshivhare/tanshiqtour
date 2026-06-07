@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price_per_person', 10, 2)->nullable();
             $table->longText('description')->nullable();
             $table->string('featured_image')->nullable();
+            $table->boolean('is_featured')->default(false);
             $table->unsignedBigInteger('destination_id')->nullable();
             $table->integer('max_persons')->nullable();
             $table->unsignedBigInteger('status')->nullable();

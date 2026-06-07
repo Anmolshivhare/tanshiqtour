@@ -15,7 +15,7 @@
                 <form class="row g-3" action="{{ route('admin.destinations.store') }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label for="name" class="form-label required">Name</label>
                         <input type="text" name="name" id="name"
                             class="form-control makeSlug @error('name') is-invalid @enderror" value="{{ old('name') }}"
@@ -24,7 +24,7 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label for="slug" class="form-label">Slug</label>
                         <input type="text" name="slug" id="slug"
                             class="form-control pageSlug @error('slug') is-invalid @enderror" value="{{ old('slug') }}"
@@ -32,6 +32,13 @@
                         @error('slug')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div class="form-check">
+                            <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input"
+                                value="1" {{ old('is_featured') ? 'checked' : '' }}>
+                            <label for="is_featured" class="form-check-label">Mark as Featured</label>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <label for="country" class="form-label">Country</label>
@@ -59,12 +66,12 @@
                         <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :default-image="Vite::asset(config('constants.company_logo'))"
                             :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
-                  
+
                     <div class="col-lg-6 col-md-6">
                         <x-image-uploader id="banner_image" name="banner_image" label="Banner Image" :default-image="Vite::asset(config('constants.company_logo'))"
                             :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
-                    
+
                     <div class="col-md-12">
                         <label for="description" class="form-label">Description</label>
                         <textarea name="description" id="description" class="form-control" rows="5" placeholder="Long Description">{{ old('description') }}</textarea>
@@ -78,5 +85,3 @@
         </div>
     </div>
 @endsection
-
-

@@ -17,6 +17,7 @@ class UpdateRequest extends FormRequest
             'duration'         => 'nullable|string|max:100',
             'price_per_person' => 'nullable|numeric|min:0',
             'description'      => 'nullable|string',
+            'is_featured'       => 'nullable|boolean',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'gallery_images'   => 'nullable|array|max:10',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
