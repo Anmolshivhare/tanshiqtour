@@ -40,6 +40,20 @@ class TourRepository extends BaseRepository
     }
 
     /**
+     * Get active tours marked as featured for front sections.
+     */
+    public function getFeaturedTours(int $limit = 6)
+    {
+        return $this->model->query()
+            ->with('destination')
+            ->active()
+            ->where('is_featured', true)
+            ->latest('id')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * Get tour by slug.
      */
     public function getBySlug(string $slug): ?Tour

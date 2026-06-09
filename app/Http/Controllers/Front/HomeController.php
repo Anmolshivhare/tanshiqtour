@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Repositories\BannerRepository;
 use App\Repositories\DestinationRepository;
+use App\Repositories\TourRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
 
@@ -15,18 +16,25 @@ class HomeController extends Controller
 
     protected $bannerRepository;
 
+    protected $tourRepository;
+
     /**
      * 
      */
-    public function __construct(DestinationRepository $destinationRepository, BannerRepository $bannerRepository)
-    {
+    public function __construct(
+        DestinationRepository $destinationRepository,
+        BannerRepository $bannerRepository,
+        TourRepository $tourRepository
+    ) {
         $this->destinationRepository = $destinationRepository;
         $this->bannerRepository = $bannerRepository;
+        $this->tourRepository = $tourRepository;
     }
 
     public function index()
     {
         $destinationsData = $this->destinationRepository->getFeaturedDestinations();
+        $featuredTours = $this->tourRepository->getFeaturedTours();
         $banners = $this->bannerRepository->getActiveBanners();
         $fallbackSlides = collect([
             [
@@ -96,12 +104,13 @@ class HomeController extends Controller
             $bannerSlides = $fallbackSlides;
         }
 
-        return view('home', compact('destinationsData', 'banners', 'bannerSlides'));
+        return view('home', compact('destinationsData', 'featuredTours', 'banners', 'bannerSlides'));
     }
 
     public function tours()
     {
-        return view('tours');
+        $featuredTours = $this->tourRepository->getFeaturedTours();
+        return view('tours', compact('featuredTours'));
     }
 
     public function about()

@@ -44,8 +44,8 @@
                     @error('description') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Banner Image</label>
-                    <x-image-uploader id="banner_image" name="image" label="Image"
+                    <label class="form-label">Banner Image Size:(1700 * 800px)</label>
+                    <x-image-uploader id="banner_image" name="image"
                         :default-image="Vite::asset(config('constants.company_logo'))" :required="true" :max-size="4"
                         :enable-crop="false" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                 </div>

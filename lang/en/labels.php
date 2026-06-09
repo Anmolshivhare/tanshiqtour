@@ -121,6 +121,7 @@ return [
     'duration' => 'Duration',
     'price_per_person' => 'Price per Person',
     'featured_image' => 'Featured Image',
+    'is_featured' => 'Is Featured',
     'add_new' => 'Add New',
     'back' => 'Back',
     'edit' => 'Edit',

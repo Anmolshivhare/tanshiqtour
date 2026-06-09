@@ -896,6 +896,10 @@
         radial-gradient(ellipse 55% 50% at 100% 100%, rgba(255, 210, 170, 0.35) 0%, transparent 70%),
         linear-gradient(160deg, #f0f8f0 0%, #fefefe 50%, #fff8f2 100%);
     position: relative;
+
+    .container {
+        max-width: 1440px !important;
+    }
 }
 
 // ── Decorative corner images ──────────────────────────────────────
@@ -908,9 +912,9 @@
 
     // Top-Left: Suitcase illustration
     &--tl {
-        top: 2rem;
-        left: 2rem;
-        width: clamp(200px, 17vw, 280px);
+        top: 3rem;
+        left: clamp(-2.5rem, 2vw, 2rem);
+        width: clamp(180px, 15vw, 260px);
         transform: rotate(-8deg);
         animation: ttPkgFloat 5.5s ease-in-out infinite;
         filter: drop-shadow(0 12px 28px rgba(0,0,0,0.12));
@@ -918,9 +922,9 @@
 
     // Bottom-Right: Beach/Palm illustration
     &--br {
-        bottom: 0rem;
-        right: 0.5rem;
-        width: clamp(200px, 18vw, 290px);
+        bottom: 0.75rem;
+        right: clamp(-2rem, 1vw, 1rem);
+        width: clamp(180px, 15vw, 260px);
         transform: rotate(6deg);
         animation: ttPkgFloat 6.5s ease-in-out 0.9s infinite;
         filter: drop-shadow(0 12px 28px rgba(0,0,0,0.10));
@@ -973,19 +977,28 @@
 
 .tt-pkg-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 440px));
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.75rem;
+    width: 100%;
+    max-width: 1380px;
+    margin: 0 auto;
 
-    @media (max-width: 991px) { grid-template-columns: repeat(2, 1fr); }
-    @media (max-width: 575px) { grid-template-columns: 1fr; }
+    @media (max-width: 575px) {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
 }
 
 .tt-pkg-card {
     background: #fff;
-    border-radius: 20px;
+    border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba($brand-primary, 0.06);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    min-width: 0;
 
     &:hover {
         transform: translateY(-8px);
@@ -997,7 +1010,7 @@
 
     &__img {
         position: relative;
-        height: 220px;
+        height: clamp(190px, 15vw, 220px);
         overflow: hidden;
 
         img {
@@ -1020,11 +1033,34 @@
         text-transform: uppercase;
     }
 
-    &__body { padding: 1.25rem; }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        min-height: 170px;
+        padding: clamp(1rem, 1.4vw, 1.35rem);
+    }
 
-    &__loc { font-size: 0.78rem; color: $brand-accent; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; i { color: $brand-accent; } }
+    &__loc {
+        font-size: 0.78rem;
+        color: $brand-accent;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.35rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
-    &__title { font-size: 1rem; font-weight: 700; color: $brand-primary; margin: 0 0 0.75rem; }
+        i { color: $brand-accent; }
+    }
+
+    &__title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $brand-primary;
+        line-height: 1.35;
+        margin: 0 0 0.75rem;
+    }
 
     &__meta {
         display: flex;
@@ -1034,6 +1070,14 @@
         margin-bottom: 1rem;
         padding-bottom: 0.75rem;
         border-bottom: 1px solid rgba($brand-primary, 0.08);
+        gap: 1rem;
+
+        span {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 
     &__rating { color: $brand-accent; i { color: $brand-accent; } }
@@ -1042,6 +1086,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
+        margin-top: auto;
     }
 
     &__label { font-size: 0.7rem; color: #9ca3af; display: block; }

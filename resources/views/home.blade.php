@@ -256,77 +256,7 @@
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)
 ============================================================ --}}
-<section class="tt-section tt-packages position-relative overflow-hidden" id="packages">
-
-    {{-- ── Top-Left decorative: Suitcase ── --}}
-    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}"
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
-
-    {{-- ── Bottom-Right decorative: Beach Palm ── --}}
-    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}"  
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
-
-    <div class="container position-relative" style="z-index:2;">
-        <div class="tt-section-head text-center" data-aos="fade-up">
-            <span class="tt-kicker-v2"><i class="fas fa-suitcase-rolling me-1"></i> Best Deals</span>
-            <h2 class="tt-section-title">Featured <span class="tt-accent">Tour Packages</span></h2>
-            <p class="tt-section-sub">Handpicked adventures, beaches, cultures, and wildlife experiences.</p>
-        </div>
-
-        {{-- Filter Tabs --}}
-        <div class="tt-filter-tabs" data-aos="fade-up">
-            <button class="tt-filter-tab active" data-filter="all">All</button>
-            <button class="tt-filter-tab" data-filter="adventure">Adventure</button>
-            <button class="tt-filter-tab" data-filter="beach">Beach</button>
-            <button class="tt-filter-tab" data-filter="cultural">Cultural</button>
-            <button class="tt-filter-tab" data-filter="wildlife">Wildlife</button>
-        </div>
-
-        <div class="tt-pkg-grid" id="tt-pkg-grid">
-            @foreach ([
-                ['title'=>'Himalayan Trek','loc'=>'Kashmir','days'=>'7D/6N','rating'=>'4.9','price'=>'₹24,999','cat'=>'adventure','img'=>'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'],
-                ['title'=>'Bali Beach Escape','loc'=>'Indonesia','days'=>'6D/5N','rating'=>'4.8','price'=>'₹38,499','cat'=>'beach','img'=>'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80'],
-                ['title'=>'Tokyo Cultural Tour','loc'=>'Japan','days'=>'8D/7N','rating'=>'4.7','price'=>'₹72,000','cat'=>'cultural','img'=>'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80'],
-                ['title'=>'African Safari','loc'=>'Kenya','days'=>'10D/9N','rating'=>'5.0','price'=>'₹1,45,000','cat'=>'wildlife','img'=>'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80'],
-                ['title'=>'Maldives Paradise','loc'=>'Maldives','days'=>'5D/4N','rating'=>'5.0','price'=>'₹55,000','cat'=>'beach','img'=>'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80'],
-                ['title'=>'Paris City Highlights','loc'=>'France','days'=>'7D/6N','rating'=>'4.8','price'=>'₹89,999','cat'=>'cultural','img'=>'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'],
-              
-            ] as $i => $pkg)
-            <div class="tt-pkg-card" data-cat="{{ $pkg['cat'] }}" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
-                <div class="tt-pkg-card__img">
-                    <img src="{{ $pkg['img'] }}" alt="{{ $pkg['title'] }}" loading="lazy">
-                    <span class="tt-pkg-card__cat">{{ ucfirst($pkg['cat']) }}</span>
-                </div>
-                <div class="tt-pkg-card__body">
-                    <div class="tt-pkg-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $pkg['loc'] }}</div>
-                    <h3 class="tt-pkg-card__title">{{ $pkg['title'] }}</h3>
-                    <div class="tt-pkg-card__meta">
-                        <span><i class="fas fa-clock me-1"></i>{{ $pkg['days'] }}</span>
-                        <span class="tt-pkg-card__rating"><i class="fas fa-star me-1"></i>{{ $pkg['rating'] }}</span>
-                    </div>
-                    <div class="tt-pkg-card__footer">
-                        <div>
-                            <span class="tt-pkg-card__label">From</span>
-                            <span class="tt-pkg-card__price">{{ $pkg['price'] }}</span>
-                        </div>
-                        <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{{ route('front.tours') }}" class="tt-btn-hero-primary">
-                <i class="fas fa-th-large me-2"></i> View All Packages
-            </a>
-        </div>
-    </div>
-</section>
+ @include('base-tour-packages')
 
 
 {{-- ============================================================

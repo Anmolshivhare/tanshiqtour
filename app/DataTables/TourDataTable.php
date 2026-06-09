@@ -34,6 +34,9 @@ class TourDataTable extends DataTable
             ->editColumn('status', function ($row) {
                 return $row->statusName->name ?? 'N/A';
             })
+            ->editColumn('is_featured', function ($row) {
+                return $row->is_featured ? 'Yes' : 'No';
+            })
             ->editColumn('price_per_person', function ($row) {
                 return $row->price_per_person ? '₹' . number_format($row->price_per_person, 2) : 'N/A';
             })
@@ -77,6 +80,7 @@ class TourDataTable extends DataTable
             Column::make('location')->title('Location')->addClass('text-center'),
             Column::make('duration')->title('Duration')->addClass('text-center'),
             Column::make('price_per_person')->title('Price/Person')->addClass('text-center'),
+            Column::make('is_featured')->title(__('labels.is_featured'))->addClass('text-center'),
             Column::make('status')->title(__('labels.status'))->addClass('text-center'),
             Column::make('created_at')->title(__('labels.created_at'))->addClass('text-center'),
             Column::computed('action')->title(__('labels.action'))

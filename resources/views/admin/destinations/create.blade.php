@@ -63,12 +63,12 @@
                     </div>
 
                     <div class="col-lg-6 col-md-6">
-                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :default-image="Vite::asset(config('constants.company_logo'))"
+                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image Size:(360 * 380px)" :default-image="Vite::asset(config('constants.company_logo'))"
                             :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
 
                     <div class="col-lg-6 col-md-6">
-                        <x-image-uploader id="banner_image" name="banner_image" label="Banner Image" :default-image="Vite::asset(config('constants.company_logo'))"
+                        <x-image-uploader id="banner_image" name="banner_image" label="Banner Image Size:(1700 * 800px)" :default-image="Vite::asset(config('constants.company_logo'))"
                             :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
 
