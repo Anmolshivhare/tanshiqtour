@@ -69,13 +69,13 @@
                             value="{{ old('short_description', $destination->short_description) }}">
                     </div>
                     <div class="col-md-6">
-                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :preview-image="$destination->featured_image
+                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image Size:(360 * 380px)" :preview-image="$destination->featured_image
                             ? asset('storage/destinations/' . $destination->featured_image)
                             : null"
                             :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
                     <div class="col-md-6">
-                        <x-image-uploader id="banner_image" name="banner_image" label="Banner Image" :preview-image="$destination->banner_image
+                        <x-image-uploader id="banner_image" name="banner_image" label="Banner Image Size:(1700 * 800px)" :preview-image="$destination->banner_image
                             ? asset('storage/destinations/' . $destination->banner_image)
                             : null"
                             :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />

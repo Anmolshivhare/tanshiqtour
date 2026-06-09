@@ -57,7 +57,7 @@
             <div class="swiper tt-destinations-swiper" id="destSwiper">
                 <div class="swiper-wrapper">
 
-                    @foreach ($destinationsData as $dest)
+                    @forelse ($destinationsData as $dest)
                         <div class="swiper-slide">
                             <div class="tt-dest-card position-relative overflow-hidden rounded-4 w-100">
                                 <a href="{{ route('front.destination-details', $dest['slug']) }}">
@@ -79,7 +79,13 @@
                                 </a>
                             </div>
                         </div>
-                    @endforeach
+
+                         @empty
+                        <div class="text-center w-100" data-aos="fade-up">
+                            <p class="tt-section-sub mb-0">No featured destinations available right now.</p>
+                        </div>
+                    @endforelse
+                    
 
                 </div>
                 {{-- Swiper pagination dots --}}

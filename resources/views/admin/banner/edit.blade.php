@@ -50,7 +50,7 @@
                 </div>
                
                 <div class="col-md-6">
-                    <label class="form-label">Banner Image</label>
+                    <label class="form-label">Banner Image Size:(1700 * 800px)</label>
                     <x-image-uploader id="banner_image" name="image" label="Image"
                         :preview-image="!empty($banner->image) ? asset('storage/' . config('constants.banner_image_path') . '/' . $banner->image) : null"
                         :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="4"

@@ -82,7 +82,7 @@ class DestinationDataTable extends DataTable
             Column::make('country')->title('Country')->addClass('text-center'),
             Column::make('city')->title('City')->addClass('text-center'),
             Column::make('status')->title(__('labels.status'))->addClass('text-center'),
-            Column::make('is_featured')->title(__('labels.featured'))->addClass('text-center'),
+            Column::make('is_featured')->title(__('labels.is_featured'))->addClass('text-center'),
             Column::make('created_at')->title(__('labels.created_at'))->addClass('text-center'),
             Column::computed('action')->title(__('labels.action'))
                 ->exportable(false)->printable(false)->width(60)->addClass('text-center'),
