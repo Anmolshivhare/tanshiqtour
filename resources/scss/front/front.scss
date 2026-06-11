@@ -1330,3 +1330,695 @@ footer {
         margin-left: 0.5rem;
     }
 }
+
+// ================================================
+// ======= TOUR DETAILS PAGE (td-*) styles ========
+// ================================================
+
+// --- Hero Gallery ---
+.td-hero {
+    background: $dark;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        gap: 4px;
+        max-height: 480px;
+
+        @media (max-width: 767px) {
+            grid-template-columns: 1fr;
+            max-height: none;
+        }
+    }
+
+    &__main {
+        overflow: hidden;
+        @media (max-width: 767px) {
+            height: 260px;
+        }
+    }
+
+    &__thumbs {
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 4px;
+
+        @media (max-width: 767px) {
+            display: none;
+        }
+    }
+
+    &__thumb {
+        overflow: hidden;
+        position: relative;
+
+        &--gallery-btn .td-hero__gallery-overlay {
+            display: flex;
+        }
+    }
+
+    &__gallery-overlay {
+        display: none;
+        position: absolute;
+        inset: 0;
+        background: rgba($brand-primary, 0.7);
+        color: $primary-white;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+            background: rgba($brand-primary, 0.85);
+        }
+    }
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+
+        &:hover {
+            transform: scale(1.04);
+        }
+    }
+}
+
+// --- Title Bar ---
+.td-title-bar {
+    background: $primary-white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.td-title {
+    font-family: $font-family-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $dark;
+    margin-bottom: 0;
+
+    @media (max-width: 575px) {
+        font-size: 1.2rem;
+    }
+}
+
+.td-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.85rem;
+}
+
+.td-review-count {
+    color: $secondary;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.td-location-badge {
+    display: inline-flex;
+    align-items: center;
+    background: $brand-primary-soft;
+    color: $brand-primary;
+    border-radius: 30px;
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+
+    &--dest {
+        background: $brand-accent-soft;
+        color: darken($brand-accent, 20%);
+    }
+}
+
+.td-share-btn {
+    background: transparent;
+    border: 1.5px solid $brand-primary;
+    color: $brand-primary;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 6px 18px;
+    transition: all 0.3s;
+    box-shadow: none !important;
+
+    &:hover {
+        background: $brand-primary;
+        color: $primary-white;
+    }
+}
+
+// --- Stats Bar ---
+.td-stats-bar {
+    background: $primary-white;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+
+    &__row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        min-height: 60px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 22px;
+        flex: 1;
+        min-width: 0;
+
+        &--price {
+            flex: 0 0 auto;
+        }
+
+        @media (max-width: 767px) {
+            flex: 0 0 50%;
+            padding: 10px 14px;
+        }
+
+        @media (max-width: 479px) {
+            flex: 0 0 100%;
+            padding: 8px 14px;
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        height: 36px;
+        background: rgba(0,0,0,0.09);
+        flex-shrink: 0;
+        align-self: center;
+
+        @media (max-width: 767px) {
+            display: none;
+        }
+    }
+
+    &__icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: $brand-primary-soft;
+        color: $brand-primary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+
+        &--accent {
+            background: $brand-accent-soft;
+            color: darken($brand-accent, 20%);
+        }
+
+        &--teal {
+            background: rgba(#00c8aa, 0.12);
+            color: #00a88e;
+        }
+
+        &--gold {
+            background: rgba($brand-accent, 0.15);
+            color: darken($brand-accent, 15%);
+        }
+    }
+
+    &__label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: $secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+    }
+
+    &__value {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: $dark;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+
+.td-price-badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
+    background: $brand-primary;
+    color: $primary-white;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 1rem;
+    font-weight: 800;
+    white-space: nowrap;
+
+    small {
+        font-size: 0.65rem;
+        font-weight: 500;
+        opacity: 0.85;
+    }
+}
+
+// --- Body Sections ---
+.td-body {
+    background: #f8f9fb;
+}
+
+.td-section {
+    background: $primary-white;
+    border-radius: 14px;
+    padding: 28px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: visible; // allow accordion shadow to show through
+
+    @media (max-width: 575px) {
+        padding: 18px 16px;
+    }
+
+    &__heading {
+        font-family: $font-family-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: $dark;
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid $brand-primary-soft;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 50px;
+            height: 2px;
+            background: $brand-primary;
+            border-radius: 2px;
+        }
+    }
+
+    &__text {
+        color: $secondary;
+        line-height: 1.75;
+        font-size: 0.95rem;
+    }
+
+    &__sub {
+        font-size: 0.875rem;
+        color: $secondary;
+        font-style: italic;
+    }
+}
+
+// --- Highlight List ---
+.td-highlight-list {
+    &__item {
+        padding: 5px 0;
+        font-size: 0.875rem;
+        color: $secondary;
+        line-height: 1.5;
+
+        i {
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+    }
+}
+
+// --- Amenity Items ---
+.td-amenity-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 0.875rem;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+
+    &:last-child { border-bottom: none; }
+
+    &--yes { color: $secondary; }
+    &--no { color: #aaa; }
+}
+
+// --- Gallery Grid ---
+.td-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+
+    @media (min-width: 576px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    &__item {
+        border-radius: 10px;
+        overflow: hidden;
+        aspect-ratio: 4/3;
+    }
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+
+        &:hover {
+            transform: scale(1.06);
+        }
+    }
+}
+
+// --- Itinerary Accordion ---
+.td-accordion {
+    // Override Bootstrap's default accordion-item styling
+    .accordion-item.td-accordion__item {
+        border: none !important;
+        border-radius: 10px !important;
+        margin-bottom: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: transparent;
+    }
+
+    // Override Bootstrap's accordion border-radius resets
+    .accordion-button.td-accordion__btn {
+        background: #f4f6fb !important;
+        color: $dark !important;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-radius: 10px !important; // collapsed: full radius
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 0;
+        box-shadow: none !important;
+
+        &:not(.collapsed) {
+            background: $brand-primary !important;
+            color: $primary-white !important;
+            border-radius: 10px 10px 0 0 !important; // open: top radius only
+            box-shadow: none !important;
+
+            .td-accordion__day-badge {
+                background: rgba(255,255,255,0.25) !important;
+                color: $primary-white !important;
+            }
+
+            &::after {
+                filter: brightness(0) invert(1);
+            }
+        }
+
+        &:focus {
+            box-shadow: none !important;
+            outline: none;
+        }
+    }
+
+    // Collapse body
+    .accordion-collapse {
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+    }
+
+    &__day-badge {
+        display: inline-flex;
+        align-items: center;
+        background: $brand-primary-soft;
+        color: $brand-primary;
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: all 0.3s;
+    }
+
+    &__body {
+        background: $primary-white;
+        color: $secondary;
+        font-size: 0.88rem;
+        line-height: 1.7;
+        padding: 16px 20px;
+        border-top: 1px solid rgba($brand-primary, 0.06);
+    }
+}
+
+// --- Review Cards ---
+.td-review-card {
+    background: #f8f9fb;
+    border-radius: 12px;
+    padding: 18px;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s;
+
+    &:hover {
+        box-shadow: 0 4px 18px rgba($brand-primary, 0.1);
+    }
+
+    &__avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $brand-primary;
+        color: $primary-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    &__name {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: $dark;
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: $dark;
+        margin-bottom: 4px;
+    }
+
+    &__body {
+        font-size: 0.83rem;
+        color: $secondary;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+}
+
+// --- Booking Sidebar ---
+.td-booking-card {
+    background: $primary-white;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.10);
+    overflow: hidden;
+    border: 1px solid rgba($brand-primary, 0.08);
+
+    &__header {
+        background: $brand-primary;
+        padding: 20px 22px 16px;
+        color: $primary-white;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    &__title {
+        font-family: $font-family-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $primary-white;
+        margin-bottom: 0;
+    }
+
+    &__price {
+        text-align: right;
+    }
+
+    &__price-from {
+        display: block;
+        font-size: 0.7rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    &__price-value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: $brand-accent;
+        white-space: nowrap;
+    }
+
+    &__body {
+        padding: 22px;
+    }
+}
+
+.td-booking-field {
+    &__label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: $secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    &__input {
+        font-size: 0.875rem;
+        border-color: #e0e4ef;
+        border-radius: 8px;
+
+        &:focus {
+            border-color: $brand-primary;
+            box-shadow: 0 0 0 3px rgba($brand-primary, 0.12);
+        }
+    }
+}
+
+.td-booking-extras {
+    &__label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: $secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    &__check-label {
+        font-size: 0.83rem;
+        color: $secondary;
+    }
+}
+
+.td-booking-pricing {
+    border-top: 1px dashed #dde3f0;
+    padding-top: 12px;
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        font-size: 0.875rem;
+        color: $secondary;
+
+        &--total {
+            border-top: 1px solid #eef0f6;
+            margin-top: 6px;
+            padding-top: 8px;
+        }
+    }
+
+    &__price {
+        font-weight: 600;
+        color: $dark;
+    }
+
+    &__total {
+        font-size: 1rem;
+        font-weight: 800;
+        color: $brand-primary;
+    }
+}
+
+.td-booking-btn {
+    background: $brand-primary !important;
+    color: $primary-white !important;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 13px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 14px rgba($brand-primary, 0.35);
+    transition: all 0.3s;
+
+    &:hover {
+        background: $brand-primary-hover !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba($brand-primary, 0.45);
+    }
+}
+
+// --- Related Tour Cards ---
+.td-related {
+    background: #f4f6fb;
+}
+
+.td-related-card {
+    background: $primary-white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+    transition: all 0.35s ease;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 28px rgba($brand-primary, 0.15);
+
+        .td-related-card__img {
+            transform: scale(1.05);
+        }
+    }
+
+    &__img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 190px;
+    }
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    &__price {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: $brand-primary;
+        color: $primary-white;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    &__body {
+        padding: 16px;
+    }
+
+    &__title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: $dark;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+

@@ -1,20 +1,15 @@
-
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)
 ============================================================ --}}
 <section class="tt-section tt-packages position-relative overflow-hidden" id="packages">
 
     {{-- ── Top-Left decorative: Suitcase ── --}}
-    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}"
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
+    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}" alt="" aria-hidden="true"
+        class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
 
     {{-- ── Bottom-Right decorative: Beach Palm ── --}}
-    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}"  
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
+    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}" alt="" aria-hidden="true"
+        class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
 
     <div class="container position-relative" style="z-index:2;">
         <div class="tt-section-head text-center" data-aos="fade-up">
@@ -24,44 +19,49 @@
         </div>
         <div class="tt-pkg-grid" id="tt-pkg-grid">
             @forelse ($featuredTours as $i => $tour)
-            @php
-                $tourImage = $tour->featured_image
-                    ? asset('storage/tours/' . $tour->featured_image)
-                    : Vite::asset('resources/images/banner1.webp');
-                $tourLocation = $tour->location ?: optional($tour->destination)->name;
-                $tourCategory = optional($tour->destination)->name ?: 'Featured';
-            @endphp
-            <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
-                <div class="tt-pkg-card__img">
-                    <img src="{{ $tourImage }}" alt="{{ $tour->title }}" loading="lazy">
-                    <span class="tt-pkg-card__cat">{{ $tourCategory }}</span>
-                </div>
-                <div class="tt-pkg-card__body">
-                    <div class="tt-pkg-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $tourLocation ?: 'Tour Package' }}</div>
-                    <h3 class="tt-pkg-card__title">{{ ucwords($tour->title) }}</h3>
-                    <div class="tt-pkg-card__meta">
-                        @if($tour->duration)
-                        <span><i class="fas fa-clock me-1"></i>{{ $tour->duration }}</span>
-                        @endif
-                        @if($tour->max_persons)
-                        <span class="tt-pkg-card__rating"><i class="fas fa-users me-1"></i>{{ $tour->max_persons }}</span>
-                        @endif
-                    </div>
-                    <div class="tt-pkg-card__footer">
-                        <div>
-                            <span class="tt-pkg-card__label">From</span>
-                            <span class="tt-pkg-card__price">
-                                {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
-                            </span>
+                @php
+                    $tourImage = $tour->featured_image
+                        ? asset('storage/tours/' . $tour->featured_image)
+                        : Vite::asset('resources/images/banner1.webp');
+                    $tourLocation = $tour->location ?: optional($tour->destination)->name;
+                    $tourCategory = optional($tour->destination)->name ?: 'Featured';
+                @endphp
+                <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
+                    <a href="{{ route('front.tour-details', $tour->slug) }}">
+
+                        <div class="tt-pkg-card__img">
+                            <img src="{{ $tourImage }}" alt="{{ $tour->title }}" loading="lazy">
+                            <span class="tt-pkg-card__cat">{{ $tourCategory }}</span>
                         </div>
-                        <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
-                    </div>
+                        <div class="tt-pkg-card__body">
+                            <div class="tt-pkg-card__loc"><i
+                                    class="fas fa-map-marker-alt me-1"></i>{{ $tourLocation ?: 'Tour Package' }}</div>
+                            <h3 class="tt-pkg-card__title">{{ ucwords($tour->title) }}</h3>
+                            <div class="tt-pkg-card__meta">
+                                @if ($tour->duration)
+                                    <span><i class="fas fa-clock me-1"></i>{{ $tour->duration }}</span>
+                                @endif
+                                @if ($tour->max_persons)
+                                    <span class="tt-pkg-card__rating"><i
+                                            class="fas fa-users me-1"></i>{{ $tour->max_persons }}</span>
+                                @endif
+                            </div>
+                            <div class="tt-pkg-card__footer">
+                                <div>
+                                    <span class="tt-pkg-card__label">From</span>
+                                    <span class="tt-pkg-card__price">
+                                        {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
+                                    </span>
+                                </div>
+                                <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
             @empty
-            <div class="text-center w-100" data-aos="fade-up">
-                <p class="tt-section-sub mb-0">No featured tour packages available right now.</p>
-            </div>
+                <div class="text-center w-100" data-aos="fade-up">
+                    <p class="tt-section-sub mb-0">No featured tour packages available right now.</p>
+                </div>
             @endforelse
         </div>
 

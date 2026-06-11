@@ -638,87 +638,99 @@ $(function () {
     });
 })();
 
-// ---- Destination Search (Live Filter) ----
+// ---- Listing Search (Live Filter) ----
 (function () {
-    const form = document.getElementById("destination-search-form");
-    const input = document.getElementById("destination-search-input");
-    const clearBtn = document.getElementById("destination-clear-btn");
-    const resultsWrap = document.getElementById("destination-results");
+    const listings = [
+        {
+            form: document.getElementById("destination-search-form"),
+            input: document.getElementById("destination-search-input"),
+            clearBtn: document.getElementById("destination-clear-btn"),
+            resultsWrap: document.getElementById("destination-results"),
+        },
+        {
+            form: document.getElementById("tour-search-form"),
+            input: document.getElementById("tour-search-input"),
+            clearBtn: document.getElementById("tour-clear-btn"),
+            resultsWrap: document.getElementById("tour-results"),
+        },
+    ];
 
-    if (!form || !input || !clearBtn || !resultsWrap) {
-        return;
-    }
+    listings.forEach(({ form, input, clearBtn, resultsWrap }) => {
+        if (!form || !input || !clearBtn || !resultsWrap) {
+            return;
+        }
 
-    const searchUrl = form.getAttribute("action");
-    let debounceTimer = null;
-    let activeRequest = null;
-    const defaultResultsHtml = resultsWrap.innerHTML;
+        const searchUrl = form.getAttribute("action");
+        let debounceTimer = null;
+        let activeRequest = null;
+        const defaultResultsHtml = resultsWrap.innerHTML;
 
-    function renderResults(payload) {
-        if (payload && typeof payload.html === "string") {
-            resultsWrap.innerHTML = payload.html;
-            resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
-                element.classList.add("aos-animate");
+        function renderResults(payload) {
+            if (payload && typeof payload.html === "string") {
+                resultsWrap.innerHTML = payload.html;
+                resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
+                    element.classList.add("aos-animate");
+                });
+            }
+        }
+
+        function setClearState(query) {
+            clearBtn.classList.toggle("d-none", query.trim().length === 0);
+        }
+
+        function runSearch(rawQuery) {
+            const query = rawQuery.trim();
+
+            if (activeRequest && activeRequest.readyState !== 4) {
+                activeRequest.abort();
+            }
+
+            setClearState(query);
+
+            activeRequest = $.ajax({
+                url: searchUrl,
+                method: "GET",
+                data: { q: query },
+                dataType: "json",
+                success(response) {
+                    renderResults(response);
+                },
+                error(xhr, status) {
+                    if (status === "abort") {
+                        return;
+                    }
+
+                    if (!query) {
+                        resultsWrap.innerHTML = defaultResultsHtml;
+                    }
+                },
             });
         }
-    }
 
-    function setClearState(query) {
-        clearBtn.classList.toggle("d-none", query.trim().length === 0);
-    }
-
-    function runSearch(rawQuery) {
-        const query = rawQuery.trim();
-
-        if (activeRequest && activeRequest.readyState !== 4) {
-            activeRequest.abort();
-        }
-
-        setClearState(query);
-
-        activeRequest = $.ajax({
-            url: searchUrl,
-            method: "GET",
-            data: { q: query },
-            dataType: "json",
-            success(response) {
-                renderResults(response);
-            },
-            error(xhr, status) {
-                if (status === "abort") {
-                    return;
-                }
-
-                if (!query) {
-                    resultsWrap.innerHTML = defaultResultsHtml;
-                }
-            },
+        input.addEventListener("input", function () {
+            setClearState(this.value);
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(() => {
+                runSearch(input.value);
+            }, 250);
         });
-    }
 
-    input.addEventListener("input", function () {
-        setClearState(this.value);
-        window.clearTimeout(debounceTimer);
-        debounceTimer = window.setTimeout(() => {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            window.clearTimeout(debounceTimer);
             runSearch(input.value);
-        }, 250);
-    });
+        });
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        window.clearTimeout(debounceTimer);
-        runSearch(input.value);
-    });
+        clearBtn.addEventListener("click", function () {
+            input.value = "";
+            setClearState("");
+            window.clearTimeout(debounceTimer);
+            runSearch("");
+            input.focus();
+        });
 
-    clearBtn.addEventListener("click", function () {
-        input.value = "";
-        setClearState("");
-        window.clearTimeout(debounceTimer);
-        runSearch("");
-        input.focus();
+        setClearState(input.value);
     });
-
-    setClearState(input.value);
 })();
 
 // ---- GSAP Airplane SVG Path Animation ----
@@ -803,6 +815,26 @@ document.addEventListener("tt:home:ready", function () {
             });
         }
     }, { threshold: 0.4 }).observe(section);
+})();
+
+// ---- Tour Details Accordion Scroll ----
+(function () {
+    const accordionButtons = document.querySelectorAll(".td-accordion__btn");
+    if (!accordionButtons.length) return;
+
+    accordionButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetSelector = this.dataset.bsTarget;
+            if (!targetSelector) return;
+
+            const target = document.querySelector(targetSelector);
+            if (target && !target.classList.contains("show")) {
+                setTimeout(() => {
+                    target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }, 350);
+            }
+        });
+    });
 })();
 
 // ---- Scroll AOS ----

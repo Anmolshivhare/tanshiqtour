@@ -107,10 +107,42 @@ class HomeController extends Controller
         return view('home', compact('destinationsData', 'featuredTours', 'banners', 'bannerSlides'));
     }
 
-    public function tours()
+    public function tours(Request $request)
     {
-        $featuredTours = $this->tourRepository->getFeaturedTours();
-        return view('tours', compact('featuredTours'));
+        $search = trim((string) $request->query('q', ''));
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $tours = $search === ''
+                ? $this->tourRepository->getActiveToursPaginated('', 9)
+                : $this->tourRepository->getActiveToursFiltered($search);
+
+            return response()->json([
+                'html' => view('front.tours.results', compact('tours', 'search'))->render(),
+                'count' => $tours instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator
+                    ? $tours->total()
+                    : $tours->count(),
+            ]);
+        }
+
+        $tours = $this->tourRepository->getActiveToursPaginated($search);
+
+        return view('tours', compact('tours', 'search'));
+    }
+
+    public function tourDetails(string $slug)
+    {
+        $tour = $this->tourRepository->getActiveBySlugWithRelations($slug);
+
+        if (!$tour) {
+            abort(404);
+        }
+
+        $relatedTours = $this->tourRepository->getFeaturedTours(4)
+            ->filter(fn($t) => $t->id !== $tour->id)
+            ->take(3)
+            ->values();
+
+        return view('tour-details', compact('tour', 'relatedTours'));
     }
 
     public function about()
