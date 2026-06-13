@@ -575,6 +575,47 @@ $(function () {
     });
 })();
 
+// ---- Tour Details Related Tours Swiper ----
+(function () {
+    const section = document.querySelector(".td-tour-slider-section");
+    if (!section) return;
+
+    const el = section.querySelector(".td-tour-slider");
+    const prevEl = section.querySelector(".td-tour-slider-prev");
+    const nextEl = section.querySelector(".td-tour-slider-next");
+    const paginationEl = section.querySelector(".td-tour-slider-pagination");
+    if (!el) return;
+
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 18,
+        loop: slideCount > 2,
+        grabCursor: true,
+        watchOverflow: true,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl,
+            nextEl,
+        },
+        breakpoints: {
+            576: { slidesPerView: 1.25, spaceBetween: 18 },
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1200: { slidesPerView: Math.min(3, slideCount || 1), spaceBetween: 24 },
+        },
+    });
+})();
+
 // ---- Destinations Swiper (Capsule Center Focus) ----
 (function () {
     const section = document.querySelector(".tt-destinations");
@@ -834,6 +875,143 @@ document.addEventListener("tt:home:ready", function () {
                 }, 350);
             }
         });
+    });
+})();
+
+// ---- Tour Details Gallery Lightbox ----
+(function () {
+    const modal = document.getElementById("galleryLightboxModal");
+    const mainImg = document.getElementById("galleryLightboxImg");
+    const imgWrap = document.getElementById("galleryImgWrap");
+    const counter = document.getElementById("galleryCounter");
+    const thumbStrip = document.getElementById("galleryThumbStrip");
+    const prevBtn = document.getElementById("galleryPrev");
+    const nextBtn = document.getElementById("galleryNext");
+    const bodyEl = document.getElementById("galleryLightboxBody");
+
+    if (!modal || !mainImg || !imgWrap || !thumbStrip) return;
+
+    const thumbs = Array.from(
+        thumbStrip.querySelectorAll(".gallery-lightbox-thumb"),
+    );
+    const galleryImages = thumbs
+        .map((thumb) => thumb.dataset.src)
+        .filter(Boolean);
+
+    if (!galleryImages.length) return;
+
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+
+    function showImage(index) {
+        currentIndex =
+            ((index % galleryImages.length) + galleryImages.length) %
+            galleryImages.length;
+
+        imgWrap.classList.add("gallery-img-exit");
+
+        window.setTimeout(() => {
+            mainImg.src = galleryImages[currentIndex];
+            mainImg.alt = `Tour gallery image ${currentIndex + 1}`;
+            imgWrap.classList.remove("gallery-img-exit");
+            imgWrap.classList.add("gallery-img-enter");
+
+            window.setTimeout(() => {
+                imgWrap.classList.remove("gallery-img-enter");
+            }, 350);
+        }, 180);
+
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+        }
+
+        thumbs.forEach((thumb, index) => {
+            thumb.classList.toggle("active", index === currentIndex);
+        });
+
+        thumbs[currentIndex]?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+        });
+    }
+
+    document
+        .querySelectorAll(".td-gallery-grid__item--clickable")
+        .forEach((item) => {
+            item.addEventListener("click", function () {
+                currentIndex = parseInt(this.dataset.galleryIndex, 10) || 0;
+
+                modal.addEventListener(
+                    "shown.bs.modal",
+                    function onShown() {
+                        showImage(currentIndex);
+                        modal.removeEventListener("shown.bs.modal", onShown);
+                    },
+                );
+            });
+
+            item.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+    prevBtn?.addEventListener("click", () => showImage(currentIndex - 1));
+    nextBtn?.addEventListener("click", () => showImage(currentIndex + 1));
+
+    thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", function () {
+            showImage(parseInt(this.dataset.index, 10) || 0);
+        });
+
+        thumb.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!modal.classList.contains("show")) return;
+
+        if (event.key === "ArrowLeft") showImage(currentIndex - 1);
+        if (event.key === "ArrowRight") showImage(currentIndex + 1);
+        if (event.key === "Escape") {
+            const bsModal = window.bootstrap?.Modal.getInstance(modal);
+            bsModal?.hide();
+        }
+    });
+
+    bodyEl?.addEventListener(
+        "touchstart",
+        (event) => {
+            startX = event.touches[0].clientX;
+            isDragging = true;
+        },
+        { passive: true },
+    );
+
+    bodyEl?.addEventListener(
+        "touchend",
+        (event) => {
+            if (!isDragging) return;
+
+            const diff = startX - event.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                showImage(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+            }
+            isDragging = false;
+        },
+        { passive: true },
+    );
+
+    modal.addEventListener("hidden.bs.modal", () => {
+        mainImg.src = "";
     });
 })();
 

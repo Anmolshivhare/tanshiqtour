@@ -53,7 +53,7 @@
                                         {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
                                     </span>
                                 </div>
-                                <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
+                                <a href="{{ route('front.tour-details', $tour->slug) }}" class="tt-pkg-card__book">Book Now</a>
                             </div>
                         </div>
                     </a>

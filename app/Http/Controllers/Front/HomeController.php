@@ -137,9 +137,9 @@ class HomeController extends Controller
             abort(404);
         }
 
-        $relatedTours = $this->tourRepository->getFeaturedTours(4)
+        $relatedTours = $this->tourRepository->getFeaturedTours(8)
             ->filter(fn($t) => $t->id !== $tour->id)
-            ->take(3)
+            ->take(6)
             ->values();
 
         return view('tour-details', compact('tour', 'relatedTours'));

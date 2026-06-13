@@ -68,38 +68,6 @@
     </div>
 </section>
 
-{{-- ===================== HERO GALLERY ===================== --}}
-{{-- <section class="td-hero">
-    <div class="td-hero__grid">
-         <div class="td-hero__main">
-            <img src="{{ $featuredImage }}" alt="{{ $tour->title }}" class="td-hero__img">
-        </div>
-         <div class="td-hero__thumbs">
-            @forelse ($tourImages->take(4) as $img)
-                <div class="td-hero__thumb">
-                    <img src="{{ asset('storage/tours/' . $img->image_path) }}" alt="Tour image" class="td-hero__img">
-                </div>
-            @empty
-                <div class="td-hero__thumb">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70" alt="Tour" class="td-hero__img">
-                </div>
-                <div class="td-hero__thumb">
-                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&q=70" alt="Tour" class="td-hero__img">
-                </div>
-                <div class="td-hero__thumb">
-                    <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=70" alt="Tour" class="td-hero__img">
-                </div>
-                <div class="td-hero__thumb td-hero__thumb--gallery-btn">
-                    <img src="https://images.unsplash.com/photo-1543159903-531cde049af2?w=400&q=70" alt="Tour" class="td-hero__img">
-                    <div class="td-hero__gallery-overlay">
-                        <i class="fas fa-images me-2"></i> Gallery
-                    </div>
-                </div>
-            @endforelse
-        </div>
-    </div>
-</section> --}}
-
 {{-- ===================== BREADCRUMB + TITLE BAR ===================== --}}
 <section class="td-title-bar py-3 border-bottom bg-white" style="position:sticky; top:96px; z-index:99; background:#fff;">
     <div class="container">
@@ -179,14 +147,14 @@
                     <div class="td-stats-bar__value">{{ $tour->max_persons ? 'Max ' . $tour->max_persons : 'Unlimited' }}</div>
                 </div>
             </div>
-            @if ($tour->price_per_person)
+            {{-- @if ($tour->price_per_person)
             <div class="td-stats-bar__divider"></div>
             <div class="td-stats-bar__item td-stats-bar__item--price">
                 <span class="td-price-badge">
                     ₹{{ number_format($tour->price_per_person) }}<small>/Person</small>
                 </span>
             </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </section>
@@ -251,37 +219,93 @@
                 </div>
 
                 {{-- Tour Gallery --}}
-                @if ($tourImages->count() > 0)
-                    <div class="td-section mb-4">
-                        <h2 class="td-section__heading">Tour Gallery</h2>
-                        <div class="td-gallery-grid">
-                            @foreach ($tourImages as $img)
-                                <div class="td-gallery-grid__item">
-                                    <img src="{{ asset('storage/tours/gallery/' . $img->image_path) }}" alt="Tour gallery" class="td-gallery-grid__img">
+                @php
+                    $galleryImages = $tourImages->count() > 0
+                        ? $tourImages->map(fn($img) => asset('storage/tours/gallery/' . $img->image_path))->values()
+                        : collect([
+                            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+                            'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
+                            'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80',
+                            'https://images.unsplash.com/photo-1543159903-531cde049af2?w=800&q=80',
+                            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80',
+                            'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80',
+                            'https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=800&q=80',
+                        ]);
+                @endphp
+
+                <div class="td-section mb-4">
+                    <h2 class="td-section__heading">Tour Gallery</h2>
+                    <div class="td-gallery-grid" id="tourGalleryGrid">
+                        @foreach ($galleryImages as $index => $imgUrl)
+                            <div class="td-gallery-grid__item td-gallery-grid__item--clickable"
+                                 data-gallery-index="{{ $index }}"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#galleryLightboxModal"
+                                 role="button"
+                                 tabindex="0"
+                                 aria-label="View image {{ $index + 1 }}">
+                                <img src="{{ $imgUrl }}"
+                                     alt="Tour gallery image {{ $index + 1 }}"
+                                     class="td-gallery-grid__img"
+                                     loading="lazy">
+                                <div class="td-gallery-grid__overlay">
+                                    <i class="fas fa-expand-alt"></i>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- ===== GALLERY LIGHTBOX MODAL ===== --}}
+                <div class="modal fade" id="galleryLightboxModal" tabindex="-1"
+                     aria-label="Gallery Lightbox" aria-modal="true" role="dialog">
+                    <div class="modal-dialog modal-fullscreen gallery-lightbox-dialog">
+                        <div class="modal-content gallery-lightbox-content">
+
+                            {{-- Top Bar --}}
+                            <div class="gallery-lightbox-topbar">
+                                <span class="gallery-lightbox-counter" id="galleryCounter">1 / {{ $galleryImages->count() }}</span>
+                                <button type="button" class="gallery-lightbox-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+
+                            {{-- Image Area --}}
+                            <div class="gallery-lightbox-body" id="galleryLightboxBody">
+
+                                {{-- Prev Arrow --}}
+                                <button class="gallery-lightbox-arrow gallery-lightbox-arrow--prev" id="galleryPrev" aria-label="Previous image">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+
+                                {{-- Main Image --}}
+                                <div class="gallery-lightbox-img-wrap" id="galleryImgWrap">
+                                    <img src="" alt="Gallery full view" class="gallery-lightbox-img" id="galleryLightboxImg">
+                                </div>
+
+                                {{-- Next Arrow --}}
+                                <button class="gallery-lightbox-arrow gallery-lightbox-arrow--next" id="galleryNext" aria-label="Next image">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                            {{-- Thumbnail Strip --}}
+                            <div class="gallery-lightbox-thumbstrip" id="galleryThumbStrip">
+                                @foreach ($galleryImages as $index => $imgUrl)
+                                    <div class="gallery-lightbox-thumb {{ $index === 0 ? 'active' : '' }}"
+                                         data-index="{{ $index }}"
+                                         data-src="{{ $imgUrl }}"
+                                         role="button" tabindex="0"
+                                         aria-label="Thumbnail {{ $index + 1 }}">
+                                        <img src="{{ $imgUrl }}" alt="Thumb {{ $index + 1 }}" loading="lazy">
+                                    </div>
+                                @endforeach
+                            </div>
+
                         </div>
                     </div>
-                @else
-                    {{-- <div class="td-section mb-4">
-                        <h2 class="td-section__heading">Tour Gallery</h2>
-                        <div class="td-gallery-grid">
-                            <div class="td-gallery-grid__item">
-                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=70" alt="Gallery" class="td-gallery-grid__img">
-                            </div>
-                            <div class="td-gallery-grid__item">
-                                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=70" alt="Gallery" class="td-gallery-grid__img">
-                            </div>
-                            <div class="td-gallery-grid__item">
-                                <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=70" alt="Gallery" class="td-gallery-grid__img">
-                            </div>
-                            <div class="td-gallery-grid__item">
-                                <img src="https://images.unsplash.com/photo-1543159903-531cde049af2?w=600&q=70" alt="Gallery" class="td-gallery-grid__img">
-                            </div>
-                        </div>
-                    </div> --}}
-                    <span class="td-section__sub">No gallery images available for this tour yet.</span>
-                @endif
+                </div>
+                {{-- ===== END LIGHTBOX MODAL ===== --}}
 
                 {{-- Tour Plan / Itinerary --}}
                 @if ($tour->itineraryDays->count() > 0)
@@ -363,6 +387,73 @@
                     </div>
                 @endif
 
+                @if (($relatedTours ?? collect())->count() > 0)
+                    <div class="td-section td-tour-slider-section mb-4">
+                        <div class="td-tour-slider-head">
+                            <div>
+                                <h2 class="td-section__heading mb-1">Related Tour Packages</h2>
+                                {{-- <p class="tt-section-sub mb-0">Handpicked adventures, beaches, cultures, and wildlife experiences.</p> --}}
+                            </div>
+                            <div class="td-tour-slider-nav">
+                                <button type="button" class="td-tour-slider-prev" aria-label="Previous tour">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button type="button" class="td-tour-slider-next" aria-label="Next tour">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="swiper td-tour-slider">
+                            <div class="swiper-wrapper">
+                                @foreach ($relatedTours as $i => $relatedTour)
+                                    @php
+                                        $relatedTourImage = $relatedTour->featured_image
+                                            ? asset('storage/tours/' . $relatedTour->featured_image)
+                                            : Vite::asset('resources/images/banner1.webp');
+                                        $relatedTourLocation = $relatedTour->location ?: optional($relatedTour->destination)->name;
+                                        $relatedTourCategory = optional($relatedTour->destination)->name ?: 'Tour Package';
+                                    @endphp
+
+                                    <div class="swiper-slide">
+                                        <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
+                                            <a href="{{ route('front.tour-details', $relatedTour->slug) }}">
+                                                <div class="tt-pkg-card__img">
+                                                    <img src="{{ $relatedTourImage }}" alt="{{ $relatedTour->title }}" loading="lazy">
+                                                    <span class="tt-pkg-card__cat">{{ $relatedTourCategory }}</span>
+                                                </div>
+                                                <div class="tt-pkg-card__body">
+                                                    <div class="tt-pkg-card__loc">
+                                                        <i class="fas fa-map-marker-alt me-1"></i>{{ $relatedTourLocation ?: 'Tour Package' }}
+                                                    </div>
+                                                    <h3 class="tt-pkg-card__title">{{ ucwords($relatedTour->title) }}</h3>
+                                                    <div class="tt-pkg-card__meta">
+                                                        @if ($relatedTour->duration)
+                                                            <span><i class="fas fa-clock me-1"></i>{{ $relatedTour->duration }}</span>
+                                                        @endif
+                                                        @if ($relatedTour->max_persons)
+                                                            <span class="tt-pkg-card__rating"><i class="fas fa-users me-1"></i>{{ $relatedTour->max_persons }}</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="tt-pkg-card__footer">
+                                                        <div>
+                                                            <span class="tt-pkg-card__label">From</span>
+                                                            <span class="tt-pkg-card__price">
+                                                                {!! $relatedTour->price_per_person ? '&#8377;' . number_format($relatedTour->price_per_person, 0) : 'On Request' !!}
+                                                            </span>
+                                                        </div>
+                                                        <span class="tt-pkg-card__book">Book Now</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="swiper-pagination td-tour-slider-pagination"></div>
+                        </div>
+                    </div>
+                @endif
                 {{-- Reviews Section --}}
                 @if ($tour->reviews->count() > 0)
                     <div class="td-section mb-4">
@@ -480,12 +571,16 @@
                         </form>
                     </div>
                 </div>
-            </div>{{-- end col-lg-4 --}}
-
-        </div>{{-- end row --}}
+            </div>
+        </div>
     </div>
 </section>
 
+{{-- ===================== All  tour slider    ===================== --}}
+
+ code here do codex
+
+{{-- ===================== All  tour slider end ===================== --}}
 
 
 @endsection

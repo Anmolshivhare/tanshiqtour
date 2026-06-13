@@ -67,11 +67,11 @@
                     </div>
 
                     <div class="col-lg-6 col-md-6">
-                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :default-image="Vite::asset(config('constants.company_logo'))"
+                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image Size(440 x 220 px)" :default-image="Vite::asset(config('constants.company_logo'))"
                             :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
                     <div class="col-md-6">
-                        <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Multiple)"
+                        <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Multiple) Size (771 x 514 px)"
                             :max-size="2" :max-files="10" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
                     <div class="col-12">
