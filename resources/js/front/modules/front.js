@@ -624,28 +624,28 @@ $(function () {
     const el = section.querySelector(".tt-destinations-swiper");
     const prevEl = section.querySelector(".tt-destinations-prev");
     const nextEl = section.querySelector(".tt-destinations-next");
+    const paginationEl = section.querySelector(".tt-destinations-pagination");
     if (!el || !prevEl || !nextEl) return;
 
     const slideCount = el.querySelectorAll(".swiper-wrapper > .swiper-slide").length;
-    const clampSlides = (value) => Math.max(1, Math.min(value, slideCount || 1));
+    const desktopSlides = slideCount > 3 ? 3 : Math.max(1, slideCount - 1);
 
     const destSwiper = new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
         centeredSlides: false,
-        slidesPerView: slideCount > 1 ? Math.min(1.25, slideCount) : 1,
+        slidesPerView: 1,
         spaceBetween: 16,
-        loop: slideCount > 1,
-        loopAdditionalSlides: Math.min(4, slideCount),
+        rewind: slideCount > 1,
         speed: 700,
         grabCursor: true,
         autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
-        pagination: { el: ".tt-destinations-pagination", clickable: true },
+        pagination: { el: paginationEl, clickable: true },
         navigation: { prevEl, nextEl },
         watchOverflow: true,
         breakpoints: {
-            480: { slidesPerView: clampSlides(2), spaceBetween: 16 },
-            768: { slidesPerView: clampSlides(3), spaceBetween: 18 },
-            1024: { slidesPerView: clampSlides(4), spaceBetween: 20 },
+            576: { slidesPerView: slideCount > 1 ? 1.25 : 1, spaceBetween: 16 },
+            768: { slidesPerView: slideCount > 2 ? 2 : 1, spaceBetween: 18 },
+            1024: { slidesPerView: desktopSlides, spaceBetween: 20 },
         },
     });
 
@@ -1013,6 +1013,36 @@ document.addEventListener("tt:home:ready", function () {
     modal.addEventListener("hidden.bs.modal", () => {
         mainImg.src = "";
     });
+})();
+
+// ---- Scroll Progress To Top ----
+(function () {
+    const button = document.getElementById("ttScrollProgress");
+    const value = document.getElementById("ttScrollProgressValue");
+    if (!button || !value) return;
+
+    function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+        const progress =
+            scrollHeight > 0
+                ? Math.min(100, Math.max(0, Math.round((scrollTop / scrollHeight) * 100)))
+                : 100;
+
+        button.style.setProperty("--scroll-progress", `${progress * 3.6}deg`);
+        button.classList.toggle("is-visible", scrollTop > 80);
+        button.classList.toggle("is-complete", progress >= 99);
+        value.textContent = `${progress}%`;
+    }
+
+    button.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
 })();
 
 // ---- Scroll AOS ----

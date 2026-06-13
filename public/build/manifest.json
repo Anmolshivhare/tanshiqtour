@@ -332,7 +332,7 @@
     ]
   },
   "resources/js/front/custom.js": {
-    "file": "assets/custom-B1LUwFyH.js",
+    "file": "assets/custom-BjdZKj19.js",
     "name": "custom",
     "src": "resources/js/front/custom.js",
     "isEntry": true,
@@ -394,7 +394,7 @@
     "src": "resources/scss/front/fonts/WorkSans-SemiBold.ttf"
   },
   "resources/scss/front/front.scss": {
-    "file": "assets/front-OSZOX1pX.css",
+    "file": "assets/front-BbS8ARxT.css",
     "src": "resources/scss/front/front.scss",
     "isEntry": true,
     "name": "front",

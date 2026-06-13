@@ -569,12 +569,4 @@
         </div>
     </div>
 </section>
-
-{{-- ===================== All  tour slider    ===================== --}}
-
- code here do codex
-
-{{-- ===================== All  tour slider end ===================== --}}
-
-
 @endsection
