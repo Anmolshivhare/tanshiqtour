@@ -70,7 +70,7 @@
 <div class="tt-drawer-overlay" id="tt-drawer-overlay"></div>
 <aside class="tt-drawer" id="tt-drawer">
     <div class="tt-drawer__header">
-        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo_img', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Logo" height="60">
+        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Logo" height="60">
         <button class="tt-drawer__close" id="tt-drawer-close"><i class="fas fa-times"></i></button>
     </div>
     <nav class="tt-drawer__nav">
@@ -82,12 +82,13 @@
         <a href="{{ route('front.contact') }}" class="tt-drawer__link {{ Request::routeIs('front.contact') ? 'active' : '' }}"><i class="fas fa-phone-alt"></i> Contact</a>
         
     </nav>
-    {{-- <div class="tt-drawer__footer">
-        <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary w-100 text-center"><i class="fas fa-compass me-1"></i> Book Now</a>
+    <div class="tt-drawer__footer">
+        {{-- <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary w-100 text-center"><i class="fas fa-compass me-1"></i> Book Now</a> --}}
         <div class="tt-drawer__socials">
-            <a href="https://www.facebook.com/profile.php?id=61584292436038" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/tanishqtourandtravels/" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://wa.me/918445542594" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="{{ $facebookUrl }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="{{ $instagramUrl }}" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/{{ $whatsappNumber }}z" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="{{ $youtubeUrl }}" target="_blank" class="tt-topbar__social"><i class="fab fa-youtube"></i></a>
         </div>
-    </div> --}}
+    </div>
 </aside>

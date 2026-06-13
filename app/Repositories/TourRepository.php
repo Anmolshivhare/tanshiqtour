@@ -40,6 +40,59 @@ class TourRepository extends BaseRepository
     }
 
     /**
+     * Get all active tours matching an optional search term.
+     */
+    public function getActiveToursFiltered(string $search = '')
+    {
+        return $this->model->query()
+            ->with('destination')
+            ->active()
+            ->whereNotNull('slug')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($searchQuery) use ($search) {
+                    $searchQuery->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('location', 'like', '%' . $search . '%')
+                        ->orWhere('duration', 'like', '%' . $search . '%')
+                        ->orWhereHas('destination', function ($destinationQuery) use ($search) {
+                            $destinationQuery->where('name', 'like', '%' . $search . '%')
+                                ->orWhere('city', 'like', '%' . $search . '%')
+                                ->orWhere('state', 'like', '%' . $search . '%')
+                                ->orWhere('country', 'like', '%' . $search . '%');
+                        });
+                });
+            })
+            ->latest('id')
+            ->get();
+    }
+
+    /**
+     * Get paginated active tours with an optional search term.
+     */
+    public function getActiveToursPaginated(string $search = '', int $perPage = 6)
+    {
+        return $this->model->query()
+            ->with('destination')
+            ->active()
+            ->whereNotNull('slug')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($searchQuery) use ($search) {
+                    $searchQuery->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('location', 'like', '%' . $search . '%')
+                        ->orWhere('duration', 'like', '%' . $search . '%')
+                        ->orWhereHas('destination', function ($destinationQuery) use ($search) {
+                            $destinationQuery->where('name', 'like', '%' . $search . '%')
+                                ->orWhere('city', 'like', '%' . $search . '%')
+                                ->orWhere('state', 'like', '%' . $search . '%')
+                                ->orWhere('country', 'like', '%' . $search . '%');
+                        });
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
+    /**
      * Get active tours marked as featured for front sections.
      */
     public function getFeaturedTours(int $limit = 6)
@@ -59,6 +112,20 @@ class TourRepository extends BaseRepository
     public function getBySlug(string $slug): ?Tour
     {
         return $this->model->where('slug', $slug)->first();
+    }
+
+    /**
+     * Get active tour by slug with all relations for the detail page.
+     */
+    public function getActiveBySlugWithRelations(string $slug): ?Tour
+    {
+        return $this->model->query()
+            ->with(['destination', 'images', 'itineraryDays', 'reviews' => function ($q) {
+                $q->where('status', 1)->latest('id');
+            }])
+            ->active()
+            ->where('slug', $slug)
+            ->first();
     }
 
     /**

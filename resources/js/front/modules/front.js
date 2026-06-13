@@ -575,6 +575,47 @@ $(function () {
     });
 })();
 
+// ---- Tour Details Related Tours Swiper ----
+(function () {
+    const section = document.querySelector(".td-tour-slider-section");
+    if (!section) return;
+
+    const el = section.querySelector(".td-tour-slider");
+    const prevEl = section.querySelector(".td-tour-slider-prev");
+    const nextEl = section.querySelector(".td-tour-slider-next");
+    const paginationEl = section.querySelector(".td-tour-slider-pagination");
+    if (!el) return;
+
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 18,
+        loop: slideCount > 2,
+        grabCursor: true,
+        watchOverflow: true,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl,
+            nextEl,
+        },
+        breakpoints: {
+            576: { slidesPerView: 1.25, spaceBetween: 18 },
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1200: { slidesPerView: Math.min(3, slideCount || 1), spaceBetween: 24 },
+        },
+    });
+})();
+
 // ---- Destinations Swiper (Capsule Center Focus) ----
 (function () {
     const section = document.querySelector(".tt-destinations");
@@ -638,87 +679,99 @@ $(function () {
     });
 })();
 
-// ---- Destination Search (Live Filter) ----
+// ---- Listing Search (Live Filter) ----
 (function () {
-    const form = document.getElementById("destination-search-form");
-    const input = document.getElementById("destination-search-input");
-    const clearBtn = document.getElementById("destination-clear-btn");
-    const resultsWrap = document.getElementById("destination-results");
+    const listings = [
+        {
+            form: document.getElementById("destination-search-form"),
+            input: document.getElementById("destination-search-input"),
+            clearBtn: document.getElementById("destination-clear-btn"),
+            resultsWrap: document.getElementById("destination-results"),
+        },
+        {
+            form: document.getElementById("tour-search-form"),
+            input: document.getElementById("tour-search-input"),
+            clearBtn: document.getElementById("tour-clear-btn"),
+            resultsWrap: document.getElementById("tour-results"),
+        },
+    ];
 
-    if (!form || !input || !clearBtn || !resultsWrap) {
-        return;
-    }
+    listings.forEach(({ form, input, clearBtn, resultsWrap }) => {
+        if (!form || !input || !clearBtn || !resultsWrap) {
+            return;
+        }
 
-    const searchUrl = form.getAttribute("action");
-    let debounceTimer = null;
-    let activeRequest = null;
-    const defaultResultsHtml = resultsWrap.innerHTML;
+        const searchUrl = form.getAttribute("action");
+        let debounceTimer = null;
+        let activeRequest = null;
+        const defaultResultsHtml = resultsWrap.innerHTML;
 
-    function renderResults(payload) {
-        if (payload && typeof payload.html === "string") {
-            resultsWrap.innerHTML = payload.html;
-            resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
-                element.classList.add("aos-animate");
+        function renderResults(payload) {
+            if (payload && typeof payload.html === "string") {
+                resultsWrap.innerHTML = payload.html;
+                resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
+                    element.classList.add("aos-animate");
+                });
+            }
+        }
+
+        function setClearState(query) {
+            clearBtn.classList.toggle("d-none", query.trim().length === 0);
+        }
+
+        function runSearch(rawQuery) {
+            const query = rawQuery.trim();
+
+            if (activeRequest && activeRequest.readyState !== 4) {
+                activeRequest.abort();
+            }
+
+            setClearState(query);
+
+            activeRequest = $.ajax({
+                url: searchUrl,
+                method: "GET",
+                data: { q: query },
+                dataType: "json",
+                success(response) {
+                    renderResults(response);
+                },
+                error(xhr, status) {
+                    if (status === "abort") {
+                        return;
+                    }
+
+                    if (!query) {
+                        resultsWrap.innerHTML = defaultResultsHtml;
+                    }
+                },
             });
         }
-    }
 
-    function setClearState(query) {
-        clearBtn.classList.toggle("d-none", query.trim().length === 0);
-    }
-
-    function runSearch(rawQuery) {
-        const query = rawQuery.trim();
-
-        if (activeRequest && activeRequest.readyState !== 4) {
-            activeRequest.abort();
-        }
-
-        setClearState(query);
-
-        activeRequest = $.ajax({
-            url: searchUrl,
-            method: "GET",
-            data: { q: query },
-            dataType: "json",
-            success(response) {
-                renderResults(response);
-            },
-            error(xhr, status) {
-                if (status === "abort") {
-                    return;
-                }
-
-                if (!query) {
-                    resultsWrap.innerHTML = defaultResultsHtml;
-                }
-            },
+        input.addEventListener("input", function () {
+            setClearState(this.value);
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(() => {
+                runSearch(input.value);
+            }, 250);
         });
-    }
 
-    input.addEventListener("input", function () {
-        setClearState(this.value);
-        window.clearTimeout(debounceTimer);
-        debounceTimer = window.setTimeout(() => {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            window.clearTimeout(debounceTimer);
             runSearch(input.value);
-        }, 250);
-    });
+        });
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        window.clearTimeout(debounceTimer);
-        runSearch(input.value);
-    });
+        clearBtn.addEventListener("click", function () {
+            input.value = "";
+            setClearState("");
+            window.clearTimeout(debounceTimer);
+            runSearch("");
+            input.focus();
+        });
 
-    clearBtn.addEventListener("click", function () {
-        input.value = "";
-        setClearState("");
-        window.clearTimeout(debounceTimer);
-        runSearch("");
-        input.focus();
+        setClearState(input.value);
     });
-
-    setClearState(input.value);
 })();
 
 // ---- GSAP Airplane SVG Path Animation ----
@@ -803,6 +856,163 @@ document.addEventListener("tt:home:ready", function () {
             });
         }
     }, { threshold: 0.4 }).observe(section);
+})();
+
+// ---- Tour Details Accordion Scroll ----
+(function () {
+    const accordionButtons = document.querySelectorAll(".td-accordion__btn");
+    if (!accordionButtons.length) return;
+
+    accordionButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetSelector = this.dataset.bsTarget;
+            if (!targetSelector) return;
+
+            const target = document.querySelector(targetSelector);
+            if (target && !target.classList.contains("show")) {
+                setTimeout(() => {
+                    target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }, 350);
+            }
+        });
+    });
+})();
+
+// ---- Tour Details Gallery Lightbox ----
+(function () {
+    const modal = document.getElementById("galleryLightboxModal");
+    const mainImg = document.getElementById("galleryLightboxImg");
+    const imgWrap = document.getElementById("galleryImgWrap");
+    const counter = document.getElementById("galleryCounter");
+    const thumbStrip = document.getElementById("galleryThumbStrip");
+    const prevBtn = document.getElementById("galleryPrev");
+    const nextBtn = document.getElementById("galleryNext");
+    const bodyEl = document.getElementById("galleryLightboxBody");
+
+    if (!modal || !mainImg || !imgWrap || !thumbStrip) return;
+
+    const thumbs = Array.from(
+        thumbStrip.querySelectorAll(".gallery-lightbox-thumb"),
+    );
+    const galleryImages = thumbs
+        .map((thumb) => thumb.dataset.src)
+        .filter(Boolean);
+
+    if (!galleryImages.length) return;
+
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+
+    function showImage(index) {
+        currentIndex =
+            ((index % galleryImages.length) + galleryImages.length) %
+            galleryImages.length;
+
+        imgWrap.classList.add("gallery-img-exit");
+
+        window.setTimeout(() => {
+            mainImg.src = galleryImages[currentIndex];
+            mainImg.alt = `Tour gallery image ${currentIndex + 1}`;
+            imgWrap.classList.remove("gallery-img-exit");
+            imgWrap.classList.add("gallery-img-enter");
+
+            window.setTimeout(() => {
+                imgWrap.classList.remove("gallery-img-enter");
+            }, 350);
+        }, 180);
+
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+        }
+
+        thumbs.forEach((thumb, index) => {
+            thumb.classList.toggle("active", index === currentIndex);
+        });
+
+        thumbs[currentIndex]?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+        });
+    }
+
+    document
+        .querySelectorAll(".td-gallery-grid__item--clickable")
+        .forEach((item) => {
+            item.addEventListener("click", function () {
+                currentIndex = parseInt(this.dataset.galleryIndex, 10) || 0;
+
+                modal.addEventListener(
+                    "shown.bs.modal",
+                    function onShown() {
+                        showImage(currentIndex);
+                        modal.removeEventListener("shown.bs.modal", onShown);
+                    },
+                );
+            });
+
+            item.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+    prevBtn?.addEventListener("click", () => showImage(currentIndex - 1));
+    nextBtn?.addEventListener("click", () => showImage(currentIndex + 1));
+
+    thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", function () {
+            showImage(parseInt(this.dataset.index, 10) || 0);
+        });
+
+        thumb.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!modal.classList.contains("show")) return;
+
+        if (event.key === "ArrowLeft") showImage(currentIndex - 1);
+        if (event.key === "ArrowRight") showImage(currentIndex + 1);
+        if (event.key === "Escape") {
+            const bsModal = window.bootstrap?.Modal.getInstance(modal);
+            bsModal?.hide();
+        }
+    });
+
+    bodyEl?.addEventListener(
+        "touchstart",
+        (event) => {
+            startX = event.touches[0].clientX;
+            isDragging = true;
+        },
+        { passive: true },
+    );
+
+    bodyEl?.addEventListener(
+        "touchend",
+        (event) => {
+            if (!isDragging) return;
+
+            const diff = startX - event.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                showImage(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+            }
+            isDragging = false;
+        },
+        { passive: true },
+    );
+
+    modal.addEventListener("hidden.bs.modal", () => {
+        mainImg.src = "";
+    });
 })();
 
 // ---- Scroll AOS ----

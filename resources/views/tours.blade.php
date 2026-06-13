@@ -35,70 +35,71 @@
 
 
 {{-- ============================================================
-     FEATURED TOUR PACKAGES (with filter tabs)
+     TOUR PACKAGES
 ============================================================ --}}
 <section class="tt-section position-relative overflow-hidden" id="packages">
+    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}"
+         alt=""
+         aria-hidden="true"
+         class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
+
+    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}"
+         alt=""
+         aria-hidden="true"
+         class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
 
     <div class="container position-relative" style="z-index:2;">
         <div class="tt-section-head text-center" data-aos="fade-up">
             <span class="tt-kicker-v2"><i class="fas fa-suitcase-rolling me-1"></i> Best Deals</span>
-            <h2 class="tt-section-title">Featured <span class="tt-accent">Tour Packages</span></h2>
-            <p class="tt-section-sub">Handpicked adventures, beaches, cultures, and wildlife experiences.</p>
-        </div>
-        <div class="tt-pkg-grid" id="tt-pkg-grid">
-            @forelse ($featuredTours as $i => $tour)
-            @php
-                $tourImage = $tour->featured_image
-                    ? asset('storage/tours/' . $tour->featured_image)
-                    : Vite::asset('resources/images/banner1.webp');
-                $tourLocation = $tour->location ?: optional($tour->destination)->name;
-                $tourCategory = optional($tour->destination)->name ?: 'Featured';
-            @endphp
-            <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
-                <div class="tt-pkg-card__img">
-                    <img src="{{ $tourImage }}" alt="{{ $tour->title }}" loading="lazy">
-                    <span class="tt-pkg-card__cat">{{ $tourCategory }}</span>
-                </div>
-                <div class="tt-pkg-card__body">
-                    <div class="tt-pkg-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $tourLocation ?: 'Tour Package' }}</div>
-                    <h3 class="tt-pkg-card__title">{{ ucwords($tour->title) }}</h3>
-                    <div class="tt-pkg-card__meta">
-                        @if($tour->duration)
-                        <span><i class="fas fa-clock me-1"></i>{{ $tour->duration }}</span>
-                        @endif
-                        @if($tour->max_persons)
-                        <span class="tt-pkg-card__rating"><i class="fas fa-users me-1"></i>{{ $tour->max_persons }}</span>
-                        @endif
-                    </div>
-                    <div class="tt-pkg-card__footer">
-                        <div>
-                            <span class="tt-pkg-card__label">From</span>
-                            <span class="tt-pkg-card__price">
-                                {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
-                            </span>
-                        </div>
-                        <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            @empty
-            <div class="text-center w-100" data-aos="fade-up">
-                <p class="tt-section-sub mb-0">No featured tour packages available right now.</p>
-            </div>
-            @endforelse
+            <h2 class="tt-section-title"><span class="tt-accent">Tour Packages</span></h2>
+            <p class="tt-section-sub">Search tour packages by name, location, destination, or duration.</p>
         </div>
 
-        <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{{ route('front.tours') }}" class="tt-btn-hero-primary">
-                <i class="fas fa-th-large me-2"></i> View All Packages
-            </a>
+        <div class="tt-destination-search-wrap" data-aos="fade-up">
+            <form action="{{ route('front.tours') }}" method="GET" class="tt-destination-search" role="search" id="tour-search-form">
+                <div class="tt-destination-search__input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ $search ?? '' }}"
+                        class="tt-destination-search__input"
+                        id="tour-search-input"
+                        placeholder="Search tour packages..."
+                        aria-label="Search tour packages"
+                    >
+                </div>
+                <button type="submit" class="tt-destination-search__btn">Search</button>
+                <button
+                    type="button"
+                    class="tt-destination-search__reset{{ !empty($search) ? '' : ' d-none' }}"
+                    id="tour-clear-btn"
+                >
+                    Clear
+                </button>
+            </form>
+        </div>
+
+        <div id="tour-results">
+            @include('front.tours.results', ['tours' => $tours, 'search' => $search])
         </div>
     </div>
 </section>
 
 
 {{-- ============================================================
-     FEATURED TOUR PACKAGES (with filter tabs)
+     TOUR PACKAGES
 ============================================================ --}}
+
+
+
+
+{{-- ============================================================
+     FAMILY / TRAVEL CARD CTA
+============================================================ --}}
+@include('base-family-travel')
+
+{{-- ============================================================
+     FAMILY / TRAVEL CARD CTA End --}}
  
 @endsection
