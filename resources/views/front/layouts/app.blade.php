@@ -55,6 +55,7 @@
             <span class="tt-scroll-progress__value" id="ttScrollProgressValue">0%</span>
             <i class="fas fa-arrow-up tt-scroll-progress__icon" aria-hidden="true"></i>
         </button>
+        <div class="tt-cursor-follower" id="ttCursorFollower" aria-hidden="true"></div>
         @stack('scripts')
     </div>
 </body>

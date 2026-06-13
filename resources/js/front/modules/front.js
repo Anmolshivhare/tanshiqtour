@@ -1045,6 +1045,52 @@ document.addEventListener("tt:home:ready", function () {
     updateProgress();
 })();
 
+// ---- Mouse Cursor Follower ----
+(function () {
+    const follower = document.getElementById("ttCursorFollower");
+    if (!follower || window.matchMedia("(pointer: coarse)").matches) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let followerX = mouseX;
+    let followerY = mouseY;
+    let isVisible = false;
+
+    function render() {
+        followerX += (mouseX - followerX) * 0.18;
+        followerY += (mouseY - followerY) * 0.18;
+        follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(render);
+    }
+
+    document.addEventListener("mousemove", (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+
+        if (!isVisible) {
+            follower.classList.add("is-visible");
+            isVisible = true;
+        }
+    });
+
+    document.addEventListener("mouseleave", () => {
+        follower.classList.remove("is-visible");
+        isVisible = false;
+    });
+
+    document.addEventListener("mouseenter", () => {
+        follower.classList.add("is-visible");
+        isVisible = true;
+    });
+
+    document.querySelectorAll("a, button, [role='button']").forEach((element) => {
+        element.addEventListener("mouseenter", () => follower.classList.add("is-active"));
+        element.addEventListener("mouseleave", () => follower.classList.remove("is-active"));
+    });
+
+    render();
+})();
+
 // ---- Scroll AOS ----
 (function () {
     const elements = document.querySelectorAll("[data-aos]");

@@ -138,7 +138,7 @@
                 </div>
 
                 {{-- Glassmorphism Search Box --}}
-                <div class="tt-search-glass" id="hero-search">
+                {{-- <div class="tt-search-glass" id="hero-search">
                     <form class="tt-search-glass__form">
                         <div class="tt-search-glass__field">
                             <i class="fas fa-map-marker-alt"></i>
@@ -196,7 +196,7 @@
                             <i class="fas fa-search me-1"></i> Search
                         </button>
                     </form>
-                </div>
+                </div> --}}
             </div>
 
             {{-- RIGHT: Swiper Coverflow Carousel --}}

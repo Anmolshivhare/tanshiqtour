@@ -549,8 +549,8 @@ footer {
 
 /* --- Main FAB Button (Purple Circle) --- */
 .fab-main {
-    width: 70px;
-    height: 70px;
+    width: 67px;
+    height: 67px;
     border-radius: 50%;
     background-color: $brand-primary;
     color: white;
@@ -793,6 +793,57 @@ footer {
         bottom: 100px;
         width: 70px;
         height: 70px;
+    }
+}
+
+.tt-cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba($warning, 0.62);
+    border-radius: 50%;
+    background: rgba($warning, 0.12);
+    box-shadow: 0 0 0 4px rgba($warning, 0.04);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+    transition:
+        opacity 0.2s ease,
+        width 0.2s ease,
+        height 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 8px;
+        border-radius: inherit;
+        background: $warning;
+    }
+
+    &.is-visible {
+        opacity: 1;
+    }
+
+    &.is-active {
+        width: 36px;
+        height: 36px;
+        border-color: rgba($brand-accent, 0.78);
+        background: rgba($brand-accent, 0.12);
+        box-shadow: 0 0 0 6px rgba($brand-accent, 0.08);
+
+        &::after {
+            background: $brand-accent;
+        }
+    }
+
+    @media (pointer: coarse), (max-width: 991px) {
+        display: none;
     }
 }
 
