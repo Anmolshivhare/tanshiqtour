@@ -5,7 +5,7 @@
 @php
     $featuredImage = $tour->featured_image
         ? asset('storage/tours/' . $tour->featured_image)
-        : 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80';
+        : asset(config('constants.destination_default_image'));
 
     $tourImages = $tour->images ?? collect();
     $location = $tour->location ?: ($tour->destination?->name ?? 'Unknown Location');
@@ -223,14 +223,8 @@
                     $galleryImages = $tourImages->count() > 0
                         ? $tourImages->map(fn($img) => asset('storage/tours/gallery/' . $img->image_path))->values()
                         : collect([
-                            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-                            'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
-                            'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80',
-                            'https://images.unsplash.com/photo-1543159903-531cde049af2?w=800&q=80',
-                            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80',
-                            'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80',
-                            'https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=800&q=80',
-                        ]);
+                                 asset(config('constants.destination_default_image'))
+                            ]);
                 @endphp
 
                 <div class="td-section mb-4">

@@ -6,7 +6,7 @@
         ? asset('storage/destinations/' . $destination->banner_image)
         : ($destination->featured_image
             ? asset('storage/destinations/' . $destination->featured_image)
-            : 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80');
+            : asset(config('constants.destination_default_image')));
 
     $featuredImage = $destination->featured_image
         ? asset('storage/destinations/' . $destination->featured_image)
