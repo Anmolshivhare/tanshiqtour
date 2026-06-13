@@ -51,6 +51,11 @@
                 @include('front.layouts.partials.footer')
             </div>
         </main>
+        <button type="button" class="tt-scroll-progress" id="ttScrollProgress" aria-label="Scroll to top">
+            <span class="tt-scroll-progress__value" id="ttScrollProgressValue">0%</span>
+            <i class="fas fa-arrow-up tt-scroll-progress__icon" aria-hidden="true"></i>
+        </button>
+        <div class="tt-cursor-follower" id="ttCursorFollower" aria-hidden="true"></div>
         @stack('scripts')
     </div>
 </body>
