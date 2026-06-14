@@ -30,6 +30,29 @@
                         <h5 class="mt-3">Description</h5>
                         <p>{{ $tour->description }}</p>
                     @endif
+                    @if(!empty($tour->highlights))
+                        <h5 class="mt-3">Highlights</h5>
+                        <ul class="mb-0">
+                            @foreach($tour->highlights as $highlight)
+                                <li>{{ $highlight }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    @if(!empty($tour->amenities))
+                        <h5 class="mt-3">Amenities</h5>
+                        <div class="row g-2">
+                            @foreach($tour->amenities as $amenity)
+                                <div class="col-md-6">
+                                    @if(!empty($amenity['available']))
+                                        <i class="fas fa-check text-success me-1"></i>
+                                    @else
+                                        <i class="fas fa-times text-warning me-1"></i>
+                                    @endif
+                                    {{ $amenity['label'] ?? '' }}
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

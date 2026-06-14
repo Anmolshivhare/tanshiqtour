@@ -23,6 +23,8 @@ class TourRepository extends BaseRepository
             'duration',
             'price_per_person',
             'description',
+            'highlights',
+            'amenities',
             'featured_image',
             'destination_id',
             'is_featured',

@@ -22,6 +22,8 @@ class Tour extends Model
         'duration',
         'price_per_person',
         'description',
+        'highlights',
+        'amenities',
         'featured_image',
         'destination_id',
         'max_persons',
@@ -29,6 +31,12 @@ class Tour extends Model
         'status',
         'created_by',
         'updated_by',
+    ];
+
+    protected $casts = [
+        'highlights' => 'array',
+        'amenities' => 'array',
+        'is_featured' => 'boolean',
     ];
 
     public function getActivitylogOptions(): LogOptions

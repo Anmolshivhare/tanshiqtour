@@ -17,7 +17,7 @@
                 <tr><th>Reviewer</th><td>{{ $review->reviewer_name }}</td></tr>
                 <tr><th>Email</th><td>{{ $review->reviewer_email ?? '—' }}</td></tr>
                 <tr><th>Tour</th><td>{{ $review->tour->title ?? '—' }}</td></tr>
-                <tr><th>Rating</th><td>{{ $review->rating }}/5 ⭐</td></tr>
+                <tr><th>Rating</th><td>{{ $review->rating }} ⭐</td></tr>
                 <tr><th>Title</th><td>{{ $review->review_title ?? '—' }}</td></tr>
                 <tr><th>Status</th><td>{{ $review->status == 1 ? 'Active' : 'Inactive' }}</td></tr>
                 <tr><th>Date</th><td>{{ $review->created_at }}</td></tr>

@@ -37,7 +37,7 @@ class ReviewDataTable extends DataTable
                 return $row->tour->title ?? 'N/A';
             })
             ->editColumn('rating', function ($row) {
-                return $row->rating . ' / 5';
+                return $row->rating . ' ⭐';
             })
             ->setRowId('id');
     }
@@ -54,7 +54,7 @@ class ReviewDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
-            ->orderBy('3', 'desc')
+            ->orderBy('5', 'desc')
             ->parameters([
                 'processing' => false,
                 'language'   => ['searchPlaceholder' => __('labels.search')],

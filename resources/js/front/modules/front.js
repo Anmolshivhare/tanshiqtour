@@ -563,15 +563,23 @@ $(function () {
 (function () {
     const el = document.querySelector(".tt-testi-swiper");
     if (!el) return;
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+    const canLoop = slideCount > 3;
+
     new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
         slidesPerView: 1,
         spaceBetween: 24,
-        loop: true,
+        loop: canLoop,
+        rewind: !canLoop,
+        watchOverflow: true,
         autoplay: { delay: 4500, disableOnInteraction: false },
         pagination: { el: ".tt-testi-pagination", clickable: true },
         navigation: { prevEl: ".tt-testi-prev", nextEl: ".tt-testi-next" },
-        breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+        breakpoints: {
+            640: { slidesPerView: Math.min(2, slideCount || 1) },
+            1024: { slidesPerView: Math.min(3, slideCount || 1) },
+        },
     });
 })();
 
@@ -612,6 +620,47 @@ $(function () {
             576: { slidesPerView: 1.25, spaceBetween: 18 },
             768: { slidesPerView: 2, spaceBetween: 20 },
             1200: { slidesPerView: Math.min(3, slideCount || 1), spaceBetween: 24 },
+        },
+    });
+})();
+
+// ---- Tour Details Reviews Swiper ----
+(function () {
+    const section = document.querySelector(".td-review-slider-section");
+    if (!section) return;
+
+    const el = section.querySelector(".td-review-slider");
+    const prevEl = section.querySelector(".td-review-slider-prev");
+    const nextEl = section.querySelector(".td-review-slider-next");
+    const paginationEl = section.querySelector(".td-review-slider-pagination");
+    if (!el) return;
+
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 16,
+        loop: slideCount > 2,
+        rewind: slideCount <= 2,
+        grabCursor: true,
+        watchOverflow: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl,
+            nextEl,
+        },
+        breakpoints: {
+            768: { slidesPerView: Math.min(2, slideCount || 1), spaceBetween: 18 },
+            1200: { slidesPerView: Math.min(2, slideCount || 1), spaceBetween: 20 },
         },
     });
 })();

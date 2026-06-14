@@ -79,6 +79,62 @@
                         <textarea name="description" class="form-control" rows="6">{{ old('description') }}</textarea>
                     </div>
 
+                    {{-- Highlights --}}
+                    <h5 class="col-12 border-bottom pb-2 mt-3">Highlight List</h5>
+                    @php
+                        $highlightRows = old('highlights');
+                        if (!is_array($highlightRows) || empty($highlightRows)) {
+                            $highlightRows = [''];
+                        }
+                    @endphp
+                    <div class="col-12" id="highlights-container">
+                        @foreach ($highlightRows as $highlight)
+                            <div class="tour-highlight-row input-group mb-2">
+                                <span class="input-group-text"><i class="fas fa-check text-success"></i></span>
+                                <input type="text" name="highlights[]" class="form-control"
+                                    value="{{ $highlight }}" placeholder="Highlight text">
+                                <button type="button" class="btn btn-outline-danger remove-highlight-btn">Remove</button>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="add-highlight-btn">+ Add Highlight</button>
+                    </div>
+
+                    {{-- Amenities --}}
+                    <h5 class="col-12 border-bottom pb-2 mt-3">Tour Amenities</h5>
+                    @php
+                        $amenityRows = old('amenities');
+                        if (!is_array($amenityRows) || empty($amenityRows)) {
+                            $amenityRows = [['label' => '', 'available' => 1]];
+                        }
+                    @endphp
+                    <div class="col-12" id="amenities-container">
+                        @foreach ($amenityRows as $i => $amenity)
+                            <div class="tour-amenity-row row g-2 align-items-center mb-2">
+                                <div class="col-md-8">
+                                    <input type="text" name="amenities[{{ $i }}][label]" class="form-control"
+                                        value="{{ $amenity['label'] ?? '' }}" placeholder="Amenity label">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="hidden" name="amenities[{{ $i }}][available]" value="0">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="amenities[{{ $i }}][available]" value="1"
+                                            class="form-check-input" id="amenity-available-{{ $i }}"
+                                            {{ !empty($amenity['available']) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="amenity-available-{{ $i }}">Available</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-outline-danger w-100 remove-amenity-btn">Remove</button>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="add-amenity-btn">+ Add Amenity</button>
+                    </div>
+
                     {{-- Itinerary --}}
                     <h5 class="col-12 border-bottom pb-2 mt-3">Itinerary Days</h5>
                     @php

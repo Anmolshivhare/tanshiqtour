@@ -56,6 +56,8 @@ class TourController extends WebController
     {
         try {
             $requestData = $this->tourRepository->getDataFromRequest($request);
+            $requestData['highlights'] = $this->normalizeHighlights($request->input('highlights', []));
+            $requestData['amenities']  = $this->normalizeAmenities($request->input('amenities', []));
             if ($request->hasFile('featured_image')) {
                 $requestData['featured_image'] = basename(UserHelper::uploadImage($request->file('featured_image'), 'tours'));
             }
@@ -116,6 +118,8 @@ class TourController extends WebController
     {
         try {
             $requestData = $this->tourRepository->getDataFromRequest($request);
+            $requestData['highlights'] = $this->normalizeHighlights($request->input('highlights', []));
+            $requestData['amenities']  = $this->normalizeAmenities($request->input('amenities', []));
             $tour        = $this->tourRepository->getDataById($id);
             if ($request->hasFile('featured_image')) {
                 if (!empty($tour->featured_image)) {
@@ -174,5 +178,34 @@ class TourController extends WebController
         } catch (Exception $exception) {
             return $this->errorAjaxResponse($exception);
         }
+    }
+
+    private function normalizeHighlights(array $highlights): array
+    {
+        return collect($highlights)
+            ->map(fn ($highlight) => trim((string) $highlight))
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    private function normalizeAmenities(array $amenities): array
+    {
+        return collect($amenities)
+            ->map(function ($amenity) {
+                $label = trim((string) ($amenity['label'] ?? ''));
+
+                if ($label === '') {
+                    return null;
+                }
+
+                return [
+                    'label' => $label,
+                    'available' => (bool) ($amenity['available'] ?? false),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 }

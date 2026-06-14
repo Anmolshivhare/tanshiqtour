@@ -1215,3 +1215,94 @@ $(function () {
         reindexDays();
     });
 });
+
+// Tour highlights add/remove rows
+$(function () {
+    const $container = $("#highlights-container");
+    const $addBtn = $("#add-highlight-btn");
+    if (!$container.length || !$addBtn.length) return;
+
+    const highlightTemplate = () => `
+        <div class="tour-highlight-row input-group mb-2">
+            <span class="input-group-text"><i class="fas fa-check text-success"></i></span>
+            <input type="text" name="highlights[]" class="form-control" placeholder="Highlight text">
+            <button type="button" class="btn btn-outline-danger remove-highlight-btn">Remove</button>
+        </div>`;
+
+    $addBtn.on("click", function () {
+        $container.append(highlightTemplate());
+    });
+
+    $container.on("click", ".remove-highlight-btn", function () {
+        if ($container.find(".tour-highlight-row").length === 1) {
+            $(this).closest(".tour-highlight-row").find("input").val("");
+            return;
+        }
+
+        $(this).closest(".tour-highlight-row").remove();
+    });
+});
+
+// Tour amenities add/remove rows
+$(function () {
+    const $container = $("#amenities-container");
+    const $addBtn = $("#add-amenity-btn");
+    if (!$container.length || !$addBtn.length) return;
+
+    const amenityTemplate = (index) => `
+        <div class="tour-amenity-row row g-2 align-items-center mb-2">
+            <div class="col-md-8">
+                <input type="text" name="amenities[${index}][label]" class="form-control" placeholder="Amenity label">
+            </div>
+            <div class="col-md-2">
+                <input type="hidden" name="amenities[${index}][available]" value="0">
+                <div class="form-check">
+                    <input type="checkbox" name="amenities[${index}][available]" value="1" class="form-check-input" id="amenity-available-${index}" checked>
+                    <label class="form-check-label" for="amenity-available-${index}">Available</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger w-100 remove-amenity-btn">Remove</button>
+            </div>
+        </div>`;
+
+    function reindexAmenities() {
+        $container.find(".tour-amenity-row").each(function (index) {
+            const $row = $(this);
+            const checkboxId = `amenity-available-${index}`;
+
+            $row.find("input").each(function () {
+                const $field = $(this);
+                const fieldName = $field.attr("name");
+                if (!fieldName) return;
+                $field.attr("name", fieldName.replace(/amenities\[\d+\]/, `amenities[${index}]`));
+            });
+
+            $row.find('input[type="checkbox"]').attr("id", checkboxId);
+            $row.find("label").attr("for", checkboxId);
+        });
+    }
+
+    reindexAmenities();
+
+    $addBtn.on("click", function () {
+        $container.append(amenityTemplate($container.find(".tour-amenity-row").length));
+        reindexAmenities();
+    });
+
+    $container.on("click", ".remove-amenity-btn", function () {
+        if ($container.find(".tour-amenity-row").length === 1) {
+            const $row = $(this).closest(".tour-amenity-row");
+            $row.find('input[type="text"]').val("");
+            $row.find('input[type="checkbox"]').prop("checked", true);
+            return;
+        }
+
+        $(this).closest(".tour-amenity-row").remove();
+        reindexAmenities();
+    });
+
+    $container.closest("form").on("submit", function () {
+        reindexAmenities();
+    });
+});

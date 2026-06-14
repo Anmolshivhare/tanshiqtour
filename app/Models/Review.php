@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Review extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes, CommonTrait, LogsActivity;
     // Note: NOT using CommonTrait because status column is an enum, not a statuses FK
 
     protected static $logName = 'Review';
@@ -21,6 +21,7 @@ class Review extends Model
         'user_id',
         'reviewer_name',
         'reviewer_email',
+        'client_pic',
         'rating',
         'review_title',
         'review_body',
