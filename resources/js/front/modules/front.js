@@ -616,7 +616,7 @@ $(function () {
     });
 })();
 
-// ---- Destinations Swiper (Capsule Center Focus) ----
+// ---- Destinations Swiper — 4 slides on desktop, loop prev/next ----
 (function () {
     const section = document.querySelector(".tt-destinations");
     if (!section) return;
@@ -628,52 +628,75 @@ $(function () {
     if (!el || !prevEl || !nextEl) return;
 
     const slideCount = el.querySelectorAll(".swiper-wrapper > .swiper-slide").length;
-    const desktopSlides = slideCount > 3 ? 3 : Math.max(1, slideCount - 1);
+
+    // We want 4 on desktop — clamp to actual slide count so it never goes blank
+    const slidesLg   = Math.min(4, slideCount);  // ← 4 slides on desktop
+    const slidesMd   = Math.min(3, slideCount);  // 3 on large tablet
+    const slidesSm   = Math.min(2, slideCount);  // 2 on small tablet
+
+    // loop requires at least (slidesPerView * 2) slides to work correctly
+    const canLoop = false;
 
     const destSwiper = new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
-        centeredSlides: false,
         slidesPerView: 1,
         spaceBetween: 16,
-        rewind: slideCount > 1,
-        speed: 700,
+        loop: canLoop,          // infinite loop — enables prev/next at all times
+        rewind: !canLoop,       // fallback: rewind if too few slides for full loop
+        speed: 650,
         grabCursor: true,
-        autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
-        pagination: { el: paginationEl, clickable: true },
-        navigation: { prevEl, nextEl },
-        watchOverflow: true,
+        watchOverflow: false,   // always show nav even with few slides
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl: prevEl,
+            nextEl: nextEl,
+            disabledClass: "tt-dest-arrow-btn--disabled",
+        },
         breakpoints: {
-            576: { slidesPerView: slideCount > 1 ? 1.25 : 1, spaceBetween: 16 },
-            768: { slidesPerView: slideCount > 2 ? 2 : 1, spaceBetween: 18 },
-            1024: { slidesPerView: desktopSlides, spaceBetween: 20 },
+            480:  { slidesPerView: Math.min(1.3, slideCount), spaceBetween: 14 },
+            640:  { slidesPerView: slidesSm,  spaceBetween: 16 },
+            900:  { slidesPerView: slidesMd,  spaceBetween: 20 },
+            1200: { slidesPerView: slidesLg,  spaceBetween: 22 },
         },
     });
 
+    // Filter tab logic (unchanged)
     const tabs = document.querySelectorAll(".tt-dest-filter__btn");
     const originalSlides = Array.from(
         el.querySelectorAll(".swiper-wrapper > .swiper-slide:not(.swiper-slide-duplicate)"),
     );
 
     if (!tabs.length || !originalSlides.length) return;
+
     const defaultIndex = originalSlides.findIndex(
         (slide) => slide.dataset.region === "asia",
     );
     if (defaultIndex >= 0) {
-        destSwiper.slideToLoop(defaultIndex, 0);
+        canLoop
+            ? destSwiper.slideToLoop(defaultIndex, 0)
+            : destSwiper.slideTo(defaultIndex, 0);
     }
 
     tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
             tabs.forEach((btn) => btn.classList.remove("active"));
             tab.classList.add("active");
-
             const region = tab.dataset.region;
             const targetIndex = originalSlides.findIndex(
                 (slide) => slide.dataset.region === region,
             );
-
             if (targetIndex >= 0) {
-                destSwiper.slideToLoop(targetIndex, 650);
+                canLoop
+                    ? destSwiper.slideToLoop(targetIndex, 650)
+                    : destSwiper.slideTo(targetIndex, 650);
             }
         });
     });
@@ -785,12 +808,25 @@ $(function () {
     });
 })();
 
+// ---- Home Banner Slide Counter ----
+(function () {
+    const carousel = document.getElementById("ttBannerCarousel");
+    const currentEl = document.getElementById("tt-current-slide");
+    if (!carousel || !currentEl) return;
+
+    carousel.addEventListener("slid.bs.carousel", function (event) {
+        currentEl.textContent = event.to + 1;
+    });
+})();
+
 // ---- Stagger Hero Reveal ----
-document.addEventListener("tt:home:ready", function () {
+(function () {
+    if (!document.getElementById("hero")) return;
+
     const items = ["#hero-badge","#hero-title","#hero-desc","#hero-ctas","#hero-search"];
     gsap.from(items, { opacity: 0, y: 40, stagger: 0.15, duration: 0.75, ease: "power3.out", delay: 0.2 });
     gsap.from("#hero-carousel", { opacity: 0, x: 60, duration: 1, ease: "power3.out", delay: 0.4 });
-});
+})();
 
 // ---- Mouse Parallax ----
 (function () {
