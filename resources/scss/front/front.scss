@@ -61,6 +61,18 @@
     background-color: $warning;
 }
 
+// ── Prevent horizontal scroll from decorative images ─────────────────
+// IMPORTANT: Do NOT put overflow-x:hidden on html or body —
+// it breaks position:sticky on the navbar.
+// Instead we clip overflow only on the page content wrapper
+// (see .tt-page-wrapper below used in app.blade.php)
+.tt-page-wrapper {
+    overflow-x: hidden;
+    // Use clip instead of hidden where possible — clip doesn't create
+    // a new scroll container so it doesn't break sticky children
+    overflow-x: clip;
+}
+
 // Common Css
 .divide-border-1 {
     > * {

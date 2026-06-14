@@ -39,16 +39,21 @@
         <main>
             <div id="layoutSidenav_content" class="main-content">
                 @include('front.layouts.partials.header')
-                <div class="main-inner-content">
-                    <div class="">
-                        <div class="row me-0">
-                            <div class="col-12 pe-0">
-                                @yield('content')
+                {{-- .tt-page-wrapper uses overflow-x:clip to prevent horizontal scroll
+                     from decorative deco images. It does NOT wrap the sticky header
+                     because overflow:hidden/clip on an ancestor breaks position:sticky. --}}
+                <div class="tt-page-wrapper">
+                    <div class="main-inner-content">
+                        <div class="">
+                            <div class="row me-0">
+                                <div class="col-12 pe-0">
+                                    @yield('content')
+                                </div>
                             </div>
                         </div>
                     </div>
+                    @include('front.layouts.partials.footer')
                 </div>
-                @include('front.layouts.partials.footer')
             </div>
         </main>
         <button type="button" class="tt-scroll-progress" id="ttScrollProgress" aria-label="Scroll to top">

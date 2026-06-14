@@ -484,23 +484,4 @@
         </div>
     </div>
 </section>
-
 @endsection
-
-@push('scripts')
-<script>
-    // Page-specific init handled by front.js
-    document.dispatchEvent(new Event('tt:home:ready'));
-
-    // ── Banner Slide Counter ──────────────────────────────────────
-    (function () {
-        const carousel = document.getElementById('ttBannerCarousel');
-        const currentEl = document.getElementById('tt-current-slide');
-        if (!carousel || !currentEl) return;
-
-        carousel.addEventListener('slid.bs.carousel', function (e) {
-            currentEl.textContent = e.to + 1;
-        });
-    })();
-</script>
-@endpush

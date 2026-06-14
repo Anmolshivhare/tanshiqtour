@@ -38,7 +38,7 @@
 
             {{-- Header row: subtitle left + arrow buttons right --}}
             <div class="tt-destinations__topbar d-flex justify-content-between flex-wrap gap-2 mb-3">
-                <p class="fw-bold fs-6 text-dark mb-0">Top Destination For Your Next Vacation</p>
+                <p class="fw-bold fs-6 text-dark mb-xl-0 mb-lg-0 mb-md-0 mb-4">Top Destination For Your Next Vacation</p>
                 <div class="tt-destinations__nav d-flex gap-2">
                     <button type="button"
                         class="tt-destinations-prev tt-dest-arrow-btn d-flex align-items-center justify-content-center"
