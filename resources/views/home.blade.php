@@ -386,6 +386,7 @@
 {{-- ============================================================
      TESTIMONIALS CAROUSEL
 ============================================================ --}}
+@if (!empty($clientReviews) && $clientReviews->isNotEmpty())
 <section class="tt-section tt-testimonials" id="testimonials">
     <div class="container">
         <div class="tt-section-head text-center" data-aos="fade-up">
@@ -406,27 +407,41 @@
 
         <div class="swiper tt-testi-swiper" id="testiSwiper" data-aos="fade-up">
             <div class="swiper-wrapper">
-                @foreach ([
-                    ['name'=>'Rohit Sharma','loc'=>'Delhi, India','review'=>'The Kashmir trip was absolutely breathtaking! Hotels, transport, and guidance — everything was perfect. Will book again for sure!','rating'=>5,'avatar'=>'RS','color'=>'#022179'],
-                    ['name'=>'Priya Mehta','loc'=>'Mumbai, India','review'=>'Our Bali honeymoon package was beyond expectations. Every detail was planned perfectly. Tanishq Tours made our dream come true!','rating'=>5,'avatar'=>'PM','color'=>'#FFBE00'],
-                    ['name'=>'Arjun Singh','loc'=>'Pune, India','review'=>'Dubai tour was amazing — value for money, great hotel, and a fantastic guide. The team was so responsive and helpful.','rating'=>5,'avatar'=>'AS','color'=>'#022179'],
-                    ['name'=>'Sneha Patel','loc'=>'Ahmedabad, India','review'=>'Booked the Maldives package as a surprise anniversary trip. My wife was overjoyed! Flawless experience from start to finish.','rating'=>5,'avatar'=>'SP','color'=>'#FFBE00'],
-                    ['name'=>'Vikram Nair','loc'=>'Bengaluru, India','review'=>'The Swiss Alps tour was a dream come true. Tanishq made the entire process smooth, from visa assistance to hotel bookings.','rating'=>5,'avatar'=>'VN','color'=>'#022179'],
-                    ['name'=>'Ananya Roy','loc'=>'Kolkata, India','review'=>'Tokyo cultural tour exceeded all my expectations. The guide was knowledgeable and the itinerary was perfectly balanced. 10/10!','rating'=>5,'avatar'=>'AR','color'=>'#FFBE00'],
-                ] as $review)
+                @foreach ($clientReviews as $review)
+                    @php
+                        $reviewerName = $review->reviewer_name ?: 'Guest Traveler';
+                        $nameParts = preg_split('/\s+/', trim($reviewerName));
+                        $initials = collect($nameParts)
+                            ->filter()
+                            ->take(2)
+                            ->map(fn($part) => strtoupper(substr($part, 0, 1)))
+                            ->implode('') ?: 'GT';
+                        $avatarColor = $loop->iteration % 2 === 0 ? '#FFBE00' : '#022179';
+                        $reviewLocation = $review->tour?->destination?->name
+                            ?: $review->tour?->location
+                            ?: $review->tour?->title
+                            ?: 'Tanishq Tours';
+                        $rating = max(1, min(5, (int) $review->rating));
+                    @endphp
                 <div class="swiper-slide">
                     <div class="tt-testi-card">
                         <div class="tt-testi-card__stars">
-                            @for ($s = 0; $s < $review['rating']; $s++)
-                                <i class="fas fa-star"></i>
+                            @for ($s = 1; $s <= 5; $s++)
+                                <i class="{{ $s <= $rating ? 'fas' : 'far' }} fa-star"></i>
                             @endfor
                         </div>
-                        <p class="tt-testi-card__text">"{{ $review['review'] }}"</p>
+                        <p class="tt-testi-card__text">" {{ \Illuminate\Support\Str::limit($review->review_body, 180) }} "</p>
                         <div class="tt-testi-card__author">
-                            <div class="tt-testi-card__avatar" style="background: {{ $review['color'] }}">{{ $review['avatar'] }}</div>
+                            <div class="tt-testi-card__avatar" style="background: {{ $avatarColor }}">
+                                @if ($review->client_pic)
+                                    <img src="{{ asset('storage/reviews/' . $review->client_pic) }}" alt="{{ $reviewerName }}">
+                                @else
+                                    {{ $initials }}
+                                @endif
+                            </div>
                             <div>
-                                <div class="tt-testi-card__name">{{ $review['name'] }}</div>
-                                <div class="tt-testi-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $review['loc'] }}</div>
+                                <div class="tt-testi-card__name ms-3 mb-1">{{ ucwords($reviewerName) }}</div>
+                                <div class="tt-testi-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ ucwords($reviewLocation) }}</div>
                             </div>
                         </div>
                     </div>
@@ -437,6 +452,7 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================================
      CTA BANNER

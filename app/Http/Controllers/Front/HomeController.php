@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Repositories\BannerRepository;
 use App\Repositories\DestinationRepository;
+use App\Repositories\ReviewRepository;
 use App\Repositories\TourRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
@@ -18,23 +19,28 @@ class HomeController extends Controller
 
     protected $tourRepository;
 
+    protected $reviewRepository;
+
     /**
      * 
      */
     public function __construct(
         DestinationRepository $destinationRepository,
         BannerRepository $bannerRepository,
-        TourRepository $tourRepository
+        TourRepository $tourRepository,
+        ReviewRepository $reviewRepository
     ) {
         $this->destinationRepository = $destinationRepository;
         $this->bannerRepository = $bannerRepository;
         $this->tourRepository = $tourRepository;
+        $this->reviewRepository = $reviewRepository;
     }
 
     public function index()
     {
         $destinationsData = $this->destinationRepository->getFeaturedDestinations();
         $featuredTours = $this->tourRepository->getFeaturedTours();
+        $clientReviews = $this->reviewRepository->getApprovedReviews();
         $banners = $this->bannerRepository->getActiveBanners();
         $fallbackSlides = collect([
             [
@@ -104,7 +110,7 @@ class HomeController extends Controller
             $bannerSlides = $fallbackSlides;
         }
 
-        return view('home', compact('destinationsData', 'featuredTours', 'banners', 'bannerSlides'));
+        return view('home', compact('destinationsData', 'featuredTours', 'clientReviews', 'banners', 'bannerSlides'));
     }
 
     public function tours(Request $request)
@@ -195,5 +201,59 @@ class HomeController extends Controller
     public function careers()
     {
         return view('careers');
+    }
+
+    /**
+     * Store a new review submitted from the tour details page.
+     */
+    public function storeReview(Request $request, string $slug)
+    {
+        $tour = $this->tourRepository->getActiveBySlugWithRelations($slug);
+
+        if (!$tour) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'reviewer_name'  => 'required|string|max:100',
+            'reviewer_email' => 'required|email|max:150',
+            'rating'         => 'required|integer|min:1|max:5',
+            'review_title'   => 'nullable|string|max:150',
+            'review_body'    => 'required|string|max:2000',
+            'client_pic'     => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $clientPic = null;
+        if ($request->hasFile('client_pic')) {
+            $file      = $request->file('client_pic');
+            $filename  = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('reviews', $filename, 'public');
+            $clientPic = $filename;
+        }
+        
+        $this->reviewRepository->createData([
+            'tour_id'        => $tour->id,
+            'reviewer_name'  => $validated['reviewer_name'],
+            'reviewer_email' => $validated['reviewer_email'],
+            'rating'         => $validated['rating'],
+            'review_title'   => $validated['review_title'] ?? null,
+            'review_body'    => $validated['review_body'],
+            'client_pic'     => $clientPic,
+            'created_by'     => auth()->id(),
+            'status'         => 0, // pending — admin must approve
+        ]);
+
+        $message = 'Thank you! Your review has been submitted and is pending approval.';
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => $message,
+            ]);
+        }
+
+        return redirect()
+            ->route('front.tour-details', $slug)
+            ->with('review_success', $message);
     }
 }

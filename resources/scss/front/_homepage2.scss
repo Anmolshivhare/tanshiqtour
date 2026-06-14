@@ -1341,6 +1341,13 @@
         color: #fff;
         flex-shrink: 0;
         border: 2px solid rgba(#fff, 0.5);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     &__name { font-weight: 700; font-size: 0.95rem; color: $brand-primary; }
@@ -3587,4 +3594,178 @@
             font-size: 0.75rem;
         }
     }
+}
+
+// ============================================================
+//  ADD A REVIEW FORM — Tour Details
+// ============================================================
+
+.td-review-form-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(#1f1f1f, 0.07);
+    border: 1px solid rgba(#1f1f1f, 0.07);
+}
+
+.tt-review-form__label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.45rem;
+}
+
+.tt-review-form__input {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fafafa;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+
+    &:focus {
+        border-color: $warning;
+        box-shadow: 0 0 0 3px rgba($warning, 0.12);
+        outline: none;
+        background: #fff;
+    }
+
+    &.is-invalid {
+        border-color: #dc3545;
+    }
+}
+
+.tt-review-form__textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+.tt-review-form__error {
+    font-size: 0.82rem;
+    color: #dc3545;
+    margin-top: 0.3rem;
+}
+
+// Star Rating
+.tt-review-form__rating-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.tt-star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 4px;
+    width: fit-content;
+}
+
+.tt-star-rating__label {
+    font-size: 1.6rem;
+    color: #d0d0d0;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+    line-height: 1;
+
+    &:hover,
+    &--active {
+        color: #f59e0b;
+        transform: scale(1.15);
+    }
+}
+
+// Profile Photo Upload
+.tt-review-upload__preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8f5ee 0%, #d4d4ed 100%);
+    border: 2.5px solid $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease;
+}
+
+.tt-review-upload__icon {
+    font-size: 1.8rem;
+    color: $primary;
+    opacity: 0.7;
+}
+
+.tt-review-upload__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: $primary;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.48rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
+    box-shadow: 0 4px 12px rgba($primary, 0.3);
+    border: none;
+
+    &:hover {
+        background: darken($warning, 8%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba($warning, 0.38);
+    }
+}
+
+.tt-review-upload__hint {
+    font-size: 0.78rem;
+    color: #999;
+}
+
+// Submit Button
+.tt-review-form__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: $primary;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba($primary, 0.35);
+    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
+
+    &:hover {
+        background: darken($warning, 8%);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba($warning, 0.42);
+    }
+
+    &:active { transform: translateY(0); }
+}
+
+// Success Alert
+.tt-review-alert {
+    border-radius: 10px;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.93rem;
+    font-weight: 500;
+
+    &--success {
+        background: #edfaf3;
+        border: 1.5px solid #3aaa6e;
+        color: #1d6e44;
+
+        i { color: #3aaa6e; font-size: 1.1rem; }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .td-review-form-section { padding: 1.25rem; }
+    .tt-review-form__submit { width: 100%; justify-content: center; }
 }

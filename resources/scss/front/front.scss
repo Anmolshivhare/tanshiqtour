@@ -2395,7 +2395,9 @@ footer {
 }
 
 .td-tour-slider-prev,
-.td-tour-slider-next {
+.td-tour-slider-next,
+.td-review-slider-prev,
+.td-review-slider-next {
     width: 38px;
     height: 38px;
     border: 1px solid rgba($brand-primary, 0.14);
@@ -2440,6 +2442,31 @@ footer {
 
     .tt-pkg-card__body {
         min-height: 158px;
+    }
+
+    .swiper-pagination-bullet {
+        background: rgba($brand-primary, 0.35);
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: $brand-primary;
+        width: 18px;
+        border-radius: 999px;
+    }
+}
+
+.td-review-slider {
+    padding: 2px 2px 38px;
+
+    .swiper-slide {
+        height: auto;
+        display: flex;
+    }
+
+    .td-review-card {
+        width: 100%;
+        min-height: 168px;
     }
 
     .swiper-pagination-bullet {

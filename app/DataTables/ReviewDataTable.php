@@ -30,15 +30,31 @@ class ReviewDataTable extends DataTable
                 $editRoute   = '';
                 return view('admin.layouts.partials.dataTable-action-button', compact('editRoute', 'deleteRoute', 'viewRoute'));
             })
-            ->editColumn('status', function ($row) {
-                return $row->status == 1 ? 'Active' : 'Inactive';
+            ->editColumn('status', function ($row) use ($user) {
+                $isActive = (int) $row->status === 1;
+                $checked = $isActive ? 'checked' : '';
+                $label = $isActive ? 'Active' : 'Inactive';
+                $disabled = $user->can('review-approve') ? '' : 'disabled';
+                $url = route('admin.reviews.status', encrypt($row->id));
+
+                return <<<HTML
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input review-status-toggle" type="checkbox" role="switch"
+                                data-url="{$url}" data-active-label="Active" data-inactive-label="Inactive"
+                                {$checked} {$disabled}>
+                        </div>
+                        <span class="review-status-label">{$label}</span>
+                    </div>
+                HTML;
             })
             ->editColumn('tour_id', function ($row) {
                 return $row->tour->title ?? 'N/A';
             })
             ->editColumn('rating', function ($row) {
-                return $row->rating . ' / 5';
+                return $row->rating . ' ⭐';
             })
+            ->rawColumns(['status', 'action'])
             ->setRowId('id');
     }
 
@@ -54,7 +70,7 @@ class ReviewDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
-            ->orderBy('3', 'desc')
+            ->orderBy('5', 'desc')
             ->parameters([
                 'processing' => false,
                 'language'   => ['searchPlaceholder' => __('labels.search')],
