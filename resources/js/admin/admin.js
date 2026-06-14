@@ -1024,6 +1024,75 @@ $(document).on("click", ".delete-btn", function (event) {
 });
 // Sweet alert on delete button code end
 
+$(document).on("change", ".review-status-toggle", function () {
+    const $toggle = $(this);
+    const $cell = $toggle.closest("td");
+    const $label = $cell.find(".review-status-label");
+    const previousState = !$toggle.is(":checked");
+    const activeLabel = $toggle.data("active-label") || "Active";
+    const inactiveLabel = $toggle.data("inactive-label") || "Inactive";
+    const nextStatus = $toggle.is(":checked") ? 1 : 0;
+
+    $toggle.prop("disabled", true);
+    $label.text(nextStatus === 1 ? activeLabel : inactiveLabel);
+
+    $.ajax({
+        url: $toggle.data("url"),
+        type: "PATCH",
+        dataType: "json",
+        data: {
+            status: nextStatus,
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        },
+        success(response) {
+            if (response.status !== "success") {
+                throw new Error(response.message || "Unable to update status.");
+            }
+
+            const savedStatus = Number(response.data?.status ?? nextStatus);
+            const savedLabel =
+                response.data?.label || (savedStatus === 1 ? activeLabel : inactiveLabel);
+
+            $toggle.prop("checked", savedStatus === 1);
+            $label.text(savedLabel);
+
+            Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "success",
+                title: response.message || "Review status updated successfully.",
+                showConfirmButton: false,
+                timer: 1800,
+                timerProgressBar: true,
+            });
+        },
+        error(xhr) {
+            const message =
+                xhr.responseJSON?.message ||
+                "Unable to update review status. Please try again.";
+
+            $toggle.prop("checked", previousState);
+            $label.text(previousState ? activeLabel : inactiveLabel);
+
+            Swal.fire({
+                icon: "error",
+                title: "Status not updated",
+                text: message,
+                confirmButtonText: "ok",
+                customClass: {
+                    title: "delete-modal-title text-secondary mt-0",
+                    popup: "rounded-3 py-8",
+                    confirmButton:
+                        "confirm-button-ok confirm-button-class border-primary btn btn-primary px-8 fw-semibold",
+                },
+            });
+        },
+        complete() {
+            $toggle.prop("disabled", false);
+        },
+    });
+});
+
 // ==========================================
 // Generic Daterangepicker + DataTable Filter
 // Reusable across any page with #filter-form, #apply-filter, #reset-filter, #daterange

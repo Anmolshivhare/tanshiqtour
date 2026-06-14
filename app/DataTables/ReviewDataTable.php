@@ -30,8 +30,23 @@ class ReviewDataTable extends DataTable
                 $editRoute   = '';
                 return view('admin.layouts.partials.dataTable-action-button', compact('editRoute', 'deleteRoute', 'viewRoute'));
             })
-            ->editColumn('status', function ($row) {
-                return $row->status == 1 ? 'Active' : 'Inactive';
+            ->editColumn('status', function ($row) use ($user) {
+                $isActive = (int) $row->status === 1;
+                $checked = $isActive ? 'checked' : '';
+                $label = $isActive ? 'Active' : 'Inactive';
+                $disabled = $user->can('review-approve') ? '' : 'disabled';
+                $url = route('admin.reviews.status', encrypt($row->id));
+
+                return <<<HTML
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input review-status-toggle" type="checkbox" role="switch"
+                                data-url="{$url}" data-active-label="Active" data-inactive-label="Inactive"
+                                {$checked} {$disabled}>
+                        </div>
+                        <span class="review-status-label">{$label}</span>
+                    </div>
+                HTML;
             })
             ->editColumn('tour_id', function ($row) {
                 return $row->tour->title ?? 'N/A';
@@ -39,6 +54,7 @@ class ReviewDataTable extends DataTable
             ->editColumn('rating', function ($row) {
                 return $row->rating . ' ⭐';
             })
+            ->rawColumns(['status', 'action'])
             ->setRowId('id');
     }
 

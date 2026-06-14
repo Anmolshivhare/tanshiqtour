@@ -85,6 +85,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
 
     // Reviews
     Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
+    Route::patch('/reviews/{id}/status', [ReviewController::class, 'updateStatus'])->name('reviews.status');
     Route::get('/reviews/{id}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
 
     // Gallery

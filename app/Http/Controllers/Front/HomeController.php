@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Repositories\BannerRepository;
 use App\Repositories\DestinationRepository;
+use App\Repositories\ReviewRepository;
 use App\Repositories\TourRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Vite;
 
 class HomeController extends Controller
@@ -20,29 +20,29 @@ class HomeController extends Controller
 
     protected $tourRepository;
 
+    protected $reviewRepository;
+
     /**
      * 
      */
     public function __construct(
         DestinationRepository $destinationRepository,
         BannerRepository $bannerRepository,
-        TourRepository $tourRepository
+        TourRepository $tourRepository,
+        ReviewRepository $reviewRepository
     ) {
         $this->destinationRepository = $destinationRepository;
         $this->bannerRepository = $bannerRepository;
         $this->tourRepository = $tourRepository;
+        $this->reviewRepository = $reviewRepository;
     }
 
     public function index()
     {
         $destinationsData = $this->destinationRepository->getFeaturedDestinations();
         $featuredTours = $this->tourRepository->getFeaturedTours();
-        $clientReviews = Review::approved()
-            ->with(['tour.destination'])
-            ->latest()
-            ->take(12)
-            ->get();
-        $banners = $this->bannerRepository->getActiveBanners();
+        $clientReviews = $this->reviewRepository->getApprovedReviews();
+            $banners = $this->bannerRepository->getActiveBanners();
         $fallbackSlides = collect([
             [
                 'title' => 'Heaven on Earth',
