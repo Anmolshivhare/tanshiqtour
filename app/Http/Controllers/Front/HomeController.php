@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
 use App\Repositories\BannerRepository;
 use App\Repositories\DestinationRepository;
 use App\Repositories\ReviewRepository;
@@ -42,7 +41,7 @@ class HomeController extends Controller
         $destinationsData = $this->destinationRepository->getFeaturedDestinations();
         $featuredTours = $this->tourRepository->getFeaturedTours();
         $clientReviews = $this->reviewRepository->getApprovedReviews();
-            $banners = $this->bannerRepository->getActiveBanners();
+        $banners = $this->bannerRepository->getActiveBanners();
         $fallbackSlides = collect([
             [
                 'title' => 'Heaven on Earth',
@@ -231,7 +230,8 @@ class HomeController extends Controller
             $file->storeAs('reviews', $filename, 'public');
             $clientPic = $filename;
         }
-        Review::create([
+        
+        $this->reviewRepository->createData([
             'tour_id'        => $tour->id,
             'reviewer_name'  => $validated['reviewer_name'],
             'reviewer_email' => $validated['reviewer_email'],
