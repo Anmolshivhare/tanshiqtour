@@ -47,12 +47,12 @@
                                 @endif
                             </div>
                             <div class="tt-pkg-card__footer">
-                                <div>
+                               {{--  <div>
                                     <span class="tt-pkg-card__label">From</span>
                                     <span class="tt-pkg-card__price">
                                         {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
-                                    </span>
-                                </div>
+                                    </span> 
+                                </div> --}}
                                 <a href="{{ route('front.tour-details', $tour->slug) }}" class="tt-pkg-card__book">Book Now</a>
                             </div>
                         </div>

@@ -69,7 +69,7 @@ class ReviewDataTable extends DataTable
             ->setTableId('reviews')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
+            // ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
             ->orderBy('5', 'desc')
             ->parameters([
                 'processing' => false,

@@ -235,7 +235,7 @@
                                     ->values()
                                 : collect([asset(config('constants.destination_default_image'))]);
                     @endphp
-
+                    @if($tourImages->count() > 0)
                     <div class="td-section mb-4">
                         <h2 class="td-section__heading">Tour Gallery</h2>
                         <div class="td-gallery-grid" id="tourGalleryGrid">
@@ -253,6 +253,7 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
 
                     {{-- ===== GALLERY LIGHTBOX MODAL ===== --}}
                     <div class="modal fade" id="galleryLightboxModal" tabindex="-1" aria-label="Gallery Lightbox"
@@ -442,12 +443,12 @@
                                                             @endif
                                                         </div>
                                                         <div class="tt-pkg-card__footer">
-                                                            <div>
+                                                            {{--  <div>
                                                                 <span class="tt-pkg-card__label">From</span>
                                                                 <span class="tt-pkg-card__price">
                                                                     {!! $relatedTour->price_per_person ? '&#8377;' . number_format($relatedTour->price_per_person, 0) : 'On Request' !!}
                                                                 </span>
-                                                            </div>
+                                                            </div> --}}
                                                             <span class="tt-pkg-card__book">Book Now</span>
                                                         </div>
                                                     </div>
@@ -654,13 +655,13 @@
                     <div class="td-booking-card" style="position:sticky; top:110px; z-index:10;">
                         <div class="td-booking-card__header">
                             <h3 class="td-booking-card__title">Book This Tour</h3>
-                            @if ($tour->price_per_person)
+                            {{-- @if ($tour->price_per_person)
                                 <div class="td-booking-card__price">
                                     <span class="td-booking-card__price-from">from</span>
                                     <span
                                         class="td-booking-card__price-value">₹{{ number_format($tour->price_per_person) }}</span>
                                 </div>
-                            @endif
+                            @endif --}}
                         </div>
 
                         <div class="td-booking-card__body">
@@ -717,7 +718,7 @@
                                         </label>
                                     </div>
                                 </div>
-
+{{-- 
                                 <div class="td-booking-pricing mb-3">
                                     <div class="td-booking-pricing__row">
                                         <span>Adult</span>
@@ -734,7 +735,7 @@
                                         <span
                                             class="td-booking-pricing__total">₹{{ number_format(($tour->price_per_person ?? 1500) * 1.8) }}</span>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <input type="hidden" name="tour" value="{{ $tour->title }}">
                                 <a href="{{ route('front.contact') }}?tour={{ urlencode($tour->title) }}"
