@@ -83,14 +83,14 @@
                    
 
                     <div class="col-md-6">
-                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image" :preview-image="$tour->featured_image ? asset('storage/tours/' . $tour->featured_image) : null"
+                        <x-image-uploader id="featured_image" name="featured_image" label="Featured Image Size(440 x 220 px)" :preview-image="$tour->featured_image ? asset('storage/tours/' . $tour->featured_image) : null"
                             :default-image="Vite::asset(config('constants.company_logo'))" :required="false" :max-size="2" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
 
                     <div class="col-md-6">
                         @if ($tour->images && $tour->images->count())
                             <div class="mb-2">
-                                <label class="form-label">Current Gallery</label>
+                                <label class="form-label">Current Gallery </label>
                                 <div class="d-flex flex-wrap gap-3">
                                     @foreach ($tour->images as $image)
                                         <label class="d-inline-block text-center">
@@ -108,7 +108,7 @@
                                     them.</small>
                             </div>
                         @endif
-                        <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Add More)"
+                        <x-multi-image-upload id="gallery_images" name="gallery_images[]" label="Gallery Images (Add More)  Size (771 x 514 px)"
                             :max-size="2" :max-files="10" :allowed-types="['jpg', 'jpeg', 'png', 'webp']" />
                     </div>
                     <div class="col-12">

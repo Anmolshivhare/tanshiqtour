@@ -95,7 +95,7 @@
                     </li>
 
                     {{-- Blog Management --}}
-                    <li class="accordion-item @if (Request::routeIs('admin.blogs.*') || Request::routeIs('admin.blog-categories.*') || Request::routeIs('admin.authors.*')) active @endif">
+                    {{-- <li class="accordion-item @if (Request::routeIs('admin.blogs.*') || Request::routeIs('admin.blog-categories.*') || Request::routeIs('admin.authors.*')) active @endif">
                         <a class="accordion-button cursor-pointer @if (Request::routeIs('admin.blogs.*') || Request::routeIs('admin.blog-categories.*') || Request::routeIs('admin.authors.*')) @else collapsed @endif"
                             data-bs-toggle="collapse" data-bs-target="#blog-management" aria-expanded="true">
                             <i class="fa-solid fa-newspaper"></i>
@@ -130,7 +130,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
 
                     {{-- Gallery --}}
                     <li class="accordion-item">
