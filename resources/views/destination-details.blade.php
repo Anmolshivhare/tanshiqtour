@@ -6,7 +6,7 @@
         ? asset('storage/destinations/' . $destination->banner_image)
         : ($destination->featured_image
             ? asset('storage/destinations/' . $destination->featured_image)
-            : 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80');
+            : asset(config('constants.destination_default_image')));
 
     $featuredImage = $destination->featured_image
         ? asset('storage/destinations/' . $destination->featured_image)
@@ -43,7 +43,7 @@
     </div>
 </section>
 
-<section class="tt-section tt-destination-details">
+<section class="tt-section tt-destination-details mb-5">
     <div class="container">
         <div class="row g-4 align-items-start">
             <div class="col-lg-5" data-aos="fade-right">
@@ -84,4 +84,13 @@
         </div>
     </div>
 </section>
+
+{{-- ============================================================
+     POPULAR DESTINATIONS
+============================================================ --}}
+@include('base-destination')
+
+{{-- ============================================================
+     POPULAR DESTINATIONS End
+============================================================ --}}
 @endsection

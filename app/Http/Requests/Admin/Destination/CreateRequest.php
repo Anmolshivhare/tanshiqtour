@@ -18,6 +18,7 @@ class CreateRequest extends FormRequest
             'city'              => 'nullable|string|max:100',
             'description'       => 'nullable|string',
             'short_description' => 'nullable|string|max:500',
+            'is_featured'       => 'nullable|boolean',
             'featured_image'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'banner_image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'status'            => 'nullable|exists:statuses,id',

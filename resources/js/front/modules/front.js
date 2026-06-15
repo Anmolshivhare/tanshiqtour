@@ -563,19 +563,109 @@ $(function () {
 (function () {
     const el = document.querySelector(".tt-testi-swiper");
     if (!el) return;
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+    const canLoop = slideCount > 3;
+
     new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
         slidesPerView: 1,
         spaceBetween: 24,
-        loop: true,
+        loop: canLoop,
+        rewind: !canLoop,
+        watchOverflow: true,
         autoplay: { delay: 4500, disableOnInteraction: false },
         pagination: { el: ".tt-testi-pagination", clickable: true },
         navigation: { prevEl: ".tt-testi-prev", nextEl: ".tt-testi-next" },
-        breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+        breakpoints: {
+            640: { slidesPerView: Math.min(2, slideCount || 1) },
+            1024: { slidesPerView: Math.min(3, slideCount || 1) },
+        },
     });
 })();
 
-// ---- Destinations Swiper (Capsule Center Focus) ----
+// ---- Tour Details Related Tours Swiper ----
+(function () {
+    const section = document.querySelector(".td-tour-slider-section");
+    if (!section) return;
+
+    const el = section.querySelector(".td-tour-slider");
+    const prevEl = section.querySelector(".td-tour-slider-prev");
+    const nextEl = section.querySelector(".td-tour-slider-next");
+    const paginationEl = section.querySelector(".td-tour-slider-pagination");
+    if (!el) return;
+
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 18,
+        loop: slideCount > 2,
+        grabCursor: true,
+        watchOverflow: true,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl,
+            nextEl,
+        },
+        breakpoints: {
+            576: { slidesPerView: 1.25, spaceBetween: 18 },
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1200: { slidesPerView: Math.min(3, slideCount || 1), spaceBetween: 24 },
+        },
+    });
+})();
+
+// ---- Tour Details Reviews Swiper ----
+(function () {
+    const section = document.querySelector(".td-review-slider-section");
+    if (!section) return;
+
+    const el = section.querySelector(".td-review-slider");
+    const prevEl = section.querySelector(".td-review-slider-prev");
+    const nextEl = section.querySelector(".td-review-slider-next");
+    const paginationEl = section.querySelector(".td-review-slider-pagination");
+    if (!el) return;
+
+    const slideCount = el.querySelectorAll(".swiper-slide").length;
+
+    new Swiper(el, {
+        modules: [Pagination, Autoplay, Navigation],
+        slidesPerView: 1,
+        spaceBetween: 16,
+        loop: slideCount > 2,
+        rewind: slideCount <= 2,
+        grabCursor: true,
+        watchOverflow: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl,
+            nextEl,
+        },
+        breakpoints: {
+            768: { slidesPerView: Math.min(2, slideCount || 1), spaceBetween: 18 },
+            1200: { slidesPerView: Math.min(2, slideCount || 1), spaceBetween: 20 },
+        },
+    });
+})();
+
+// ---- Destinations Swiper — 4 slides on desktop, loop prev/next ----
 (function () {
     const section = document.querySelector(".tt-destinations");
     if (!section) return;
@@ -583,142 +673,177 @@ $(function () {
     const el = section.querySelector(".tt-destinations-swiper");
     const prevEl = section.querySelector(".tt-destinations-prev");
     const nextEl = section.querySelector(".tt-destinations-next");
+    const paginationEl = section.querySelector(".tt-destinations-pagination");
     if (!el || !prevEl || !nextEl) return;
 
     const slideCount = el.querySelectorAll(".swiper-wrapper > .swiper-slide").length;
-    const clampSlides = (value) => Math.max(1, Math.min(value, slideCount || 1));
+
+    // We want 4 on desktop — clamp to actual slide count so it never goes blank
+    const slidesLg   = Math.min(4, slideCount);  // ← 4 slides on desktop
+    const slidesMd   = Math.min(3, slideCount);  // 3 on large tablet
+    const slidesSm   = Math.min(2, slideCount);  // 2 on small tablet
+
+    // loop requires at least (slidesPerView * 2) slides to work correctly
+    const canLoop = false;
 
     const destSwiper = new Swiper(el, {
         modules: [Pagination, Autoplay, Navigation],
-        centeredSlides: false,
-        slidesPerView: slideCount > 1 ? Math.min(1.25, slideCount) : 1,
+        slidesPerView: 1,
         spaceBetween: 16,
-        loop: slideCount > 1,
-        loopAdditionalSlides: Math.min(4, slideCount),
-        speed: 700,
+        loop: canLoop,          // infinite loop — enables prev/next at all times
+        rewind: !canLoop,       // fallback: rewind if too few slides for full loop
+        speed: 650,
         grabCursor: true,
-        autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
-        pagination: { el: ".tt-destinations-pagination", clickable: true },
-        navigation: { prevEl, nextEl },
-        watchOverflow: true,
+        watchOverflow: false,   // always show nav even with few slides
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: paginationEl,
+            clickable: true,
+        },
+        navigation: {
+            prevEl: prevEl,
+            nextEl: nextEl,
+            disabledClass: "tt-dest-arrow-btn--disabled",
+        },
         breakpoints: {
-            480: { slidesPerView: clampSlides(2), spaceBetween: 16 },
-            768: { slidesPerView: clampSlides(3), spaceBetween: 18 },
-            1024: { slidesPerView: clampSlides(4), spaceBetween: 20 },
+            480:  { slidesPerView: Math.min(1.3, slideCount), spaceBetween: 14 },
+            640:  { slidesPerView: slidesSm,  spaceBetween: 16 },
+            900:  { slidesPerView: slidesMd,  spaceBetween: 20 },
+            1200: { slidesPerView: slidesLg,  spaceBetween: 22 },
         },
     });
 
+    // Filter tab logic (unchanged)
     const tabs = document.querySelectorAll(".tt-dest-filter__btn");
     const originalSlides = Array.from(
         el.querySelectorAll(".swiper-wrapper > .swiper-slide:not(.swiper-slide-duplicate)"),
     );
 
     if (!tabs.length || !originalSlides.length) return;
+
     const defaultIndex = originalSlides.findIndex(
         (slide) => slide.dataset.region === "asia",
     );
     if (defaultIndex >= 0) {
-        destSwiper.slideToLoop(defaultIndex, 0);
+        canLoop
+            ? destSwiper.slideToLoop(defaultIndex, 0)
+            : destSwiper.slideTo(defaultIndex, 0);
     }
 
     tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
             tabs.forEach((btn) => btn.classList.remove("active"));
             tab.classList.add("active");
-
             const region = tab.dataset.region;
             const targetIndex = originalSlides.findIndex(
                 (slide) => slide.dataset.region === region,
             );
-
             if (targetIndex >= 0) {
-                destSwiper.slideToLoop(targetIndex, 650);
+                canLoop
+                    ? destSwiper.slideToLoop(targetIndex, 650)
+                    : destSwiper.slideTo(targetIndex, 650);
             }
         });
     });
 })();
 
-// ---- Destination Search (Live Filter) ----
+// ---- Listing Search (Live Filter) ----
 (function () {
-    const form = document.getElementById("destination-search-form");
-    const input = document.getElementById("destination-search-input");
-    const clearBtn = document.getElementById("destination-clear-btn");
-    const resultsWrap = document.getElementById("destination-results");
+    const listings = [
+        {
+            form: document.getElementById("destination-search-form"),
+            input: document.getElementById("destination-search-input"),
+            clearBtn: document.getElementById("destination-clear-btn"),
+            resultsWrap: document.getElementById("destination-results"),
+        },
+        {
+            form: document.getElementById("tour-search-form"),
+            input: document.getElementById("tour-search-input"),
+            clearBtn: document.getElementById("tour-clear-btn"),
+            resultsWrap: document.getElementById("tour-results"),
+        },
+    ];
 
-    if (!form || !input || !clearBtn || !resultsWrap) {
-        return;
-    }
+    listings.forEach(({ form, input, clearBtn, resultsWrap }) => {
+        if (!form || !input || !clearBtn || !resultsWrap) {
+            return;
+        }
 
-    const searchUrl = form.getAttribute("action");
-    let debounceTimer = null;
-    let activeRequest = null;
-    const defaultResultsHtml = resultsWrap.innerHTML;
+        const searchUrl = form.getAttribute("action");
+        let debounceTimer = null;
+        let activeRequest = null;
+        const defaultResultsHtml = resultsWrap.innerHTML;
 
-    function renderResults(payload) {
-        if (payload && typeof payload.html === "string") {
-            resultsWrap.innerHTML = payload.html;
-            resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
-                element.classList.add("aos-animate");
+        function renderResults(payload) {
+            if (payload && typeof payload.html === "string") {
+                resultsWrap.innerHTML = payload.html;
+                resultsWrap.querySelectorAll("[data-aos]").forEach((element) => {
+                    element.classList.add("aos-animate");
+                });
+            }
+        }
+
+        function setClearState(query) {
+            clearBtn.classList.toggle("d-none", query.trim().length === 0);
+        }
+
+        function runSearch(rawQuery) {
+            const query = rawQuery.trim();
+
+            if (activeRequest && activeRequest.readyState !== 4) {
+                activeRequest.abort();
+            }
+
+            setClearState(query);
+
+            activeRequest = $.ajax({
+                url: searchUrl,
+                method: "GET",
+                data: { q: query },
+                dataType: "json",
+                success(response) {
+                    renderResults(response);
+                },
+                error(xhr, status) {
+                    if (status === "abort") {
+                        return;
+                    }
+
+                    if (!query) {
+                        resultsWrap.innerHTML = defaultResultsHtml;
+                    }
+                },
             });
         }
-    }
 
-    function setClearState(query) {
-        clearBtn.classList.toggle("d-none", query.trim().length === 0);
-    }
-
-    function runSearch(rawQuery) {
-        const query = rawQuery.trim();
-
-        if (activeRequest && activeRequest.readyState !== 4) {
-            activeRequest.abort();
-        }
-
-        setClearState(query);
-
-        activeRequest = $.ajax({
-            url: searchUrl,
-            method: "GET",
-            data: { q: query },
-            dataType: "json",
-            success(response) {
-                renderResults(response);
-            },
-            error(xhr, status) {
-                if (status === "abort") {
-                    return;
-                }
-
-                if (!query) {
-                    resultsWrap.innerHTML = defaultResultsHtml;
-                }
-            },
+        input.addEventListener("input", function () {
+            setClearState(this.value);
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(() => {
+                runSearch(input.value);
+            }, 250);
         });
-    }
 
-    input.addEventListener("input", function () {
-        setClearState(this.value);
-        window.clearTimeout(debounceTimer);
-        debounceTimer = window.setTimeout(() => {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            window.clearTimeout(debounceTimer);
             runSearch(input.value);
-        }, 250);
-    });
+        });
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        window.clearTimeout(debounceTimer);
-        runSearch(input.value);
-    });
+        clearBtn.addEventListener("click", function () {
+            input.value = "";
+            setClearState("");
+            window.clearTimeout(debounceTimer);
+            runSearch("");
+            input.focus();
+        });
 
-    clearBtn.addEventListener("click", function () {
-        input.value = "";
-        setClearState("");
-        window.clearTimeout(debounceTimer);
-        runSearch("");
-        input.focus();
+        setClearState(input.value);
     });
-
-    setClearState(input.value);
 })();
 
 // ---- GSAP Airplane SVG Path Animation ----
@@ -732,12 +857,25 @@ $(function () {
     });
 })();
 
+// ---- Home Banner Slide Counter ----
+(function () {
+    const carousel = document.getElementById("ttBannerCarousel");
+    const currentEl = document.getElementById("tt-current-slide");
+    if (!carousel || !currentEl) return;
+
+    carousel.addEventListener("slid.bs.carousel", function (event) {
+        currentEl.textContent = event.to + 1;
+    });
+})();
+
 // ---- Stagger Hero Reveal ----
-document.addEventListener("tt:home:ready", function () {
+(function () {
+    if (!document.getElementById("hero")) return;
+
     const items = ["#hero-badge","#hero-title","#hero-desc","#hero-ctas","#hero-search"];
     gsap.from(items, { opacity: 0, y: 40, stagger: 0.15, duration: 0.75, ease: "power3.out", delay: 0.2 });
     gsap.from("#hero-carousel", { opacity: 0, x: 60, duration: 1, ease: "power3.out", delay: 0.4 });
-});
+})();
 
 // ---- Mouse Parallax ----
 (function () {
@@ -803,6 +941,239 @@ document.addEventListener("tt:home:ready", function () {
             });
         }
     }, { threshold: 0.4 }).observe(section);
+})();
+
+// ---- Tour Details Accordion Scroll ----
+(function () {
+    const accordionButtons = document.querySelectorAll(".td-accordion__btn");
+    if (!accordionButtons.length) return;
+
+    accordionButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetSelector = this.dataset.bsTarget;
+            if (!targetSelector) return;
+
+            const target = document.querySelector(targetSelector);
+            if (target && !target.classList.contains("show")) {
+                setTimeout(() => {
+                    target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }, 350);
+            }
+        });
+    });
+})();
+
+// ---- Tour Details Gallery Lightbox ----
+(function () {
+    const modal = document.getElementById("galleryLightboxModal");
+    const mainImg = document.getElementById("galleryLightboxImg");
+    const imgWrap = document.getElementById("galleryImgWrap");
+    const counter = document.getElementById("galleryCounter");
+    const thumbStrip = document.getElementById("galleryThumbStrip");
+    const prevBtn = document.getElementById("galleryPrev");
+    const nextBtn = document.getElementById("galleryNext");
+    const bodyEl = document.getElementById("galleryLightboxBody");
+
+    if (!modal || !mainImg || !imgWrap || !thumbStrip) return;
+
+    const thumbs = Array.from(
+        thumbStrip.querySelectorAll(".gallery-lightbox-thumb"),
+    );
+    const galleryImages = thumbs
+        .map((thumb) => thumb.dataset.src)
+        .filter(Boolean);
+
+    if (!galleryImages.length) return;
+
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+
+    function showImage(index) {
+        currentIndex =
+            ((index % galleryImages.length) + galleryImages.length) %
+            galleryImages.length;
+
+        imgWrap.classList.add("gallery-img-exit");
+
+        window.setTimeout(() => {
+            mainImg.src = galleryImages[currentIndex];
+            mainImg.alt = `Tour gallery image ${currentIndex + 1}`;
+            imgWrap.classList.remove("gallery-img-exit");
+            imgWrap.classList.add("gallery-img-enter");
+
+            window.setTimeout(() => {
+                imgWrap.classList.remove("gallery-img-enter");
+            }, 350);
+        }, 180);
+
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+        }
+
+        thumbs.forEach((thumb, index) => {
+            thumb.classList.toggle("active", index === currentIndex);
+        });
+
+        thumbs[currentIndex]?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+        });
+    }
+
+    document
+        .querySelectorAll(".td-gallery-grid__item--clickable")
+        .forEach((item) => {
+            item.addEventListener("click", function () {
+                currentIndex = parseInt(this.dataset.galleryIndex, 10) || 0;
+
+                modal.addEventListener(
+                    "shown.bs.modal",
+                    function onShown() {
+                        showImage(currentIndex);
+                        modal.removeEventListener("shown.bs.modal", onShown);
+                    },
+                );
+            });
+
+            item.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+    prevBtn?.addEventListener("click", () => showImage(currentIndex - 1));
+    nextBtn?.addEventListener("click", () => showImage(currentIndex + 1));
+
+    thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", function () {
+            showImage(parseInt(this.dataset.index, 10) || 0);
+        });
+
+        thumb.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!modal.classList.contains("show")) return;
+
+        if (event.key === "ArrowLeft") showImage(currentIndex - 1);
+        if (event.key === "ArrowRight") showImage(currentIndex + 1);
+        if (event.key === "Escape") {
+            const bsModal = window.bootstrap?.Modal.getInstance(modal);
+            bsModal?.hide();
+        }
+    });
+
+    bodyEl?.addEventListener(
+        "touchstart",
+        (event) => {
+            startX = event.touches[0].clientX;
+            isDragging = true;
+        },
+        { passive: true },
+    );
+
+    bodyEl?.addEventListener(
+        "touchend",
+        (event) => {
+            if (!isDragging) return;
+
+            const diff = startX - event.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                showImage(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+            }
+            isDragging = false;
+        },
+        { passive: true },
+    );
+
+    modal.addEventListener("hidden.bs.modal", () => {
+        mainImg.src = "";
+    });
+})();
+
+// ---- Scroll Progress To Top ----
+(function () {
+    const button = document.getElementById("ttScrollProgress");
+    const value = document.getElementById("ttScrollProgressValue");
+    if (!button || !value) return;
+
+    function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+        const progress =
+            scrollHeight > 0
+                ? Math.min(100, Math.max(0, Math.round((scrollTop / scrollHeight) * 100)))
+                : 100;
+
+        button.style.setProperty("--scroll-progress", `${progress * 3.6}deg`);
+        button.classList.toggle("is-visible", scrollTop > 80);
+        button.classList.toggle("is-complete", progress >= 99);
+        value.textContent = `${progress}%`;
+    }
+
+    button.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+})();
+
+// ---- Mouse Cursor Follower ----
+(function () {
+    const follower = document.getElementById("ttCursorFollower");
+    if (!follower || window.matchMedia("(pointer: coarse)").matches) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let followerX = mouseX;
+    let followerY = mouseY;
+    let isVisible = false;
+
+    function render() {
+        followerX += (mouseX - followerX) * 0.18;
+        followerY += (mouseY - followerY) * 0.18;
+        follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(render);
+    }
+
+    document.addEventListener("mousemove", (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+
+        if (!isVisible) {
+            follower.classList.add("is-visible");
+            isVisible = true;
+        }
+    });
+
+    document.addEventListener("mouseleave", () => {
+        follower.classList.remove("is-visible");
+        isVisible = false;
+    });
+
+    document.addEventListener("mouseenter", () => {
+        follower.classList.add("is-visible");
+        isVisible = true;
+    });
+
+    document.querySelectorAll("a, button, [role='button']").forEach((element) => {
+        element.addEventListener("mouseenter", () => follower.classList.add("is-active"));
+        element.addEventListener("mouseleave", () => follower.classList.remove("is-active"));
+    });
+
+    render();
 })();
 
 // ---- Scroll AOS ----

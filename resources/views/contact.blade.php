@@ -182,7 +182,7 @@
                                 {{-- <button type="submit" class="tt-banner-slide__btnt" id="contact-submit-btn">
                                    
                                 </button> --}}
-                                <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-1">
+                                <a href="{{ route('front.contact') }}" class="tt-banner-slide__btn" id="banner-cta-1">
                                      Send Message <i class="fas fa-arrow-right ms-2"></i>
                                  </a>
                             </div>

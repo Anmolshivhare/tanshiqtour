@@ -2,19 +2,25 @@
 
 @section('content')
 
+@php
+    $bannerSlides = $bannerSlides ?? collect();
+    $bannerCount = $bannerSlides->count();
+@endphp
+
+@if($bannerCount > 0)
+
 {{-- ============================================================
      BANNER SLIDER SECTION
 ============================================================ --}}
-<section class="tt-banner-slider" id="bannerSlider" aria-label="Tanishq Tours Featured Destinations">
 
+<section class="tt-banner-slider" id="bannerSlider" aria-label="Tanishq Tours Featured Destinations">
     <div id="ttBannerCarousel"
          class="carousel slide carousel-fade tt-banner-carousel"
          data-bs-ride="carousel"
          data-bs-interval="5000">
 
-        {{-- ── Indicators ── --}}
         <div class="carousel-indicators tt-banner-indicators">
-            @foreach ([0,1,2,3,4] as $idx)
+            @foreach ($bannerSlides as $idx => $banner)
             <button type="button"
                     data-bs-target="#ttBannerCarousel"
                     data-bs-slide-to="{{ $idx }}"
@@ -25,122 +31,32 @@
             @endforeach
         </div>
 
-        {{-- ── Slides ── --}}
         <div class="carousel-inner">
-
-            {{-- Slide 1 – Kashmir --}}
-            <div class="carousel-item active" id="banner-slide-1">
-                <div class="tt-banner-slide"
-                     style="background-image:url('{{ Vite::asset('resources/images/banner1.webp') }}')">
-                    <div class="tt-banner-slide__overlay"></div>
+            @foreach ($bannerSlides as $idx => $banner)
+            <div class="carousel-item {{ $idx === 0 ? 'active' : '' }}" id="banner-slide-{{ $idx + 1 }}">
+                <div class="tt-banner-slide" style="background-image:url('{{ $banner['image'] }}')">
+                    <div class="tt-banner-slide__overlay {{ $banner['overlay_class'] }}"></div>
                     <div class="container tt-banner-slide__content">
+                        @if(!empty($banner['subtitle']))
                         <div class="tt-banner-tag">
-                            <i class="fa-solid fa-location-dot me-1"></i> India
+                            <i class="fa-solid fa-location-dot me-1"></i> {{ $banner['subtitle'] }}
                         </div>
-                        <h2 class="tt-banner-slide__title">
-                            Heaven on <span>Earth</span>
-                        </h2>
-                        <p class="tt-banner-slide__sub">
-                            Discover the breathtaking valleys, lakes and mountain meadows of Kashmir.
-                        </p>
-                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-1">
-                            <i class="fas fa-compass me-2"></i>Explore Kashmir
+                        @endif
+                        <h2 class="tt-banner-slide__title">{{ $banner['title'] }}</h2>
+                        @if(!empty($banner['description']))
+                        <p class="tt-banner-slide__sub">{{ $banner['description'] }}</p>
+                        @endif
+                        @if(!empty($banner['button_text']))
+                        <a href="{{ $banner['button_url'] ?: route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-{{ $idx + 1 }}">
+                            <i class="fas fa-compass me-2"></i>Explore {{ $banner['button_text'] }}
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
+            @endforeach
+        </div>
 
-            {{-- Slide 2 – Bali --}}
-            <div class="carousel-item" id="banner-slide-2">
-                <div class="tt-banner-slide"
-                     style="background-image:url('{{ Vite::asset('resources/images/banner2.webp') }}')">
-                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--teal"></div>
-                    <div class="container tt-banner-slide__content">
-                        <div class="tt-banner-tag">
-                            <i class="fa-solid fa-location-dot me-1"></i> Indonesia
-                        </div>
-                        <h2 class="tt-banner-slide__title">
-                            Bali <span>Beach Escape</span>
-                        </h2>
-                        <p class="tt-banner-slide__sub">
-                            Pristine beaches, lush rice terraces and vibrant culture await you in paradise.
-                        </p>
-                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-2">
-                            <i class="fas fa-compass me-2"></i>Explore Bali
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Slide 3 – Dubai --}}
-            <div class="carousel-item" id="banner-slide-3">
-                <div class="tt-banner-slide"
-                     style="background-image:url('{{ Vite::asset('resources/images/banner3.webp') }}')">
-                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--gold"></div>
-                    <div class="container tt-banner-slide__content">
-                        <div class="tt-banner-tag">
-                            <i class="fa-solid fa-location-dot me-1"></i> UAE
-                        </div>
-                        <h2 class="tt-banner-slide__title">
-                            Dubai <span>Luxury</span>
-                        </h2>
-                        <p class="tt-banner-slide__sub">
-                            Iconic skylines, desert safaris and world-class hospitality in the City of Gold.
-                        </p>
-                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-3">
-                            <i class="fas fa-compass me-2"></i>Explore Dubai
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Slide 4 – Switzerland --}}
-            <div class="carousel-item" id="banner-slide-4">
-                <div class="tt-banner-slide"
-                     style="background-image:url('{{ Vite::asset('resources/images/banner4.webp') }}')">
-                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--blue"></div>
-                    <div class="container tt-banner-slide__content">
-                        <div class="tt-banner-tag">
-                            <i class="fa-solid fa-location-dot me-1"></i> Europe
-                        </div>
-                        <h2 class="tt-banner-slide__title">
-                            Swiss <span>Alps Dream</span>
-                        </h2>
-                        <p class="tt-banner-slide__sub">
-                            Snow-capped peaks, charming villages and crystal-clear lakes of Switzerland.
-                        </p>
-                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-4">
-                            <i class="fas fa-compass me-2"></i>Explore Switzerland
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Slide 5 – Maldives --}}
-            <div class="carousel-item" id="banner-slide-5">
-                <div class="tt-banner-slide"
-                     style="background-image:url('{{ Vite::asset('resources/images/banner5.webp') }}')">
-                    <div class="tt-banner-slide__overlay tt-banner-slide__overlay--cyan"></div>
-                    <div class="container tt-banner-slide__content">
-                        <div class="tt-banner-tag">
-                            <i class="fa-solid fa-location-dot me-1"></i> Maldives
-                        </div>
-                        <h2 class="tt-banner-slide__title">
-                            Maldives <span>Paradise</span>
-                        </h2>
-                        <p class="tt-banner-slide__sub">
-                            Overwater bungalows, turquoise lagoons and the world's most stunning sunsets.
-                        </p>
-                        <a href="{{ route('front.tours') }}" class="tt-banner-slide__btn" id="banner-cta-5">
-                            <i class="fas fa-compass me-2"></i>Explore Maldives
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>{{-- /carousel-inner --}}
-
-        {{-- ── Prev / Next Controls ── --}}
         <button class="carousel-control-prev tt-banner-ctrl" type="button"
                 data-bs-target="#ttBannerCarousel" data-bs-slide="prev"
                 id="banner-prev" aria-label="Previous slide">
@@ -156,13 +72,16 @@
             </span>
         </button>
 
-        {{-- ── Slide Counter ── --}}
         <div class="tt-banner-counter" aria-live="polite">
-            <span id="tt-current-slide">1</span> / <span>5</span>
+            <span id="tt-current-slide">1</span> / <span>{{ $bannerCount }}</span>
         </div>
-
-    </div>{{-- /carousel --}}
+    </div>
 </section>
+@endif
+
+{{-- ============================================================
+     BANNER SLIDER SECTION END
+============================================================ --}}
 
 {{-- ============================================================
      HERO SECTION
@@ -219,7 +138,7 @@
                 </div>
 
                 {{-- Glassmorphism Search Box --}}
-                <div class="tt-search-glass" id="hero-search">
+                {{-- <div class="tt-search-glass" id="hero-search">
                     <form class="tt-search-glass__form">
                         <div class="tt-search-glass__field">
                             <i class="fas fa-map-marker-alt"></i>
@@ -277,7 +196,7 @@
                             <i class="fas fa-search me-1"></i> Search
                         </button>
                     </form>
-                </div>
+                </div> --}}
             </div>
 
             {{-- RIGHT: Swiper Coverflow Carousel --}}
@@ -337,77 +256,7 @@
 {{-- ============================================================
      FEATURED TOUR PACKAGES (with filter tabs)
 ============================================================ --}}
-<section class="tt-section tt-packages position-relative overflow-hidden" id="packages">
-
-    {{-- ── Top-Left decorative: Suitcase ── --}}
-    <img src="{{ Vite::asset('resources/images/how-lagges.webp') }}"
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
-
-    {{-- ── Bottom-Right decorative: Beach Palm ── --}}
-    <img src="{{ Vite::asset('resources/images/testi-1-2.webp') }}"  
-         alt=""
-         aria-hidden="true"
-         class="tt-pkg-deco tt-pkg-deco--br d-none d-lg-block">
-
-    <div class="container position-relative" style="z-index:2;">
-        <div class="tt-section-head text-center" data-aos="fade-up">
-            <span class="tt-kicker-v2"><i class="fas fa-suitcase-rolling me-1"></i> Best Deals</span>
-            <h2 class="tt-section-title">Featured <span class="tt-accent">Tour Packages</span></h2>
-            <p class="tt-section-sub">Handpicked adventures, beaches, cultures, and wildlife experiences.</p>
-        </div>
-
-        {{-- Filter Tabs --}}
-        <div class="tt-filter-tabs" data-aos="fade-up">
-            <button class="tt-filter-tab active" data-filter="all">All</button>
-            <button class="tt-filter-tab" data-filter="adventure">Adventure</button>
-            <button class="tt-filter-tab" data-filter="beach">Beach</button>
-            <button class="tt-filter-tab" data-filter="cultural">Cultural</button>
-            <button class="tt-filter-tab" data-filter="wildlife">Wildlife</button>
-        </div>
-
-        <div class="tt-pkg-grid" id="tt-pkg-grid">
-            @foreach ([
-                ['title'=>'Himalayan Trek','loc'=>'Kashmir','days'=>'7D/6N','rating'=>'4.9','price'=>'₹24,999','cat'=>'adventure','img'=>'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'],
-                ['title'=>'Bali Beach Escape','loc'=>'Indonesia','days'=>'6D/5N','rating'=>'4.8','price'=>'₹38,499','cat'=>'beach','img'=>'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80'],
-                ['title'=>'Tokyo Cultural Tour','loc'=>'Japan','days'=>'8D/7N','rating'=>'4.7','price'=>'₹72,000','cat'=>'cultural','img'=>'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80'],
-                ['title'=>'African Safari','loc'=>'Kenya','days'=>'10D/9N','rating'=>'5.0','price'=>'₹1,45,000','cat'=>'wildlife','img'=>'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80'],
-                ['title'=>'Maldives Paradise','loc'=>'Maldives','days'=>'5D/4N','rating'=>'5.0','price'=>'₹55,000','cat'=>'beach','img'=>'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80'],
-                ['title'=>'Paris City Highlights','loc'=>'France','days'=>'7D/6N','rating'=>'4.8','price'=>'₹89,999','cat'=>'cultural','img'=>'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'],
-              
-            ] as $i => $pkg)
-            <div class="tt-pkg-card" data-cat="{{ $pkg['cat'] }}" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
-                <div class="tt-pkg-card__img">
-                    <img src="{{ $pkg['img'] }}" alt="{{ $pkg['title'] }}" loading="lazy">
-                    <span class="tt-pkg-card__cat">{{ ucfirst($pkg['cat']) }}</span>
-                </div>
-                <div class="tt-pkg-card__body">
-                    <div class="tt-pkg-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $pkg['loc'] }}</div>
-                    <h3 class="tt-pkg-card__title">{{ $pkg['title'] }}</h3>
-                    <div class="tt-pkg-card__meta">
-                        <span><i class="fas fa-clock me-1"></i>{{ $pkg['days'] }}</span>
-                        <span class="tt-pkg-card__rating"><i class="fas fa-star me-1"></i>{{ $pkg['rating'] }}</span>
-                    </div>
-                    <div class="tt-pkg-card__footer">
-                        <div>
-                            <span class="tt-pkg-card__label">From</span>
-                            <span class="tt-pkg-card__price">{{ $pkg['price'] }}</span>
-                        </div>
-                        <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{{ route('front.tours') }}" class="tt-btn-hero-primary">
-                <i class="fas fa-th-large me-2"></i> View All Packages
-            </a>
-        </div>
-    </div>
-</section>
+ @include('base-tour-packages')
 
 
 {{-- ============================================================
@@ -537,6 +386,7 @@
 {{-- ============================================================
      TESTIMONIALS CAROUSEL
 ============================================================ --}}
+@if (!empty($clientReviews) && $clientReviews->isNotEmpty())
 <section class="tt-section tt-testimonials" id="testimonials">
     <div class="container">
         <div class="tt-section-head text-center" data-aos="fade-up">
@@ -557,27 +407,41 @@
 
         <div class="swiper tt-testi-swiper" id="testiSwiper" data-aos="fade-up">
             <div class="swiper-wrapper">
-                @foreach ([
-                    ['name'=>'Rohit Sharma','loc'=>'Delhi, India','review'=>'The Kashmir trip was absolutely breathtaking! Hotels, transport, and guidance — everything was perfect. Will book again for sure!','rating'=>5,'avatar'=>'RS','color'=>'#022179'],
-                    ['name'=>'Priya Mehta','loc'=>'Mumbai, India','review'=>'Our Bali honeymoon package was beyond expectations. Every detail was planned perfectly. Tanishq Tours made our dream come true!','rating'=>5,'avatar'=>'PM','color'=>'#FFBE00'],
-                    ['name'=>'Arjun Singh','loc'=>'Pune, India','review'=>'Dubai tour was amazing — value for money, great hotel, and a fantastic guide. The team was so responsive and helpful.','rating'=>5,'avatar'=>'AS','color'=>'#022179'],
-                    ['name'=>'Sneha Patel','loc'=>'Ahmedabad, India','review'=>'Booked the Maldives package as a surprise anniversary trip. My wife was overjoyed! Flawless experience from start to finish.','rating'=>5,'avatar'=>'SP','color'=>'#FFBE00'],
-                    ['name'=>'Vikram Nair','loc'=>'Bengaluru, India','review'=>'The Swiss Alps tour was a dream come true. Tanishq made the entire process smooth, from visa assistance to hotel bookings.','rating'=>5,'avatar'=>'VN','color'=>'#022179'],
-                    ['name'=>'Ananya Roy','loc'=>'Kolkata, India','review'=>'Tokyo cultural tour exceeded all my expectations. The guide was knowledgeable and the itinerary was perfectly balanced. 10/10!','rating'=>5,'avatar'=>'AR','color'=>'#FFBE00'],
-                ] as $review)
+                @foreach ($clientReviews as $review)
+                    @php
+                        $reviewerName = $review->reviewer_name ?: 'Guest Traveler';
+                        $nameParts = preg_split('/\s+/', trim($reviewerName));
+                        $initials = collect($nameParts)
+                            ->filter()
+                            ->take(2)
+                            ->map(fn($part) => strtoupper(substr($part, 0, 1)))
+                            ->implode('') ?: 'GT';
+                        $avatarColor = $loop->iteration % 2 === 0 ? '#FFBE00' : '#022179';
+                        $reviewLocation = $review->tour?->destination?->name
+                            ?: $review->tour?->location
+                            ?: $review->tour?->title
+                            ?: 'Tanishq Tours';
+                        $rating = max(1, min(5, (int) $review->rating));
+                    @endphp
                 <div class="swiper-slide">
                     <div class="tt-testi-card">
                         <div class="tt-testi-card__stars">
-                            @for ($s = 0; $s < $review['rating']; $s++)
-                                <i class="fas fa-star"></i>
+                            @for ($s = 1; $s <= 5; $s++)
+                                <i class="{{ $s <= $rating ? 'fas' : 'far' }} fa-star"></i>
                             @endfor
                         </div>
-                        <p class="tt-testi-card__text">"{{ $review['review'] }}"</p>
+                        <p class="tt-testi-card__text">" {{ \Illuminate\Support\Str::limit($review->review_body, 180) }} "</p>
                         <div class="tt-testi-card__author">
-                            <div class="tt-testi-card__avatar" style="background: {{ $review['color'] }}">{{ $review['avatar'] }}</div>
+                            <div class="tt-testi-card__avatar" style="background: {{ $avatarColor }}">
+                                @if ($review->client_pic)
+                                    <img src="{{ asset('storage/reviews/' . $review->client_pic) }}" alt="{{ $reviewerName }}">
+                                @else
+                                    {{ $initials }}
+                                @endif
+                            </div>
                             <div>
-                                <div class="tt-testi-card__name">{{ $review['name'] }}</div>
-                                <div class="tt-testi-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ $review['loc'] }}</div>
+                                <div class="tt-testi-card__name ms-3 mb-1">{{ ucwords($reviewerName) }}</div>
+                                <div class="tt-testi-card__loc"><i class="fas fa-map-marker-alt me-1"></i>{{ ucwords($reviewLocation) }}</div>
                             </div>
                         </div>
                     </div>
@@ -588,6 +452,7 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================================
      CTA BANNER
@@ -635,23 +500,4 @@
         </div>
     </div>
 </section>
-
 @endsection
-
-@push('scripts')
-<script>
-    // Page-specific init handled by front.js
-    document.dispatchEvent(new Event('tt:home:ready'));
-
-    // ── Banner Slide Counter ──────────────────────────────────────
-    (function () {
-        const carousel = document.getElementById('ttBannerCarousel');
-        const currentEl = document.getElementById('tt-current-slide');
-        if (!carousel || !currentEl) return;
-
-        carousel.addEventListener('slid.bs.carousel', function (e) {
-            currentEl.textContent = e.to + 1;
-        });
-    })();
-</script>
-@endpush

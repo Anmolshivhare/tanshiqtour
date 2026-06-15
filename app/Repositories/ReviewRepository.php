@@ -28,16 +28,16 @@ class ReviewRepository extends BaseRepository
 
     public function getPendingReviews()
     {
-        return $this->model->where('status', ReviewStatus::Pending)->with('tour')->get();
+        return $this->model->where('status', 0)->with('tour')->get();
     }
 
     public function getApprovedReviews()
     {
-        return $this->model->where('status', ReviewStatus::Approved)->with('tour')->get();
+        return $this->model->where('status', 1)->with(['tour.destination']) ->latest()->take(12)->get();
     }
 
     public function getByTourId(int $tourId)
     {
-        return $this->model->where('tour_id', $tourId)->where('status', ReviewStatus::Approved)->get();
+        return $this->model->where('tour_id', $tourId)->where('status', 1)->get();
     }
 }

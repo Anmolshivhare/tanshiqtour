@@ -9,7 +9,7 @@
             <div class="row justify-content-center flex-column align-items-center login-shell">
                 <div class="col-xl-5 col-lg-6 col-md-8">
                     <div class="text-center d-block card-image login-logo-wrap">
-                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('admin_panel_logo_img', config('constants.company_logo')) }}" alt="logo" class="img-fluid login-logo" />
+                        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('sidebar_logo_img', config('constants.company_logo')) }}" alt="logo" class="img-fluid login-logo" />
 
                     </div>
                 </div>

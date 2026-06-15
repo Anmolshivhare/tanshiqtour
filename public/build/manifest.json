@@ -3,19 +3,19 @@
     "file": "assets/cropper-CMr-B4M_.css",
     "src": "_cropper-CMr-B4M_.css"
   },
-  "_cropper-CqQHQar5.js": {
-    "file": "assets/cropper-CqQHQar5.js",
+  "_cropper-Dr91g8q8.js": {
+    "file": "assets/cropper-Dr91g8q8.js",
     "name": "cropper",
     "css": [
       "assets/cropper-CMr-B4M_.css"
     ]
   },
-  "_daterangepicker-CTuZzQBU.js": {
-    "file": "assets/daterangepicker-CTuZzQBU.js",
+  "_daterangepicker-D1dHZN-a.js": {
+    "file": "assets/daterangepicker-D1dHZN-a.js",
     "name": "daterangepicker",
     "isDynamicEntry": true,
     "imports": [
-      "_cropper-CqQHQar5.js",
+      "_cropper-Dr91g8q8.js",
       "resources/js/admin/admin.js"
     ]
   },
@@ -299,10 +299,6 @@
     "file": "assets/contact-hero-CJ9sggNe.webp",
     "src": "resources/images/contact-hero.webp"
   },
-  "resources/images/footer_logo.svg": {
-    "file": "assets/footer_logo-DPnlv2CZ.svg",
-    "src": "resources/images/footer_logo.svg"
-  },
   "resources/images/how-lagges.webp": {
     "file": "assets/how-lagges-DzKm3Xz9.webp",
     "src": "resources/images/how-lagges.webp"
@@ -310,10 +306,6 @@
   "resources/images/logo.jpg": {
     "file": "assets/logo-C69NClhu.jpg",
     "src": "resources/images/logo.jpg"
-  },
-  "resources/images/logo.svg": {
-    "file": "assets/logo-BSvtNX9i.svg",
-    "src": "resources/images/logo.svg"
   },
   "resources/images/perasut-1-1.webp": {
     "file": "assets/perasut-1-1-BDwvIoDW.webp",
@@ -328,24 +320,24 @@
     "src": "resources/images/testi-1-2.webp"
   },
   "resources/js/admin/admin.js": {
-    "file": "assets/admin-Kq98bJa4.js",
+    "file": "assets/admin-Dblf48p1.js",
     "name": "admin",
     "src": "resources/js/admin/admin.js",
     "isEntry": true,
     "imports": [
-      "_cropper-CqQHQar5.js"
+      "_cropper-Dr91g8q8.js"
     ],
     "dynamicImports": [
-      "_daterangepicker-CTuZzQBU.js"
+      "_daterangepicker-D1dHZN-a.js"
     ]
   },
   "resources/js/front/custom.js": {
-    "file": "assets/custom-BWs5M2q0.js",
+    "file": "assets/custom-9Eu0CwRg.js",
     "name": "custom",
     "src": "resources/js/front/custom.js",
     "isEntry": true,
     "imports": [
-      "_cropper-CqQHQar5.js"
+      "_cropper-Dr91g8q8.js"
     ]
   },
   "resources/scss/admin/admin.scss": {
@@ -402,7 +394,7 @@
     "src": "resources/scss/front/fonts/WorkSans-SemiBold.ttf"
   },
   "resources/scss/front/front.scss": {
-    "file": "assets/front-BOu3sXbY.css",
+    "file": "assets/front-CyKv5koH.css",
     "src": "resources/scss/front/front.scss",
     "isEntry": true,
     "name": "front",

@@ -29,8 +29,8 @@
                         <select name="parent_id" id="parent_id"
                             class="form-select @error('parent_id') is-invalid @enderror">
                             <option value="">{{ __('labels.select') }}</option>
-                            @foreach($permissions as $id => $name)
-                                <option value="{{ $id }}" {{ old('parent_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                            @foreach($permissions as $id => $permission)
+                                <option value="{{ $id }}" {{ old('parent_id') == $id ? 'selected' : '' }}>{{ $permission->name }}</option>
                             @endforeach
                         </select>
                         @error('parent_id')

@@ -21,22 +21,26 @@
 .tt-banner-slide {
     position: relative;
     width: 100%;
-    height: clamp(480px, 100vh, 750px);   // responsive height
+    height: clamp(500px, 90vh, 800px);   // responsive height — desktop
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     display: flex;
     align-items: center;
+    overflow: hidden;   // clip scale animation so it doesn’t bleed outside
 
-    // Ken-Burns subtle zoom on active slide
+    // Ken-Burns subtle zoom on active slide (desktop only)
     .carousel-item.active & {
-        animation: ttBannerZoom 8s ease-in-out forwards;
+        animation: ttBannerZoom 10s ease-in-out forwards;
     }
 }
 
+// NOTE: We animate via a wrapper pseudo-element trick to avoid
+// breaking background-size:cover on mobile.
+// The actual bg image always stays 'cover'; we scale the slide el instead.
 @keyframes ttBannerZoom {
-    0%   { background-size: 110%; }
-    100% { background-size: 100%; }
+    0%   { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 // ── Gradient Overlays (one per colour scheme) ─────────────────────
@@ -95,6 +99,7 @@
     padding-top: 0;
     padding-bottom: 0;
     max-width: 620px;   // cap text column width
+    width: 100%;
 
     // Animate content in when slide becomes active
     .carousel-item.active & {
@@ -122,8 +127,12 @@
     padding: 0.4rem 1rem;
     border-radius: 50px;
     margin-bottom: 1rem;
+    max-width: 100%;
+    white-space: normal;       // allow wrapping on small screens
+    word-break: break-word;
+    line-height: 1.4;
 
-    i { color: $brand-accent; }
+    i { color: $brand-accent; flex-shrink: 0; }
 }
 
 // ── Main Heading ──────────────────────────────────────────────────
@@ -288,41 +297,130 @@
 }
 
 // ── Responsive ───────────────────────────────────────────────────
+
+// Large screens (≥ 1200px) — give a bit more height
+@media (min-width: 1200px) {
+    .tt-banner-slide {
+        height: clamp(560px, 92vh, 860px);
+    }
+}
+
+// Tablet landscape (992px – 1199px)
+@media (max-width: 1199.98px) {
+    .tt-banner-slide {
+        height: clamp(460px, 70vh, 650px);
+    }
+    .tt-banner-slide__content {
+        max-width: 85%;
+    }
+}
+
+// Tablet portrait (768px – 991px)
 @media (max-width: 991.98px) {
     .tt-banner-slide {
-        height: clamp(400px, 60vh, 600px);
+        height: clamp(400px, 65vh, 580px);
+        align-items: center;   // keep content vertically centred
     }
     .tt-banner-slide__content {
         max-width: 90%;
     }
+    .tt-banner-ctrl__icon {
+        width: 42px;
+        height: 42px;
+    }
 }
 
+// Mobile landscape / large mobile (576px – 767px)
 @media (max-width: 767.98px) {
     .tt-banner-slide {
-        height: clamp(360px, 55vh, 500px);
-        align-items: flex-end;
-        padding-bottom: 3rem;
+        height: clamp(380px, 60vh, 520px);
+        align-items: center;
+        padding-bottom: 3.5rem; // room for indicators
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    // Disable zoom animation on mobile landscape to prevent blank-area glitch
+    .carousel-item.active .tt-banner-slide {
+        animation: none !important;
+        transform: none !important;
+    }
+    .tt-banner-slide__content {
+        max-width: 92%;
+        padding: 0 0.75rem;
     }
     .tt-banner-ctrl__icon {
         width: 38px;
         height: 38px;
         font-size: 0.85rem;
     }
-}
-
-@media (max-width: 575.98px) {
-    .tt-banner-slide {
-        height: clamp(320px, 55vh, 450px);
-        align-items: flex-end;
-        padding-bottom: 4rem;
-    }
     .tt-banner-slide__title {
-        font-size: clamp(1.8rem, 8vw, 2.5rem);
+        font-size: clamp(1.75rem, 6vw, 2.4rem);
+        margin-bottom: 0.75rem;
     }
     .tt-banner-slide__sub {
-        display: none;   // hide desc on very small screens to reduce clutter
+        font-size: 0.88rem;
+        line-height: 1.55;
+        margin-bottom: 1.25rem;
+        max-width: 100%;
+    }
+    .tt-banner-tag {
+        font-size: 0.72rem;
+        padding: 0.35rem 0.8rem;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.75rem;
+    }
+}
+
+// Mobile portrait (< 576px)
+@media (max-width: 575.98px) {
+    .tt-banner-slide {
+        height: 100%;           // full screen height on portrait phones
+        min-height: 500px;
+        max-height: 900px;
+        align-items: center;
+        padding-bottom: 4rem;    // room for dot indicators
+        padding-top: 0;
+        // Ensure background always covers fully on mobile
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    // Kill zoom animation on mobile — it was causing blank space below image
+    .carousel-item.active .tt-banner-slide {
+        animation: none !important;
+        transform: none !important;
+    }
+    .tt-banner-slide__content {
+        max-width: 100%;
+        padding: 0 1.25rem;
+    }
+    .tt-banner-slide__title {
+        font-size: clamp(1.55rem, 7.5vw, 2.1rem);
+        margin-bottom: 0.65rem;
+        line-height: 1.2;
+    }
+    .tt-banner-slide__sub {
+        font-size: 0.84rem;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+        max-width: 100%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .tt-banner-tag {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.75rem;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.6rem;
+        max-width: 90%;
+    }
+    .tt-banner-slide__btn {
+        font-size: 0.84rem;
+        padding: 0.6rem 1.35rem;
     }
     .tt-banner-ctrl { display: none !important; }  // rely on swipe gestures
+    .tt-banner-indicators { bottom: 12px !important; }
 }
 
 // ================================================
@@ -690,21 +788,6 @@
     z-index: 5;
 }
 
-.tt-destinations-swiper .swiper-slide-active .tt-dest-capsule {
-    border-color: #FFBE00;
-    box-shadow: 0 28px 48px rgba(#1f1f1f, 0.26), 0 0 0 6px rgba(#FFBE00, 0.22);
-}
-
-.tt-destinations-swiper .swiper-slide-active {
-    transform: scale(1.07);
-}
-
-.tt-destinations-swiper .swiper-slide-prev,
-.tt-destinations-swiper .swiper-slide-next {
-    transform: scale(0.92);
-    opacity: 0.92;
-}
-
 .tt-dest-capsule:hover {
     transform: translateY(-8px);
     box-shadow: 0 26px 44px rgba(#1f1f1f, 0.24), 0 0 0 6px rgba(#FFBE00, 0.22);
@@ -717,8 +800,8 @@
 
 .tt-destinations-prev,
 .tt-destinations-next {
-    width: 48px !important;
-    height: 48px !important;
+    width: 40px !important;
+    height: 40px !important;
     border-radius: 50% !important;
     background: #ffbe00  !important;
     color: #fff !important;
@@ -792,8 +875,22 @@
 // ================================================
 .tt-why {
     background: linear-gradient(160deg, #f0faf4 0%, #f8f8f0 50%, #f0f4fa 100%);
-    padding: 5rem 0 18rem;
+    padding: 5rem 0 18rem;   // large padding on desktop for deco images overlap
     isolation: isolate;
+
+    // On tablet and below — deco images are hidden (d-none d-lg-block),
+    // so remove the giant bottom padding that was only needed for them
+    @media (max-width: 991.98px) {
+        padding: 4rem 0 4rem;
+    }
+
+    @media (max-width: 767.98px) {
+        padding: 3.5rem 0 3rem;
+    }
+
+    @media (max-width: 575.98px) {
+        padding: 3rem 0 2.5rem;
+    }
 }
 
 // Decorative images (balloon left, airplane right)
@@ -803,21 +900,27 @@
     user-select: none;
     z-index: 0;
     opacity: 0.92;
+    // Clip any overflow — prevents horizontal scroll at 100% zoom
+    max-width: 18vw;
 }
 
 .tt-why__deco--left {
-    left: 0px;
+    left: 0;
     bottom: 0;
-    width: clamp(200px, 18vw, 300px);
-    // Gentle float animation
+    width: clamp(160px, 16vw, 260px);
+    max-width: 16vw;
     animation: ttWhyFloat 5s ease-in-out infinite;
+    // Shift slightly inward so it never goes outside the section
+    transform: translateX(-8%);
 }
 
 .tt-why__deco--right {
-    right: -10px;
-    top: calc(50% - 160px);   // pre-offset so float doesn't displace centering
-    width: clamp(220px, 20vw, 320px);
+    right: 0.5em;
+    top: calc(25% - 140px);
+    width: clamp(180px, 17vw, 280px);
+    max-width: 17vw;
     animation: ttWhyFloat 6s ease-in-out 0.8s infinite;
+    transform: translateX(8%);
 }
 
 @keyframes ttWhyFloat {
@@ -896,6 +999,10 @@
         radial-gradient(ellipse 55% 50% at 100% 100%, rgba(255, 210, 170, 0.35) 0%, transparent 70%),
         linear-gradient(160deg, #f0f8f0 0%, #fefefe 50%, #fff8f2 100%);
     position: relative;
+
+    .container {
+        max-width: 1440px !important;
+    }
 }
 
 // ── Decorative corner images ──────────────────────────────────────
@@ -908,20 +1015,22 @@
 
     // Top-Left: Suitcase illustration
     &--tl {
-        top: 2rem;
-        left: 2rem;
-        width: clamp(200px, 17vw, 280px);
-        transform: rotate(-8deg);
+        top: 2.5rem;
+        left: 0;                            // flush with section left edge
+        width: clamp(150px, 13vw, 230px);   // smaller so it never overflows
+        max-width: 13vw;
+        transform: rotate(-8deg) translateX(-10%);
         animation: ttPkgFloat 5.5s ease-in-out infinite;
         filter: drop-shadow(0 12px 28px rgba(0,0,0,0.12));
     }
 
     // Bottom-Right: Beach/Palm illustration
     &--br {
-        bottom: 0rem;
-        right: 0.5rem;
-        width: clamp(200px, 18vw, 290px);
-        transform: rotate(6deg);
+        bottom: 0.5rem;
+        right: 0;                           // flush with section right edge
+        width: clamp(150px, 13vw, 230px);
+        max-width: 13vw;
+        transform: rotate(6deg) translateX(10%);
         animation: ttPkgFloat 6.5s ease-in-out 0.9s infinite;
         filter: drop-shadow(0 12px 28px rgba(0,0,0,0.10));
     }
@@ -973,19 +1082,28 @@
 
 .tt-pkg-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 440px));
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.75rem;
+    width: 100%;
+    max-width: 1380px;
+    margin: 0 auto;
 
-    @media (max-width: 991px) { grid-template-columns: repeat(2, 1fr); }
-    @media (max-width: 575px) { grid-template-columns: 1fr; }
+    @media (max-width: 575px) {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
 }
 
 .tt-pkg-card {
     background: #fff;
-    border-radius: 20px;
+    border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba($brand-primary, 0.06);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    min-width: 0;
 
     &:hover {
         transform: translateY(-8px);
@@ -997,7 +1115,7 @@
 
     &__img {
         position: relative;
-        height: 220px;
+        height: clamp(190px, 15vw, 220px);
         overflow: hidden;
 
         img {
@@ -1020,11 +1138,34 @@
         text-transform: uppercase;
     }
 
-    &__body { padding: 1.25rem; }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        min-height: 170px;
+        padding: clamp(1rem, 1.4vw, 1.35rem);
+    }
 
-    &__loc { font-size: 0.78rem; color: $brand-accent; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; i { color: $brand-accent; } }
+    &__loc {
+        font-size: 0.78rem;
+        color: $brand-accent;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.35rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
-    &__title { font-size: 1rem; font-weight: 700; color: $brand-primary; margin: 0 0 0.75rem; }
+        i { color: $brand-accent; }
+    }
+
+    &__title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $brand-primary;
+        line-height: 1.35;
+        margin: 0 0 0.75rem;
+    }
 
     &__meta {
         display: flex;
@@ -1034,6 +1175,14 @@
         margin-bottom: 1rem;
         padding-bottom: 0.75rem;
         border-bottom: 1px solid rgba($brand-primary, 0.08);
+        gap: 1rem;
+
+        span {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 
     &__rating { color: $brand-accent; i { color: $brand-accent; } }
@@ -1042,6 +1191,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
+        margin-top: auto;
     }
 
     &__label { font-size: 0.7rem; color: #9ca3af; display: block; }
@@ -1190,6 +1341,13 @@
         color: #fff;
         flex-shrink: 0;
         border: 2px solid rgba(#fff, 0.5);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     &__name { font-weight: 700; font-size: 0.95rem; color: $brand-primary; }
@@ -2950,4 +3108,664 @@
     p:last-child {
         margin-bottom: 0;
     }
+}
+
+// ============================================================
+// GLOBAL RESPONSIVE OVERRIDES
+// All screens — mobile, tablet, desktop, large
+// ============================================================
+
+// ── Large screens (≥ 1400px) ───────────────────────────────
+@media (min-width: 1400px) {
+    .tt-section {
+        padding: 6rem 0;
+    }
+
+    .tt-why {
+        padding: 6rem 0 20rem;
+    }
+
+    .tt-stats {
+        padding: 9rem 0;
+    }
+
+    .tt-cta-banner {
+        padding: 8rem 0;
+    }
+}
+
+// ── Tablet landscape (992px – 1199px) ─────────────────────
+@media (max-width: 1199.98px) {
+    .tt-section {
+        padding: 4.5rem 0;
+    }
+
+    .tt-section-head {
+        margin-bottom: 2.5rem;
+    }
+
+    .tt-stats {
+        padding: 6rem 0;
+    }
+
+    .tt-cta-banner {
+        padding: 5.5rem 0;
+    }
+
+    .tt-newsletter {
+        padding: 4.5rem 0;
+    }
+
+    // Hero v2
+    .tt-hero-v2 {
+        padding: 5rem 0 3.5rem;
+    }
+}
+
+// ── Tablet portrait (768px – 991px) ───────────────────────
+@media (max-width: 991.98px) {
+    // Section common
+    .tt-section {
+        padding: 4rem 0;
+    }
+
+    .tt-section-head {
+        margin-bottom: 2rem;
+    }
+
+    .tt-section-title {
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+    }
+
+    // Hero v2
+    .tt-hero-v2 {
+        min-height: auto;
+        padding: 4.5rem 0 3rem;
+    }
+
+    .tt-hero-v2__title {
+        font-size: clamp(2rem, 5vw, 2.8rem);
+    }
+
+    // Stats
+    .tt-stats {
+        padding: 5rem 0;
+    }
+
+    .tt-stat-v2__num {
+        font-size: 2rem;
+    }
+
+    // CTA Banner
+    .tt-cta-banner {
+        padding: 5rem 0;
+    }
+
+    .tt-cta-banner__title {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    // Newsletter
+    .tt-newsletter {
+        padding: 4rem 0;
+    }
+
+    .tt-newsletter__inner {
+        padding: 2.5rem 1.5rem;
+    }
+
+    // Testimonials
+    .tt-testi-card {
+        min-height: auto;
+    }
+
+    // Destinations
+    .tt-dest-capsule {
+        height: 320px;
+    }
+
+    // Why cards
+    .tt-why-card {
+        padding: 2rem 1.5rem 1.75rem;
+    }
+
+    .tt-why-card__icon {
+        width: 64px;
+        height: 64px;
+        font-size: 1.5rem;
+    }
+
+    // Tour packages
+    .tt-pkg-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+// ── Mobile landscape / large mobile (576px – 767px) ────────
+@media (max-width: 767.98px) {
+    // Section common
+    .tt-section {
+        padding: 3.5rem 0;
+    }
+
+    .tt-section-head {
+        margin-bottom: 1.75rem;
+    }
+
+    .tt-section-title {
+        font-size: clamp(1.5rem, 5vw, 1.9rem);
+    }
+
+    .tt-section-sub {
+        font-size: 0.92rem;
+    }
+
+    // Hero v2
+    .tt-hero-v2 {
+        padding: 3.5rem 0 2.5rem;
+    }
+
+    .tt-hero-v2__title {
+        font-size: clamp(1.8rem, 6vw, 2.4rem);
+    }
+
+    .tt-hero-v2__desc {
+        font-size: 0.95rem;
+    }
+
+    .tt-hero-v2__ctas {
+        flex-direction: column;
+        gap: 0.75rem;
+
+        a { justify-content: center; }
+    }
+
+    // Stats — 2 columns
+    .tt-stats {
+        padding: 4rem 0;
+    }
+
+    .tt-stat-v2 {
+        padding: 1.5rem 0.75rem;
+    }
+
+    .tt-stat-v2__num {
+        font-size: 1.8rem;
+    }
+
+    .tt-stat-v2__label {
+        font-size: 0.82rem;
+    }
+
+    .tt-stat-v2__icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 0.75rem;
+
+        i { font-size: 1.2rem; }
+    }
+
+    // CTA Banner
+    .tt-cta-banner {
+        padding: 4rem 0;
+    }
+
+    .tt-cta-banner__title {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+
+    .tt-cta-banner__sub {
+        font-size: 0.9rem;
+    }
+
+    .tt-cta-banner__btns {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    // Newsletter
+    .tt-newsletter {
+        padding: 3.5rem 0;
+    }
+
+    .tt-newsletter__inner {
+        padding: 2rem 1.25rem;
+        border-radius: 20px;
+    }
+
+    .tt-newsletter h2 {
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
+    }
+
+    .tt-newsletter p {
+        font-size: 0.9rem;
+    }
+
+    // Testimonials
+    .tt-testi-swiper {
+        padding: 16px 8px 50px !important;
+    }
+
+    .tt-testi-card {
+        padding: 1.5rem;
+    }
+
+    .tt-testi-card__text {
+        font-size: 0.88rem;
+    }
+
+    // Why cards: full width on tablet portrait
+    .tt-why-card {
+        padding: 1.75rem 1.25rem 1.5rem;
+    }
+
+    // Tour packages
+    .tt-pkg-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .tt-pkg-card__img {
+        height: 180px;
+    }
+
+    // Filter tabs
+    .tt-filter-tabs {
+        gap: 0.45rem;
+        margin-bottom: 2rem;
+    }
+
+    .tt-filter-tab {
+        font-size: 0.82rem;
+        padding: 0.45rem 1.1rem;
+    }
+}
+
+// ── Mobile portrait (< 576px) ──────────────────────────────
+@media (max-width: 575.98px) {
+    // Section common
+    .tt-section {
+        padding: 3rem 0;
+    }
+
+    .tt-section-head {
+        margin-bottom: 1.5rem;
+    }
+
+    .tt-section-title {
+        font-size: clamp(1.4rem, 6vw, 1.75rem);
+    }
+
+    .tt-section-sub {
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
+    // Hero v2
+    .tt-hero-v2 {
+        padding: 3rem 0 2rem;
+    }
+
+    .tt-hero-v2__title {
+        font-size: clamp(1.65rem, 7vw, 2.1rem);
+    }
+
+    .tt-hero-v2__desc {
+        font-size: 0.9rem;
+        line-height: 1.65;
+    }
+
+    .tt-badge-pill {
+        font-size: 0.75rem;
+        padding: 0.38rem 0.85rem;
+    }
+
+    .tt-btn-hero-primary,
+    .tt-btn-hero-outline {
+        font-size: 0.88rem;
+        padding: 0.7rem 1.4rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    // Stats — 2 columns on mobile
+    .tt-stats {
+        padding: 3.5rem 0;
+    }
+
+    .tt-stats__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .tt-stat-v2 {
+        padding: 1.25rem 0.6rem;
+        border-radius: 16px;
+    }
+
+    .tt-stat-v2__num {
+        font-size: 1.6rem;
+    }
+
+    .tt-stat-v2__label {
+        font-size: 0.78rem;
+    }
+
+    .tt-stat-v2__icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 0.6rem;
+
+        i { font-size: 1.1rem; }
+    }
+
+    // CTA Banner
+    .tt-cta-banner {
+        padding: 3.5rem 0;
+    }
+
+    .tt-cta-banner__title {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .tt-btn-cta-primary,
+    .tt-btn-cta-outline {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+
+    // Newsletter
+    .tt-newsletter {
+        padding: 3rem 0;
+    }
+
+    .tt-newsletter__inner {
+        padding: 1.75rem 1rem;
+        border-radius: 16px;
+    }
+
+    .tt-newsletter h2 {
+        font-size: clamp(1.3rem, 6vw, 1.6rem);
+    }
+
+    .tt-newsletter__icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
+
+    // Testimonials
+    .tt-testi-card {
+        padding: 1.25rem;
+        border-radius: 18px;
+    }
+
+    .tt-testi-card__text {
+        font-size: 0.85rem;
+        line-height: 1.65;
+    }
+
+    .tt-testi-card__avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 0.88rem;
+    }
+
+    .tt-testi-card__name {
+        font-size: 0.88rem;
+    }
+
+    // Why cards
+    .tt-why-card {
+        padding: 1.5rem 1rem 1.25rem;
+        border-radius: 18px;
+    }
+
+    .tt-why-card__icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.4rem;
+        margin-bottom: 1rem !important;
+    }
+
+    .tt-why-card__title {
+        font-size: 0.98rem;
+    }
+
+    .tt-why-card__desc {
+        font-size: 0.82rem;
+    }
+
+    // Tour packages — single column on mobile
+    .tt-pkg-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+        padding: 0 0.25rem;
+    }
+
+    .tt-pkg-card__img {
+        height: 195px;
+    }
+
+    .tt-pkg-card__body {
+        min-height: auto;
+        padding: 1rem;
+    }
+
+    .tt-pkg-card__title {
+        font-size: 0.95rem;
+    }
+
+    // Filter tabs
+    .tt-filter-tabs {
+        gap: 0.4rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .tt-filter-tab {
+        font-size: 0.78rem;
+        padding: 0.4rem 0.95rem;
+    }
+
+    // Destinations
+    .tt-dest-capsule {
+        height: 280px;
+    }
+
+    .tt-dest-filter__btn {
+        font-size: 0.78rem;
+        padding: 0.45rem 0.9rem;
+    }
+
+    // Topbar — hide on very small screens to save space
+    .tt-topbar {
+        padding: 0.35rem 0;
+
+        &__left {
+            gap: 0.75rem;
+        }
+
+        &__item {
+            font-size: 0.75rem;
+        }
+    }
+}
+
+// ============================================================
+//  ADD A REVIEW FORM — Tour Details
+// ============================================================
+
+.td-review-form-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(#1f1f1f, 0.07);
+    border: 1px solid rgba(#1f1f1f, 0.07);
+}
+
+.tt-review-form__label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.45rem;
+}
+
+.tt-review-form__input {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fafafa;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+
+    &:focus {
+        border-color: $warning;
+        box-shadow: 0 0 0 3px rgba($warning, 0.12);
+        outline: none;
+        background: #fff;
+    }
+
+    &.is-invalid {
+        border-color: #dc3545;
+    }
+}
+
+.tt-review-form__textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+.tt-review-form__error {
+    font-size: 0.82rem;
+    color: #dc3545;
+    margin-top: 0.3rem;
+}
+
+// Star Rating
+.tt-review-form__rating-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.tt-star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 4px;
+    width: fit-content;
+}
+
+.tt-star-rating__label {
+    font-size: 1.6rem;
+    color: #d0d0d0;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+    line-height: 1;
+
+    &:hover,
+    &--active {
+        color: #f59e0b;
+        transform: scale(1.15);
+    }
+}
+
+// Profile Photo Upload
+.tt-review-upload__preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8f5ee 0%, #d4d4ed 100%);
+    border: 2.5px solid $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease;
+}
+
+.tt-review-upload__icon {
+    font-size: 1.8rem;
+    color: $primary;
+    opacity: 0.7;
+}
+
+.tt-review-upload__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: $primary;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.48rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
+    box-shadow: 0 4px 12px rgba($primary, 0.3);
+    border: none;
+
+    &:hover {
+        background: darken($warning, 8%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba($warning, 0.38);
+    }
+}
+
+.tt-review-upload__hint {
+    font-size: 0.78rem;
+    color: #999;
+}
+
+// Submit Button
+.tt-review-form__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: $primary;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba($primary, 0.35);
+    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
+
+    &:hover {
+        background: darken($warning, 8%);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba($warning, 0.42);
+    }
+
+    &:active { transform: translateY(0); }
+}
+
+// Success Alert
+.tt-review-alert {
+    border-radius: 10px;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.93rem;
+    font-weight: 500;
+
+    &--success {
+        background: #edfaf3;
+        border: 1.5px solid #3aaa6e;
+        color: #1d6e44;
+
+        i { color: #3aaa6e; font-size: 1.1rem; }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .td-review-form-section { padding: 1.25rem; }
+    .tt-review-form__submit { width: 100%; justify-content: center; }
 }
