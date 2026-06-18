@@ -50,6 +50,11 @@ Route::get('/admin', function () {
     return redirect()->route('admin.login');
 })->name('admin.root');
 
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+})->name('admin.root');
+
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('post-login');
