@@ -19,7 +19,11 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Front\FrontAuthController;
 use App\Http\Controllers\Front\HomeController;
+use App\Models\Destination;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('front.home');
@@ -112,4 +116,33 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [\App\Http\Controllers\Front\WishlistController::class, 'index'])->name('front.wishlist');
     Route::post('/wishlist/toggle', [\App\Http\Controllers\Front\WishlistController::class, 'toggle'])->name('front.wishlist.toggle');
+});
+
+Route::get('/generate-sitemap', function () {
+
+    $sitemap = Sitemap::create();
+
+    // Static Pages
+    $sitemap->add(route('front.home'));
+    $sitemap->add(route('front.about'));
+    $sitemap->add(route('front.contact'));
+    $sitemap->add(route('front.destinations'));
+    $sitemap->add(route('front.tours'));
+
+    // Dynamic Destination Pages
+    Destination::all()->each(function ($destination) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.destination-details', $destination->slug))
+        );
+    });
+
+    Tour::all()->each(function ($tour) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.tour-details', $tour->slug))
+        );
+    });
+
+    $sitemap->writeToFile(public_path('sitemap.xml'));
+
+    return 'Sitemap generated successfully!';
 });

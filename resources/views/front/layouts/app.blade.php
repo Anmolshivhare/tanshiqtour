@@ -14,21 +14,49 @@
     <title>{{ $siteName }} | Best Tour & Travel Agency | Holiday & Honeymoon Packages</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Tanishq Tour & Travel is your trusted tour and travel agency for domestic and international holiday packages, honeymoon trips, family vacations, adventure tours, hotel and flight booking at great prices.">
-    <meta name="keywords" content="Tanishq Tour & Travel, travel agency, tour operator, holiday packages, honeymoon tour packages, domestic tours, international tours, budget trips, luxury tours, flight booking, hotel booking, adventure tours, family vacation packages, best travel agency in India">
+    <meta name="description"
+        content="Tanishq Tour & Travel is your trusted tour and travel agency for domestic and international holiday packages, honeymoon trips, family vacations, adventure tours, hotel and flight booking at great prices.">
+    <meta name="keywords"
+        content="Tanishq Tour & Travel, travel agency, tour operator, holiday packages, honeymoon tour packages, domestic tours, international tours, budget trips, luxury tours, flight booking, hotel booking, adventure tours, family vacation packages, best travel agency in India">
     <meta name="author" content="{{ $siteName }}">
     <meta name="robots" content="index, follow">
 
     <!-- OG Tags -->
     <meta property="og:title" content="{{ $siteName }} | Best Tour & Travel Agency">
-    <meta property="og:description" content="Book holiday packages, international tours, honeymoon trips and adventure tours with Tanishq Tour & Travel.">
+    <meta property="og:description"
+        content="Book holiday packages, international tours, honeymoon trips and adventure tours with Tanishq Tour & Travel.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}">
+    <meta property="og:image"
+        content="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}" alt="fav-icon">
+    <link rel="icon" type="image/png"
+        href="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}"
+        alt="fav-icon">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Organization',
+    'name' => $siteName,
+    'url' => url('/'),
+    'logo' => \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon'))
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+
+    <!-- Website Schema -->
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => $siteName,
+        'url' => url('/')
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
 
     <!-- Scripts -->
     @vite(['resources/scss/front/front.scss', 'resources/js/front/custom.js'])
@@ -39,9 +67,6 @@
         <main>
             <div id="layoutSidenav_content" class="main-content">
                 @include('front.layouts.partials.header')
-                {{-- .tt-page-wrapper uses overflow-x:clip to prevent horizontal scroll
-                     from decorative deco images. It does NOT wrap the sticky header
-                     because overflow:hidden/clip on an ancestor breaks position:sticky. --}}
                 <div class="tt-page-wrapper">
                     <div class="main-inner-content">
                         <div class="">
