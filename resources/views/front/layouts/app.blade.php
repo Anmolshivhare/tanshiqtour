@@ -37,6 +37,19 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2602ZWYZ6D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2602ZWYZ6D');
+    </script>
+
     <!-- Organization Schema -->
     <script type="application/ld+json">
     {!! json_encode([
@@ -89,4 +102,5 @@
         @stack('scripts')
     </div>
 </body>
+
 </html>
