@@ -69,8 +69,16 @@
                         <input type="url" name="youtube_url" class="form-control" value="{{ $settings['youtube_url'] ?? '' }}">
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label">Website  Url</label>
+                        <input type="url" name="website_url" class="form-control" value="{{ $settings['website_url'] ?? '' }}">
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">WhatsApp Number</label>
                         <input type="text" name="whatsapp_number" class="form-control" value="{{ $settings['whatsapp_number'] ?? '' }}">
+                    </div>
+                     <div class="col-md-6">
+                        <label class="form-label">Support Email</label>
+                        <input type="email" name="support_email" class="form-control" value="{{ $settings['support_email'] ?? '' }}">
                     </div>
                 </div>
             </div>

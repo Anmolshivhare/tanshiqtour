@@ -19,15 +19,21 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Front\FrontAuthController;
 use App\Http\Controllers\Front\HomeController;
+use App\Models\Destination;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('front.home');
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/tours/{slug}', [HomeController::class, 'tourDetails'])->name('front.tour-details');
+Route::post('/tours/{slug}/enquiry', [HomeController::class, 'storeTourEnquiry'])->name('front.tour.enquiry.store');
 Route::post('/tours/{slug}/reviews', [HomeController::class, 'storeReview'])->name('front.tour.review.store');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
+Route::post('/contact-us', [HomeController::class, 'storeContact'])->name('front.contact.store');
 Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
 Route::get('/destinations/{slug}', [HomeController::class, 'destinationDetails'])->name('front.destination-details');
 Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
@@ -45,6 +51,11 @@ Route::get('/logout', [FrontAuthController::class, 'logout'])->name('front.logou
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 })->name('admin.root');
+
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+})->name('admin.root');
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('login');
@@ -112,4 +123,33 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [\App\Http\Controllers\Front\WishlistController::class, 'index'])->name('front.wishlist');
     Route::post('/wishlist/toggle', [\App\Http\Controllers\Front\WishlistController::class, 'toggle'])->name('front.wishlist.toggle');
+});
+
+Route::get('/generate-sitemap', function () {
+
+    $sitemap = Sitemap::create();
+
+    // Static Pages
+    $sitemap->add(route('front.home'));
+    $sitemap->add(route('front.about'));
+    $sitemap->add(route('front.contact'));
+    $sitemap->add(route('front.destinations'));
+    $sitemap->add(route('front.tours'));
+
+    // Dynamic Destination Pages
+    Destination::all()->each(function ($destination) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.destination-details', $destination->slug))
+        );
+    });
+
+    Tour::all()->each(function ($tour) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.tour-details', $tour->slug))
+        );
+    });
+
+    $sitemap->writeToFile(public_path('sitemap.xml'));
+
+    return 'Sitemap generated successfully!';
 });
