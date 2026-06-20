@@ -46,7 +46,7 @@
                     <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('footer_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Tanishq Tour & Travel Logo"
                         width="120" height="100">
                 </a>
-                <p class="text-white text-justify small lh-lg">
+                <p class="text-white text-justify small lh-lg pt-3">
                     Explore the world with us. We offer the best tour packages and customized adventures across the
                     globe.
                 </p>
@@ -104,10 +104,7 @@
 
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5 class="text-uppercase fw-bolder mb-5 ">Map</h5>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248.3809009050046!2d77.0803829905804!3d28.491743976176814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d193e3a6a7905%3A0x5ca3e96c47a011f0!2sTag%20Tower%2C%20220%2C%20Udyog%20Vihar%20Phase%204%20Rd%2C%20Phase%20III%2C%20Udyog%20Vihar%2C%20Sector%2018%2C%20Gurugram%2C%20Shahpur%2C%20Haryana%20122015!5e0!3m2!1sen!2sin!4v1763576348366!5m2!1sen!2sin"
-                    width="300" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d887.4185215112226!2d78.03612516962596!3d27.166542791689533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397471c46e6ba04d%3A0xdaa3691a1a34b453!2sTanishq%20Tour%20%26%20Travels%20%7C%20best%20travel%20agency%20in%20agra!5e0!3m2!1sen!2sin!4v1781940985266!5m2!1sen!2sin" width="400" height="250" class="me-2" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>

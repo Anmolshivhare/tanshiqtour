@@ -21,20 +21,24 @@ class EnquiryRepository extends BaseRepository
             'subject',
             'message',
             'tour_id',
+            'travel_date',
+            'adults',
+            'children',
+            'city',
             'status',
         ]);
     }
 
-    public function getUnread()
-    {
-        return $this->model->where('status', EnquiryStatus::New)->get();
-    }
+    // public function getUnread()
+    // {
+    //     return $this->model->where('status', EnquiryStatus::New)->get();
+    // }
 
-    public function markAsRead(int $id): void
-    {
-        $enquiry = $this->model->find($id);
-        if ($enquiry && $enquiry->status === EnquiryStatus::New) {
-            $enquiry->update(['status' => EnquiryStatus::Read->value]);
-        }
-    }
+    // public function markAsRead(int $id): void
+    // {
+    //     $enquiry = $this->model->find($id);
+    //     if ($enquiry && $enquiry->status === EnquiryStatus::New) {
+    //         $enquiry->update(['status' => EnquiryStatus::Read->value]);
+    //     }
+    // }
 }

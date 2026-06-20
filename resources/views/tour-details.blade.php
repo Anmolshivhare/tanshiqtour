@@ -235,24 +235,24 @@
                                     ->values()
                                 : collect([asset(config('constants.destination_default_image'))]);
                     @endphp
-                    @if($tourImages->count() > 0)
-                    <div class="td-section mb-4">
-                        <h2 class="td-section__heading">Tour Gallery</h2>
-                        <div class="td-gallery-grid" id="tourGalleryGrid">
-                            @foreach ($galleryImages as $index => $imgUrl)
-                                <div class="td-gallery-grid__item td-gallery-grid__item--clickable"
-                                    data-gallery-index="{{ $index }}" data-bs-toggle="modal"
-                                    data-bs-target="#galleryLightboxModal" role="button" tabindex="0"
-                                    aria-label="View image {{ $index + 1 }}">
-                                    <img src="{{ $imgUrl }}" alt="Tour gallery image {{ $index + 1 }}"
-                                        class="td-gallery-grid__img" loading="lazy">
-                                    <div class="td-gallery-grid__overlay">
-                                        <i class="fas fa-expand-alt"></i>
+                    @if ($tourImages->count() > 0)
+                        <div class="td-section mb-4">
+                            <h2 class="td-section__heading">Tour Gallery</h2>
+                            <div class="td-gallery-grid" id="tourGalleryGrid">
+                                @foreach ($galleryImages as $index => $imgUrl)
+                                    <div class="td-gallery-grid__item td-gallery-grid__item--clickable"
+                                        data-gallery-index="{{ $index }}" data-bs-toggle="modal"
+                                        data-bs-target="#galleryLightboxModal" role="button" tabindex="0"
+                                        aria-label="View image {{ $index + 1 }}">
+                                        <img src="{{ $imgUrl }}" alt="Tour gallery image {{ $index + 1 }}"
+                                            class="td-gallery-grid__img" loading="lazy">
+                                        <div class="td-gallery-grid__overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
                     @endif
 
                     {{-- ===== GALLERY LIGHTBOX MODAL ===== --}}
@@ -665,83 +665,111 @@
                         </div>
 
                         <div class="td-booking-card__body">
-                            <form action="{{ route('front.contact') }}" method="GET" id="bookingForm">
-                                <div class="td-booking-field mb-3">
-                                    <label class="td-booking-field__label">From</label>
-                                    <div class="input-group">
-                                        <input type="date" class="form-control td-booking-field__input"
-                                            name="from_date" id="fromDate">
-                                        <span class="input-group-text bg-white border-start-0">
-                                            <i class="far fa-calendar-alt text-primary"></i>
-                                        </span>
+                            @if (session('tour_enquiry_success'))
+                                <div class="tt-tour-enquiry-alert tt-tour-enquiry-alert--success alert alert-success alert-dismissible fade show mb-3"
+                                    role="alert">
+                                    <i class="fas fa-check-circle me-2"></i>{{ session('tour_enquiry_success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('front.tour.enquiry.store', $tour->slug) }}" method="POST"
+                                id="tourEnquiryForm" novalidate>
+                                @csrf
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12  col-sm-12  td-booking-field mb-3">
+                                        <label for="tour-enquiry-name" class="td-booking-field__label">Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control td-booking-field__input"
+                                                name="name" id="tour-enquiry-name" placeholder="Name"
+                                                value="{{ old('name') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12  col-sm-12 td-booking-field mb-3">
+                                        <label for="tour-enquiry-email" class="td-booking-field__label">Email</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control td-booking-field__input"
+                                                name="email" id="tour-enquiry-email" placeholder="Email"
+                                                value="{{ old('email') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12  col-sm-12  td-booking-field mb-3">
+                                        <label for="tour-enquiry-phone" class="td-booking-field__label">Phone</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control td-booking-field__input"
+                                                name="phone" id="tour-enquiry-phone" placeholder="Phone"
+                                                value="{{ old('phone') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12  col-sm-12  td-booking-field mb-3">
+                                        <label for="tour-enquiry-subject" class="td-booking-field__label">Subject</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control td-booking-field__input"
+                                                name="subject" id="tour-enquiry-subject" placeholder="Subject"
+                                                value="{{ old('subject', 'Tour booking enquiry') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12  col-sm-12  td-booking-field mb-3">
+                                        <label for="tour-enquiry-city" class="td-booking-field__label">City</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control td-booking-field__input"
+                                                name="city" id="tour-enquiry-city" placeholder="City"
+                                                value="{{ old('city') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12  col-sm-12 td-booking-field mb-3">
+                                        <label for="tour-enquiry-travel-date" class="td-booking-field__label">Travel
+                                            Date</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control td-booking-field__input"
+                                                name="travel_date" id="tour-enquiry-travel-date"
+                                                value="{{ old('travel_date') }}">
+                                            <span class="input-group-text bg-white border-start-0">
+                                                <i class="far fa-calendar-alt text-primary"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="adults" class="td-booking-field__label">Adults</label>
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-warning btn-outline-dark"
+                                                onclick="changeValue('adults', -1)">-</button>
+
+                                            <input type="number" id="adults" name="adults"
+                                                class="form-control text-center" value="{{ old('adults', 1) }}"
+                                                min="1">
+
+                                            <button type="button" class="btn btn-warning btn-outline-dark"
+                                                onclick="changeValue('adults', 1)">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="children" class="td-booking-field__label">Children</label>
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-warning btn-outline-dark"
+                                                onclick="changeValue('children', -1)">-</button>
+
+                                            <input type="number" id="children" name="children"
+                                                class="form-control text-center" value="{{ old('children', 0) }}"
+                                                min="0">
+
+                                            <button type="button" class="btn btn-warning btn-outline-dark"
+                                                onclick="changeValue('children', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="td-booking-field mb-3">
+                                        <label for="tour-enquiry-tour" class="td-booking-field__label">Tour</label>
+                                        <input type="text" class="form-control td-booking-field__input"
+                                            id="tour-enquiry-tour" value="{{ $tour->title }}" disabled>
+                                        <input type="hidden" name="tour_id" value="{{ $tour->id }}">
                                     </div>
                                 </div>
-
-                                <div class="td-booking-field mb-3">
-                                    <label class="td-booking-field__label">Time</label>
-                                    <div class="input-group">
-                                        <input type="time" class="form-control td-booking-field__input" name="time"
-                                            id="bookingTime">
-                                        <span class="input-group-text bg-white border-start-0">
-                                            <i class="far fa-clock text-success"></i>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="td-booking-field mb-3">
-                                    <label class="td-booking-field__label">Ticket Ia</label>
-                                    <select class="form-select td-booking-field__input" name="ticket_type"
-                                        id="ticketType">
-                                        <option value="">Please Select Date First</option>
-                                        <option value="standard">Standard Ticket</option>
-                                        <option value="premium">Premium Ticket</option>
-                                        <option value="vip">VIP Package</option>
-                                    </select>
-                                </div>
-
-                                <div class="td-booking-extras mb-3">
-                                    <p class="td-booking-extras__label mb-2">Add Extra:</p>
-                                    <div class="form-check mb-1">
-                                        <input class="form-check-input" type="checkbox" id="extraPerBooking"
-                                            name="extras[]" value="per_booking">
-                                        <label class="form-check-label td-booking-extras__check-label"
-                                            for="extraPerBooking">
-                                            Services Per Booking
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="extraPerPerson"
-                                            name="extras[]" value="per_person">
-                                        <label class="form-check-label td-booking-extras__check-label"
-                                            for="extraPerPerson">
-                                            Services Per Person
-                                        </label>
-                                    </div>
-                                </div>
-{{-- 
-                                <div class="td-booking-pricing mb-3">
-                                    <div class="td-booking-pricing__row">
-                                        <span>Adult</span>
-                                        <span
-                                            class="td-booking-pricing__price">₹{{ number_format($tour->price_per_person ?? 1500) }}</span>
-                                    </div>
-                                    <div class="td-booking-pricing__row">
-                                        <span>Youth</span>
-                                        <span
-                                            class="td-booking-pricing__price">₹{{ number_format(($tour->price_per_person ?? 1500) * 0.8) }}</span>
-                                    </div>
-                                    <div class="td-booking-pricing__row td-booking-pricing__row--total">
-                                        <span><strong>Total</strong></span>
-                                        <span
-                                            class="td-booking-pricing__total">₹{{ number_format(($tour->price_per_person ?? 1500) * 1.8) }}</span>
-                                    </div>
-                                </div> --}}
-
-                                <input type="hidden" name="tour" value="{{ $tour->title }}">
-                                <a href="{{ route('front.contact') }}?tour={{ urlencode($tour->title) }}"
-                                    class="btn td-booking-btn w-100" id="bookNowBtn">
+                                <button type="submit" class="btn td-booking-btn w-100" id="tourEnquirySubmitBtn">
                                     Book Now &raquo;
-                                </a>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -750,3 +778,20 @@
         </div>
     </section>
 @endsection
+@push('scripts')
+    <script>
+        function changeValue(id, change) {
+            let input = document.getElementById(id);
+            let value = parseInt(input.value) || 0;
+            let min = parseInt(input.min) || 0;
+
+            value += change;
+
+            if (value < min) {
+                value = min;
+            }
+
+            input.value = value;
+        }
+    </script>
+@endpush

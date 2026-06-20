@@ -51,7 +51,7 @@ class EnquiryDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             // ->dom("<'search-bar-wrapper'Bf>r<'table-wrapper yajra-table-custom-class table-responsive'tr><'pagination-wrapper'p>")
-            ->orderBy('3', 'desc')
+            ->orderBy('6', 'desc')
             ->parameters([
                 'processing' => false,
                 'language'   => ['searchPlaceholder' => __('labels.search')],
@@ -63,6 +63,7 @@ class EnquiryDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex')->title(__('labels.id'))->width(50)->addClass('text-center'),
             Column::make('name')->title('Name')->addClass('text-center'),
+            Column::make('phone')->title('phone')->addClass('text-center'),
             Column::make('email')->title('Email')->addClass('text-center'),
             Column::make('tour_id')->title('Tour')->addClass('text-center'),
             Column::make('status')->title(__('labels.status'))->addClass('text-center'),
