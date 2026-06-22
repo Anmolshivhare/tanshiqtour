@@ -57,15 +57,13 @@
                     <span class="tt-kicker-v2"><i class="fas fa-map-marked-alt me-1"></i> Destination</span>
                     <h2 class="tt-section-title mb-3">{{ $destination->name }}</h2>
 
-                    <div class="tt-destination-details__short mb-4">
-                        <h3>Short Description</h3>
+                    {{-- <div class="tt-destination-details__short mb-4">
                         <p>
                             {{ $destination->short_description ?: 'Short description is not available for this destination yet.' }}
                         </p>
-                    </div>
+                    </div> --}}
 
                     <div class="tt-destination-details__long">
-                        <h3>Long Description</h3>
                         <div class="tt-destination-details__long-text">
                             {!! $destination->description ?: '<p>Long description is not available for this destination yet.</p>' !!}
                         </div>
