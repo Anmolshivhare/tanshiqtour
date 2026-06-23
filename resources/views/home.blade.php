@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'Tanishq Tour & Travel | Best Travel Agency in Agra')
+@section('meta_description', 'Plan domestic and international holiday packages with Tanishq Tour & Travel, a trusted travel agency in Agra for family trips, honeymoon tours and adventure holidays.')
+@section('canonical', route('home'))
+
 @section('content')
 
     @php
