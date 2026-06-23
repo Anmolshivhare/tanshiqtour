@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'About Tanishq Tour & Travel | Trusted Travel Agency')
+@section('meta_description', 'Learn about Tanishq Tour & Travel, a trusted travel agency helping families, couples and groups plan memorable domestic and international holidays.')
+@section('canonical', route('front.about'))
+
 @section('content')
 
 {{-- ============================================================
@@ -13,7 +17,7 @@
         <nav aria-label="breadcrumb" class="tt-about-hero__breadcrumb">
             <ol class="breadcrumb justify-content-center mb-3">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('front.home') }}"><i class="fas fa-home me-1"></i>Home</a>
+                    <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">About Us</li>
             </ol>
@@ -266,4 +270,3 @@
 
 
 @endsection
-

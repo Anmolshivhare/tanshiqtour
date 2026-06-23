@@ -1,5 +1,21 @@
 @extends('front.layouts.app')
 
+@php
+    $destinationLocation = trim(implode(', ', array_filter([$destination->city, $destination->state, $destination->country])));
+    $destinationMetaDescription = trim(strip_tags($destination->short_description ?: $destination->description ?: 'Explore ' . $destination->name . ' tour packages, attractions and travel ideas with Tanishq Tour & Travel.'));
+    $destinationMetaDescription = \Illuminate\Support\Str::limit($destinationMetaDescription, 155, '');
+    $destinationSeoImage = $destination->featured_image
+        ? asset('storage/destinations/' . $destination->featured_image)
+        : ($destination->banner_image
+            ? asset('storage/destinations/' . $destination->banner_image)
+            : asset(config('constants.destination_default_image')));
+@endphp
+
+@section('title', $destination->name . ' Travel Guide & Tour Packages | Tanishq Tour & Travel')
+@section('meta_description', $destinationMetaDescription)
+@section('canonical', route('front.destination-details', $destination->slug))
+@section('og_image', $destinationSeoImage)
+
 @section('content')
 @php
     $bannerImage = $destination->banner_image
@@ -12,8 +28,22 @@
         ? asset('storage/destinations/' . $destination->featured_image)
         : $bannerImage;
 
-    $location = trim(implode(', ', array_filter([$destination->city, $destination->state, $destination->country])));
+    $location = $destinationLocation;
 @endphp
+
+@push('schema')
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'TouristDestination',
+        'name' => $destination->name,
+        'description' => $destinationMetaDescription,
+        'url' => route('front.destination-details', $destination->slug),
+        'image' => $destinationSeoImage,
+        'address' => $destinationLocation ?: null,
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+@endpush
 
 <section class="tt-contact-hero" id="destination-details-hero">
     <div class="tt-contact-hero__bg" style="background-image: url('{{ $bannerImage }}');"></div>

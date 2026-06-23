@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'Contact Tanishq Tour & Travel | Plan Your Holiday')
+@section('meta_description', 'Contact Tanishq Tour & Travel to plan holiday packages, honeymoon trips, family vacations, flight bookings, hotel bookings and custom tour itineraries.')
+@section('canonical', route('front.contact'))
+
 @section('content')
     @php
         $phone = $settingData->contact_phone ?? '';
@@ -18,7 +22,7 @@
         <nav aria-label="breadcrumb" class="tt-contact-hero__breadcrumb">
             <ol class="breadcrumb justify-content-center mb-3">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('front.home') }}"><i class="fas fa-home me-1"></i>Home</a>
+                    <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
             </ol>

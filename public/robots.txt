@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-https://tanishqtours.com/sitemap.xml
+
+Sitemap: https://tanishqtours.com/sitemap.xml
