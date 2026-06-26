@@ -16,10 +16,7 @@ class GalleryRepository extends BaseRepository
         return $request->only([
             'title',
             'description',
-            'type',
-            'file_path',
             'thumbnail_path',
-            'sort_order',
             'is_featured',
             'destination_id',
             'tour_id',
@@ -35,5 +32,14 @@ class GalleryRepository extends BaseRepository
     public function getByType(string $type)
     {
         return $this->model->where('type', $type)->orderBy('sort_order')->get();
+    }
+
+    public function getActiveForFront()
+    {
+        return $this->model
+            ->with(['destination', 'tour', 'images'])
+            ->active()
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

@@ -28,6 +28,8 @@ Route::get('/tours/{slug}', [HomeController::class, 'tourDetails'])->name('front
 Route::post('/tours/{slug}/reviews', [HomeController::class, 'storeReview'])->name('front.tour.review.store');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
+Route::post('/contact-us', [HomeController::class, 'storeContact'])->name('front.contact.store');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('front.gallery');
 Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
 Route::get('/destinations/{slug}', [HomeController::class, 'destinationDetails'])->name('front.destination-details');
 Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
@@ -89,7 +91,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::get('/reviews/{id}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
 
     // Gallery
-    Route::resource('galleries', GalleryController::class)->except(['show']);
+    Route::resource('galleries', GalleryController::class);
 
     // Blog Categories
     Route::resource('blog-categories', BlogCategoryController::class)->except(['show']);

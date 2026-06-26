@@ -28,7 +28,7 @@ class GalleryDataTable extends DataTable
             ->addColumn('action', function ($row) use ($user) {
                 $editRoute   = $user->can('gallery-edit')   ? route('admin.galleries.edit',    encrypt($row->id)) : '';
                 $deleteRoute = $user->can('gallery-delete') ? route('admin.galleries.destroy', encrypt($row->id)) : '';
-                $viewRoute   = '';
+                $viewRoute   = $user->can('gallery-list')   ? route('admin.galleries.show',   encrypt($row->id)) : '';
                 return view('admin.layouts.partials.dataTable-action-button', compact('editRoute', 'deleteRoute', 'viewRoute'));
             })
             ->editColumn('status', function ($row) {

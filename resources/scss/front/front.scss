@@ -2541,3 +2541,221 @@ footer {
         overflow: hidden;
     }
 }
+
+// --- Front Gallery Page ---
+.tt-gallery-page {
+    background: #f8f9fb;
+}
+
+.tt-gallery-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 28px;
+}
+
+.tt-gallery-filter__btn {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #fff;
+    color: $dark;
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+
+    &:hover {
+        border-color: rgba($brand-primary, 0.45);
+        color: $brand-primary;
+        transform: translateY(-1px);
+    }
+
+    &.active {
+        background: #fff;
+        color: $dark;
+        border-color: $brand-primary;
+        box-shadow: 0 0 0 1px rgba($brand-primary, 0.15);
+    }
+}
+
+.tt-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 20px;
+
+    @media (min-width: 576px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 992px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.tt-gallery-card {
+    background: #fff;
+    border: 1px solid rgba($brand-primary, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 32px rgba($brand-primary, 0.14);
+    }
+}
+
+.tt-gallery-card__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #e9edf5;
+    overflow: hidden;
+}
+
+.tt-gallery-card__img,
+.tt-gallery-card__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tt-gallery-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.62);
+    color: #fff;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.tt-gallery-card__body {
+    padding: 14px 16px 16px;
+}
+
+.tt-gallery-card__title {
+    color: $dark;
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.tt-gallery-card__place {
+    color: $primary-text;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.tt-gallery-empty {
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px dashed rgba($brand-primary, 0.22);
+    border-radius: 8px;
+    color: $primary-text;
+    text-align: center;
+    padding: 32px;
+
+    i {
+        color: $brand-primary;
+        font-size: 2rem;
+    }
+
+    p {
+        margin: 0;
+        font-weight: 700;
+    }
+}
+
+.tt-gallery-panel__head {
+    margin-bottom: 24px;
+}
+
+.tt-gallery-panel__title {
+    color: $dark;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.tt-gallery-panel__sub {
+    color: $primary-text;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.tt-gallery-all-grid,
+.tt-gallery-video-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 20px;
+
+    @media (min-width: 576px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 992px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.tt-gallery-featured {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @media (min-width: 992px) {
+        grid-template-columns: 1.15fr 1fr;
+        min-height: 420px;
+    }
+}
+
+.tt-gallery-featured__main {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e9edf5;
+    min-height: 260px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        min-height: 260px;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+.tt-gallery-featured__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.tt-gallery-featured__item {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e9edf5;
+    min-height: 120px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        min-height: 120px;
+        object-fit: cover;
+        display: block;
+    }
+}

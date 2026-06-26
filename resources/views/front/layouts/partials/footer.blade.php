@@ -69,6 +69,8 @@
                                     class="text-white lh-lg text-decoration-none">Destinations</a></li>
                     <li class="mb-2"><a href="{{ route('front.tours') }}"
                             class="text-white lh-lg text-decoration-none">Tour Packages</a></li>
+                    <li class="mb-2"><a href="{{ route('front.gallery') }}"
+                            class="text-white lh-lg text-decoration-none">Gallery</a></li>
                     <li class="mb-2"><a href="{{ route('front.contact') }}"
                             class="text-white lh-lg text-decoration-none">Contact Us</a></li>
 
