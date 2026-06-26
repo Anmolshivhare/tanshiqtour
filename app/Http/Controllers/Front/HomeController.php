@@ -167,7 +167,7 @@ class HomeController extends Controller
     public function about()
     {
         $destinationsData = $this->destinationRepository->getActiveDestinations();
-        
+
         return view('about', compact('destinationsData'));
     }
 
@@ -374,7 +374,7 @@ class HomeController extends Controller
             $file->storeAs('reviews', $filename, 'public');
             $clientPic = $filename;
         }
-        
+
         $this->reviewRepository->createData([
             'tour_id'        => $tour->id,
             'reviewer_name'  => $validated['reviewer_name'],

@@ -19,12 +19,17 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Front\FrontAuthController;
 use App\Http\Controllers\Front\HomeController;
+use App\Models\Destination;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index'])->name('front.home');
+Route::redirect('/home', '/', 301)->name('front.home');
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/tours/{slug}', [HomeController::class, 'tourDetails'])->name('front.tour-details');
+Route::post('/tours/{slug}/enquiry', [HomeController::class, 'storeTourEnquiry'])->name('front.tour.enquiry.store');
 Route::post('/tours/{slug}/reviews', [HomeController::class, 'storeReview'])->name('front.tour.review.store');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
@@ -33,6 +38,34 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('front.gallery'
 Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
 Route::get('/destinations/{slug}', [HomeController::class, 'destinationDetails'])->name('front.destination-details');
 Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
+
+Route::get('/sitemap.xml', function () {
+    $sitemap = Sitemap::create()
+        ->add(Url::create(route('home'))->setPriority(1.0))
+        ->add(Url::create(route('front.about'))->setPriority(0.8))
+        ->add(Url::create(route('front.contact'))->setPriority(0.8))
+        ->add(Url::create(route('front.destinations'))->setPriority(0.9))
+        ->add(Url::create(route('front.tours'))->setPriority(0.9))
+        ->add(Url::create(route('front.careers'))->setPriority(0.4));
+
+    Destination::query()->whereNull('deleted_at')->get()->each(function ($destination) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.destination-details', $destination->slug))
+                ->setLastModificationDate($destination->updated_at)
+                ->setPriority(0.8)
+        );
+    });
+
+    Tour::query()->whereNull('deleted_at')->get()->each(function ($tour) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('front.tour-details', $tour->slug))
+                ->setLastModificationDate($tour->updated_at)
+                ->setPriority(0.8)
+        );
+    });
+
+    return response($sitemap->render(), 200)->header('Content-Type', 'application/xml');
+})->name('sitemap');
 
 // Frontend Authentication Routes
 Route::get('/login', [FrontAuthController::class, 'showLogin'])->name('front.login');
@@ -47,6 +80,11 @@ Route::get('/logout', [FrontAuthController::class, 'logout'])->name('front.logou
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 })->name('admin.root');
+
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+})->name('admin.root');
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('login');
@@ -115,3 +153,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [\App\Http\Controllers\Front\WishlistController::class, 'index'])->name('front.wishlist');
     Route::post('/wishlist/toggle', [\App\Http\Controllers\Front\WishlistController::class, 'toggle'])->name('front.wishlist.toggle');
 });
+
+Route::redirect('/generate-sitemap', '/sitemap.xml', 301);

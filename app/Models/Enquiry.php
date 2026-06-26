@@ -12,8 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Enquiry extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
-    // Note: NOT using CommonTrait because status column is an enum, not a statuses FK
+    use HasFactory, SoftDeletes, LogsActivity, CommonTrait;
 
     protected static $logName = 'Enquiry';
 
@@ -24,6 +23,10 @@ class Enquiry extends Model
         'subject',
         'message',
         'tour_id',
+        'travel_date',
+        'adults',
+        'children',
+        'city',
         'status',
         'replied_at',
         'replied_by',
@@ -31,10 +34,14 @@ class Enquiry extends Model
         'updated_by',
     ];
 
-    protected $casts = [
-        'status'     => EnquiryStatus::class,
-        'replied_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => EnquiryStatus::class,
+            'travel_date' => 'date',
+            'replied_at' => 'datetime',
+        ];
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

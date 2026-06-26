@@ -29,10 +29,7 @@
                         <span class="tt-pkg-card__rating"><i class="fas fa-star me-1"></i>Featured</span>
                     </div>
                     <div class="tt-pkg-card__footer">
-                        <div>
-                            <span class="tt-pkg-card__label">Plan Your Trip</span>
-                            <span class="tt-pkg-card__price">Custom</span>
-                        </div>
+                    
                         <a href="{{ route('front.tours') }}" class="tt-pkg-card__book">Book Now</a>
                     </div>
                 </div>

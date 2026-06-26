@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'Travel Destinations | Best Places to Visit')
+@section('meta_description', 'Discover handpicked travel destinations for your next holiday with Tanishq Tour & Travel, from scenic Indian escapes to international vacation spots.')
+@section('canonical', route('front.destinations'))
+
 @section('content')
 
 {{-- ============================================================

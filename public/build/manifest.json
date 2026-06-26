@@ -332,7 +332,11 @@
     ]
   },
   "resources/js/front/custom.js": {
+<<<<<<< HEAD
     "file": "assets/custom-DVN48S0n.js",
+=======
+    "file": "assets/custom-CHnxVeQB.js",
+>>>>>>> 80b7728bae2982be5246807ec65a1fe16e86b694
     "name": "custom",
     "src": "resources/js/front/custom.js",
     "isEntry": true,
@@ -394,7 +398,11 @@
     "src": "resources/scss/front/fonts/WorkSans-SemiBold.ttf"
   },
   "resources/scss/front/front.scss": {
+<<<<<<< HEAD
     "file": "assets/front-C6Ncuodz.css",
+=======
+    "file": "assets/front-Bw5PxkMP.css",
+>>>>>>> 80b7728bae2982be5246807ec65a1fe16e86b694
     "src": "resources/scss/front/front.scss",
     "isEntry": true,
     "name": "front",

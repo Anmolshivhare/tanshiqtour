@@ -68,13 +68,15 @@
                     @endcan
 
                     {{-- Banners --}}
-                    <li class="accordion-item">
+                    @can('banner-list')
+                        <li class="accordion-item">
                         <a class="accordion-button cursor-pointer no-arrow @if (Request::routeIs('admin.banners.*')) @else collapsed @endif"
                             href="{{ route('admin.banners.index') }}">
                             <i class="fa-solid fa-image"></i>
                             <span class="sidebar-menus-name ms-2 tansition-opacity text-primary">Banners</span>
                         </a>
                     </li>
+                    @endcan
 
                     {{-- Destinations --}}
                     <li class="accordion-item">

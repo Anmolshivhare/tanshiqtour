@@ -82,7 +82,6 @@
         <a href="{{ route('front.gallery') }}" class="tt-drawer__link {{ Request::routeIs('front.gallery') ? 'active' : '' }}"><i class="fas fa-images"></i> Gallery</a>
         {{-- <a href="{{ route('front.careers') }}" class="tt-drawer__link {{ Request::routeIs('front.careers') ? 'active' : '' }}"><i class="fas fa-briefcase"></i> Careers</a> --}}
         <a href="{{ route('front.contact') }}" class="tt-drawer__link {{ Request::routeIs('front.contact') ? 'active' : '' }}"><i class="fas fa-phone-alt"></i> Contact</a>
-        
     </nav>
     <div class="tt-drawer__footer">
         {{-- <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary w-100 text-center"><i class="fas fa-compass me-1"></i> Book Now</a> --}}

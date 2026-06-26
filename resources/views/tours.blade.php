@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'Tour Packages | Domestic & International Holiday Packages')
+@section('meta_description', 'Explore domestic and international tour packages from Tanishq Tour & Travel, including honeymoon packages, family holidays, adventure trips and custom travel plans.')
+@section('canonical', route('front.tours'))
+
 @section('content')
 
 {{-- ============================================================
@@ -13,7 +17,7 @@
         <nav aria-label="breadcrumb" class="tt-contact-hero__breadcrumb">
             <ol class="breadcrumb justify-content-center mb-3">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('front.home') }}"><i class="fas fa-home me-1"></i>Home</a>
+                    <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Tour Packages</li>
             </ol>
