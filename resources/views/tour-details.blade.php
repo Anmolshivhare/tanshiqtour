@@ -725,7 +725,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12  col-sm-12  td-booking-field mb-3">
-                                        <label for="tour-enquiry-name" class="td-booking-field__label">Name</label>
+                                        <label for="tour-enquiry-name" class="td-booking-field__label">Name <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control td-booking-field__input"
                                                 name="name" id="tour-enquiry-name" placeholder="Name"
@@ -733,7 +733,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-12  col-sm-12 td-booking-field mb-3">
-                                        <label for="tour-enquiry-email" class="td-booking-field__label">Email</label>
+                                        <label for="tour-enquiry-email" class="td-booking-field__label">Email <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="email" class="form-control td-booking-field__input"
                                                 name="email" id="tour-enquiry-email" placeholder="Email"
@@ -741,7 +741,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12  col-sm-12  td-booking-field mb-3">
-                                        <label for="tour-enquiry-phone" class="td-booking-field__label">Phone</label>
+                                        <label for="tour-enquiry-phone" class="td-booking-field__label">Phone <span class="text-danger">*</span> </label>
                                         <div class="input-group">
                                             <input type="text" class="form-control td-booking-field__input"
                                                 name="phone" id="tour-enquiry-phone" placeholder="Phone"
