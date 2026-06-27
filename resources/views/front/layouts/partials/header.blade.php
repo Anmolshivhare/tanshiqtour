@@ -50,6 +50,7 @@
                 <li><a href="{{ route('front.about') }}" class="tt-nav__link {{ Request::routeIs('front.about') ? 'active' : '' }}">About Us</a></li>
                 <li><a href="{{ route('front.destinations') }}" class="tt-nav__link {{ Request::routeIs('front.destinations') ? 'active' : '' }}">Destinations</a></li>
                 <li><a href="{{ route('front.tours') }}" class="tt-nav__link {{ Request::routeIs('front.tours') ? 'active' : '' }}">Tour Packages</a></li>
+                <li><a href="{{ route('front.gallery') }}" class="tt-nav__link {{ Request::routeIs('front.gallery') ? 'active' : '' }}">Gallery</a></li>
                 {{-- <li><a href="{{ route('front.careers') }}" class="tt-nav__link {{ Request::routeIs('front.careers') ? 'active' : '' }}">Careers</a></li> --}}
                 <li><a href="{{ route('front.contact') }}" class="tt-nav__link {{ Request::routeIs('front.contact') ? 'active' : '' }}">Contact Us</a></li>
             </ul>
@@ -78,6 +79,7 @@
         <a href="{{ route('front.about') }}" class="tt-drawer__link {{ Request::routeIs('front.about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> About Us</a>
         <a href="{{ route('front.tours') }}" class="tt-drawer__link {{ Request::routeIs('front.tours') ? 'active' : '' }}"><i class="fas fa-map-marked-alt"></i> Tour packages</a>
         <a href="{{ route('front.destinations') }}" class="tt-drawer__link {{ Request::routeIs('front.destinations') ? 'active' : '' }}"><i class="fas fa-map-marker-alt"></i> Destinations</a>
+        <a href="{{ route('front.gallery') }}" class="tt-drawer__link {{ Request::routeIs('front.gallery') ? 'active' : '' }}"><i class="fas fa-images"></i> Gallery</a>
         {{-- <a href="{{ route('front.careers') }}" class="tt-drawer__link {{ Request::routeIs('front.careers') ? 'active' : '' }}"><i class="fas fa-briefcase"></i> Careers</a> --}}
         <a href="{{ route('front.contact') }}" class="tt-drawer__link {{ Request::routeIs('front.contact') ? 'active' : '' }}"><i class="fas fa-phone-alt"></i> Contact</a>
     </nav>

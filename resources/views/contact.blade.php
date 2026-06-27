@@ -1,5 +1,9 @@
 @extends('front.layouts.app')
 
+@section('title', 'Contact Tanishq Tour & Travel | Plan Your Holiday')
+@section('meta_description', 'Contact Tanishq Tour & Travel to plan holiday packages, honeymoon trips, family vacations, flight bookings, hotel bookings and custom tour itineraries.')
+@section('canonical', route('front.contact'))
+
 @section('content')
     @php
         $phone = $settingData->contact_phone ?? '';
@@ -18,7 +22,7 @@
         <nav aria-label="breadcrumb" class="tt-contact-hero__breadcrumb">
             <ol class="breadcrumb justify-content-center mb-3">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('front.home') }}"><i class="fas fa-home me-1"></i>Home</a>
+                    <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
             </ol>
@@ -91,8 +95,9 @@
             {{-- LEFT: Embedded Map --}}
             <div class="col-lg-5" data-aos="fade-right">
                 <div class="tt-contact-map">
+
                 
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d887.4185215112226!2d78.03612516962596!3d27.166542791689533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397471c46e6ba04d%3A0xdaa3691a1a34b453!2sTanishq%20Tour%20%26%20Travels%20%7C%20best%20travel%20agency%20in%20agra!5e0!3m2!1sen!2sin!4v1781940985266!5m2!1sen!2sin" width="600" height="520" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d887.4185215112226!2d78.03612516962596!3d27.166542791689533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397471c46e6ba04d%3A0xdaa3691a1a34b453!2sTanishq%20Tour%20%26%20Travels%20%7C%20best%20travel%20agency%20in%20agra!5e0!3m2!1sen!2sin!4v1781940985266!5m2!1sen!2sin" width="600" height="620" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 

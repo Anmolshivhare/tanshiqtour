@@ -1,5 +1,20 @@
 @extends('front.layouts.app')
 
+@php
+    $tourLocation = $tour->location ?: $tour->destination?->name ?? 'India';
+    $tourMetaDescription = trim(strip_tags($tour->description ?: 'Book ' . $tour->title . ' with Tanishq Tour & Travel. Explore itinerary, highlights, inclusions and custom travel options for your holiday.'));
+    $tourMetaDescription = \Illuminate\Support\Str::limit($tourMetaDescription, 155, '');
+    $tourSeoImage = $tour->featured_image
+        ? asset('storage/tours/' . $tour->featured_image)
+        : asset(config('constants.destination_default_image'));
+@endphp
+
+@section('title', $tour->title . ' | Tour Package by Tanishq Tour & Travel')
+@section('meta_description', $tourMetaDescription)
+@section('canonical', route('front.tour-details', $tour->slug))
+@section('og_image', $tourSeoImage)
+@section('og_type', 'product')
+
 @section('content')
 
     @php
@@ -8,7 +23,7 @@
             : asset(config('constants.destination_default_image'));
 
         $tourImages = $tour->images ?? collect();
-        $location = $tour->location ?: $tour->destination?->name ?? 'Unknown Location';
+        $location = $tourLocation;
         $avgRating = $tour->reviews->avg('rating') ?? 0;
         $reviewCount = $tour->reviews->count();
         $destination = $tour->destination;
@@ -36,6 +51,37 @@
             ->values()
             ->all();
     @endphp
+
+    @push('schema')
+        <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'TouristTrip',
+            'name' => $tour->title,
+            'description' => $tourMetaDescription,
+            'url' => route('front.tour-details', $tour->slug),
+            'image' => $tourSeoImage,
+            'touristType' => 'Leisure travelers',
+            'itinerary' => $tour->itineraryDays->map(fn ($day) => [
+                '@type' => 'ItemList',
+                'name' => 'Day ' . $day->day_number . ': ' . $day->title,
+                'description' => $day->description,
+            ])->values(),
+            'offers' => $tour->price_per_person ? [
+                '@type' => 'Offer',
+                'price' => $tour->price_per_person,
+                'priceCurrency' => 'INR',
+                'availability' => 'https://schema.org/InStock',
+                'url' => route('front.tour-details', $tour->slug),
+            ] : null,
+            'aggregateRating' => $reviewCount > 0 ? [
+                '@type' => 'AggregateRating',
+                'ratingValue' => round($avgRating, 1),
+                'reviewCount' => $reviewCount,
+            ] : null,
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+        </script>
+    @endpush
 
 
     <section class="tt-contact-hero" id="destination-details-hero">
@@ -72,7 +118,7 @@
         <div class="container">
             <div class="row align-items-center g-2">
                 <div class="col-lg-8">
-                    <h1 class="td-title mb-1">{{ $tour->title }}</h1>
+                    <h2 class="td-title mb-1">{{ $tour->title }}</h2>
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         {{-- Stars --}}
                         <div class="td-stars">
@@ -679,7 +725,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12  col-sm-12  td-booking-field mb-3">
-                                        <label for="tour-enquiry-name" class="td-booking-field__label">Name</label>
+                                        <label for="tour-enquiry-name" class="td-booking-field__label">Name <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control td-booking-field__input"
                                                 name="name" id="tour-enquiry-name" placeholder="Name"
@@ -687,7 +733,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-12  col-sm-12 td-booking-field mb-3">
-                                        <label for="tour-enquiry-email" class="td-booking-field__label">Email</label>
+                                        <label for="tour-enquiry-email" class="td-booking-field__label">Email <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="email" class="form-control td-booking-field__input"
                                                 name="email" id="tour-enquiry-email" placeholder="Email"
@@ -695,7 +741,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12  col-sm-12  td-booking-field mb-3">
-                                        <label for="tour-enquiry-phone" class="td-booking-field__label">Phone</label>
+                                        <label for="tour-enquiry-phone" class="td-booking-field__label">Phone <span class="text-danger">*</span> </label>
                                         <div class="input-group">
                                             <input type="text" class="form-control td-booking-field__input"
                                                 name="phone" id="tour-enquiry-phone" placeholder="Phone"
