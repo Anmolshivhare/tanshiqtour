@@ -10,8 +10,8 @@
       "assets/cropper-CMr-B4M_.css"
     ]
   },
-  "_daterangepicker-Dk51HdjZ.js": {
-    "file": "assets/daterangepicker-Dk51HdjZ.js",
+  "_daterangepicker-Bn02lONg.js": {
+    "file": "assets/daterangepicker-Bn02lONg.js",
     "name": "daterangepicker",
     "isDynamicEntry": true,
     "imports": [
@@ -320,7 +320,7 @@
     "src": "resources/images/testi-1-2.webp"
   },
   "resources/js/admin/admin.js": {
-    "file": "assets/admin-PiPdORh0.js",
+    "file": "assets/admin-BV7SOhq5.js",
     "name": "admin",
     "src": "resources/js/admin/admin.js",
     "isEntry": true,
@@ -328,7 +328,7 @@
       "_cropper-Dr91g8q8.js"
     ],
     "dynamicImports": [
-      "_daterangepicker-Dk51HdjZ.js"
+      "_daterangepicker-Bn02lONg.js"
     ]
   },
   "resources/js/front/custom.js": {
@@ -341,7 +341,7 @@
     ]
   },
   "resources/scss/admin/admin.scss": {
-    "file": "assets/admin-sDcmOMPe.css",
+    "file": "assets/admin-BEEIMVdu.css",
     "src": "resources/scss/admin/admin.scss",
     "isEntry": true,
     "name": "admin",

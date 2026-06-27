@@ -113,7 +113,7 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label">Description</label>
-                        <textarea name="description" class="form-control" rows="6">{{ old('description', $tour->description) }}</textarea>
+                        <textarea name="description" class="form-control editor" rows="6">{{ old('description', $tour->description) }}</textarea>
                     </div>
 
                     <h5 class="col-12 border-bottom pb-2 mt-3">Highlight List</h5>
@@ -214,7 +214,7 @@
                                             name="itinerary[{{ $i }}][meals_included]" class="form-control"
                                             value="{{ $day['meals_included'] ?? '' }}" placeholder="Meals (B/L/D)"></div>
                                     <div class="col-12">
-                                        <textarea name="itinerary[{{ $i }}][description]" class="form-control" rows="2">{{ $day['description'] ?? '' }}</textarea>
+                                        <textarea name="itinerary[{{ $i }}][description]" class="form-control" rows="2" placeholder="Description">{{ $day['description'] ?? '' }}</textarea>
                                     </div>
                                 </div>
                             </div>
