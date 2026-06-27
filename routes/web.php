@@ -46,6 +46,7 @@ Route::get('/sitemap.xml', function () {
         ->add(Url::create(route('front.contact'))->setPriority(0.8))
         ->add(Url::create(route('front.destinations'))->setPriority(0.9))
         ->add(Url::create(route('front.tours'))->setPriority(0.9))
+        ->add(Url::create(route('front.gallery'))->setPriority(0.4))
         ->add(Url::create(route('front.careers'))->setPriority(0.4));
 
     Destination::query()->whereNull('deleted_at')->get()->each(function ($destination) use ($sitemap) {
