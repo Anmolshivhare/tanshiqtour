@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Enums\EnquiryStatus;
+use App\Helpers\SiteSettingHelper;
 use App\Http\Controllers\Controller;
 use App\Repositories\BannerRepository;
 use App\Repositories\DestinationRepository;
 use App\Repositories\EnquiryRepository;
+use App\Repositories\GalleryRepository;
 use App\Repositories\ReviewRepository;
 use App\Repositories\TourRepository;
-use App\Enums\EnquiryStatus;
-use App\Helpers\SiteSettingHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Vite;
@@ -27,6 +28,8 @@ class HomeController extends Controller
 
     protected $enquiryRepository;
 
+    protected $galleryRepository;
+
     /**
      * 
      */
@@ -35,13 +38,15 @@ class HomeController extends Controller
         BannerRepository $bannerRepository,
         TourRepository $tourRepository,
         ReviewRepository $reviewRepository,
-        EnquiryRepository $enquiryRepository
+        EnquiryRepository $enquiryRepository,
+        GalleryRepository $galleryRepository
     ) {
         $this->destinationRepository = $destinationRepository;
         $this->bannerRepository = $bannerRepository;
         $this->tourRepository = $tourRepository;
         $this->reviewRepository = $reviewRepository;
         $this->enquiryRepository = $enquiryRepository;
+        $this->galleryRepository = $galleryRepository;
     }
 
     public function index()
@@ -169,6 +174,26 @@ class HomeController extends Controller
     public function contact()
     {
         return view('contact');
+    }
+
+    public function gallery()
+    {
+        $galleries = $this->galleryRepository->getActiveForFront();
+
+        $filters = $galleries
+            ->filter(fn ($gallery) => $gallery->images->isNotEmpty())
+            ->map(function ($gallery) {
+                return [
+                    'key' => \Illuminate\Support\Str::slug($gallery->title),
+                    'label' => $gallery->title,
+                ];
+            })
+            ->unique('key')
+            ->values();
+
+        $hasVideos = $galleries->contains(fn ($gallery) => !empty($gallery->file_path));
+
+        return view('gallery', compact('galleries', 'filters', 'hasVideos'));
     }
 
     public function storeContact(Request $request)

@@ -13,9 +13,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->enum('type', ['image', 'video'])->default('image');
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
             $table->string('thumbnail_path')->nullable();
-            $table->integer('sort_order')->default(0);
+            $table->integer('sort_order')->default(0)->nullable();
             $table->boolean('is_featured')->default(false);
             $table->unsignedBigInteger('destination_id')->nullable();
             $table->unsignedBigInteger('tour_id')->nullable();

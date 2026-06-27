@@ -51,4 +51,9 @@ class Gallery extends Model
     {
         return $this->belongsTo(Tour::class, 'tour_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(GalleryImage::class, 'gallery_id');
+    }
 }

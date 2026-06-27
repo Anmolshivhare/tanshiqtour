@@ -34,6 +34,7 @@ Route::post('/tours/{slug}/reviews', [HomeController::class, 'storeReview'])->na
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('front.contact');
 Route::post('/contact-us', [HomeController::class, 'storeContact'])->name('front.contact.store');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('front.gallery');
 Route::get('/destinations', [HomeController::class, 'destinations'])->name('front.destinations');
 Route::get('/destinations/{slug}', [HomeController::class, 'destinationDetails'])->name('front.destination-details');
 Route::get('/careers', [HomeController::class, 'careers'])->name('front.careers');
@@ -45,6 +46,7 @@ Route::get('/sitemap.xml', function () {
         ->add(Url::create(route('front.contact'))->setPriority(0.8))
         ->add(Url::create(route('front.destinations'))->setPriority(0.9))
         ->add(Url::create(route('front.tours'))->setPriority(0.9))
+        ->add(Url::create(route('front.gallery'))->setPriority(0.4))
         ->add(Url::create(route('front.careers'))->setPriority(0.4));
 
     Destination::query()->whereNull('deleted_at')->get()->each(function ($destination) use ($sitemap) {
@@ -128,7 +130,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::get('/reviews/{id}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
 
     // Gallery
-    Route::resource('galleries', GalleryController::class)->except(['show']);
+    Route::resource('galleries', GalleryController::class);
 
     // Blog Categories
     Route::resource('blog-categories', BlogCategoryController::class)->except(['show']);
