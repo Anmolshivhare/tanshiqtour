@@ -1375,3 +1375,49 @@ $(function () {
         reindexAmenities();
     });
 });
+
+// Admin gallery show — image lightbox modal
+$(function () {
+    const modal = document.getElementById("galleryImageModal");
+    const preview = document.getElementById("galleryImagePreview");
+    const counter = document.getElementById("galleryImageCounter");
+    const prevBtn = document.getElementById("galleryImagePrev");
+    const nextBtn = document.getElementById("galleryImageNext");
+    const triggers = Array.from(document.querySelectorAll(".admin-gallery-image-view"));
+
+    if (!modal || !preview || !counter || !prevBtn || !nextBtn || !triggers.length) {
+        return;
+    }
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+        currentIndex = (index + triggers.length) % triggers.length;
+        const trigger = triggers[currentIndex];
+        preview.src = trigger.dataset.imageSrc;
+        counter.textContent = `${currentIndex + 1} / ${trigger.dataset.imageTotal}`;
+    }
+
+    triggers.forEach(function (trigger, index) {
+        trigger.addEventListener("click", function () {
+            showImage(index);
+        });
+    });
+
+    prevBtn.addEventListener("click", function () {
+        showImage(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener("click", function () {
+        showImage(currentIndex + 1);
+    });
+
+    modal.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+            showImage(currentIndex - 1);
+        }
+        if (event.key === "ArrowRight") {
+            showImage(currentIndex + 1);
+        }
+    });
+});
