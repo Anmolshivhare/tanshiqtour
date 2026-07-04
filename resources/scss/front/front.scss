@@ -1,6 +1,4 @@
-// Fonts
-@import "fonts";
-// Variables
+// Variables (fonts are loaded via Google Fonts CDN in layouts)
 @import "variables";
 
 // Footer
@@ -12,8 +10,6 @@
 
 // Bootstrap
 @import "bootstrap/scss/bootstrap";
-@import "@fortawesome/fontawesome-free/css/all.min.css";
-@import "bootstrap-icons/font/bootstrap-icons.css";
 
 // Swiper
 @import "swiper/swiper-bundle.css";

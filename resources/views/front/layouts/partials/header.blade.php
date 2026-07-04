@@ -41,7 +41,7 @@
         <nav class="tt-nav">
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="tt-nav__logo">
-                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Tanishq Tour & Travel" class="tt-nav__logo-img" id="nav-logo">
+                <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Tanishq Tour & Travel" class="tt-nav__logo-img" id="nav-logo" width="216" height="72">
             </a>
 
             {{-- Desktop Nav Links --}}
@@ -71,7 +71,7 @@
 <div class="tt-drawer-overlay" id="tt-drawer-overlay"></div>
 <aside class="tt-drawer" id="tt-drawer">
     <div class="tt-drawer__header">
-        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Logo" height="60">
+        <img src="{{ \App\Helpers\SiteSettingHelper::imageUrl('header_logo', 'resources/images/Tanishq Tour & Travels.png') }}" alt="Logo" width="180" height="60">
         <button class="tt-drawer__close" id="tt-drawer-close"><i class="fas fa-times"></i></button>
     </div>
     <nav class="tt-drawer__nav">
