@@ -1,5 +1,3 @@
-import Cropper from "cropperjs";
-import "cropperjs/dist/cropper.css";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import Swiper from "swiper";
@@ -12,7 +10,7 @@ const BRAND_PRIMARY = "#022179";
 // ==========================================
 // Profile Image Cropper
 // ==========================================
-$(function () {
+$(async function () {
     const $dropzone = $("#profile-dropzone");
     const $fileInput = $("#profile_pic");
     const $croppedDataInput = $("#cropped_image");
@@ -26,6 +24,10 @@ $(function () {
     if ($dropzone.length === 0) {
         return;
     }
+
+    // Dynamically load Cropper and its CSS on-demand
+    const { default: Cropper } = await import("cropperjs");
+    await import("cropperjs/dist/cropper.css");
 
     let cropper = null;
     let modalInstance = null;

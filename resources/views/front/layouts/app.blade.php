@@ -45,10 +45,27 @@
     <link rel="icon" type="image/png"
         href="{{ \App\Helpers\SiteSettingHelper::imageUrl('favicon', config('constants.company_logo_favicon')) }}"
         >
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link rel="canonical" href="{{ $canonicalUrl }}">
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Preconnect to Google Fonts and cdnjs -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome (Asynchronous & Non-blocking) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
+    </noscript>
+
+    {{-- Preload Largest Contentful Paint (LCP) Banner Image --}}
+    @if (isset($bannerSlides) && $bannerSlides->isNotEmpty())
+        <link rel="preload" href="{{ $bannerSlides->first()['image'] }}" as="image" fetchpriority="high">
+    @endif
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2602ZWYZ6D"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
