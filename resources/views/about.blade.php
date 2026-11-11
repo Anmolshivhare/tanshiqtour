@@ -19,7 +19,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">About Rohit</li>
+                <li class="breadcrumb-item active" aria-current="page">About Rohits</li>
             </ol>
         </nav>
         <h1 class="tt-about-hero__title">About <span>Us</span></h1>
