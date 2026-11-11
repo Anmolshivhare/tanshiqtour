@@ -182,7 +182,7 @@
                         <div class="td-stats-bar__value">{{ $tour->duration ?? 'Flexible' }}</div>
                     </div>
                 </div>
-                <div class="td-stats-bar__divider"></div>
+                {{-- <div class="td-stats-bar__divider"></div>
                 <div class="td-stats-bar__item">
                     <div class="td-stats-bar__icon td-stats-bar__icon--gold">
                         <i class="fas fa-users"></i>
@@ -192,8 +192,8 @@
                         <div class="td-stats-bar__value">
                             {{ $tour->max_persons ? 'Max ' . $tour->max_persons : 'Unlimited' }}</div>
                     </div>
-                </div>
-                {{-- @if ($tour->price_per_person)
+                </div>  
+                @if ($tour->price_per_person)
             <div class="td-stats-bar__divider"></div>
             <div class="td-stats-bar__item td-stats-bar__item--price">
                 <span class="td-price-badge">

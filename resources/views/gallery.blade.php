@@ -215,6 +215,4 @@
         @endif
     </div>
 </section>
-
-@include('base-family-travel')
 @endsection

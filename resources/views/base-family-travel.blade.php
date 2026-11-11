@@ -43,11 +43,11 @@
                         <a href="{{ route('front.tours') }}" class="tt-about-cta-card__btn">
                             Discover More <i class="fas fa-angle-right"></i>
                         </a>
-                        <a href="tel:+2085550112" class="tt-about-cta-card__call">
+                        <a href="tel:9319390271" class="tt-about-cta-card__call">
                             <span class="tt-about-cta-card__call-icon"><i class="fas fa-phone-alt"></i></span>
                             <span>
                                 <small>Call Us Now</small>
-                                <strong>+208-555-0112</strong>
+                                <strong>+91 9319390271</strong>
                             </span>
                         </a>
                     </div>

@@ -19,7 +19,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}"><i class="fas fa-home me-1"></i>Home</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">About Us</li>
+                <li class="breadcrumb-item active" aria-current="page">About Rohits</li>
             </ol>
         </nav>
         <h1 class="tt-about-hero__title">About <span>Us</span></h1>
@@ -202,7 +202,7 @@
                 alt=""
                 aria-hidden="true"
                 class="tt-pkg-deco tt-pkg-deco--tl d-none d-lg-block">
-            
+
             <div class="tt-how-steps__line d-none d-lg-block" aria-hidden="true"></div>
             <div class="tt-how-steps__plane d-none d-lg-block" aria-hidden="true">
                 <i class="far fa-paper-plane"></i>

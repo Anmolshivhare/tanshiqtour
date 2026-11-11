@@ -13,7 +13,65 @@ import {
     Font,
     Paragraph,
     SourceEditing,
+    HtmlEmbed,
+    GeneralHtmlSupport,
 } from "ckeditor5";
+
+if ($(".editor").length) {
+    document.querySelectorAll(".editor").forEach((editorElement) => {
+        ClassicEditor.create(editorElement, {
+            licenseKey: "GPL",
+            plugins: [
+                Essentials,
+                Bold,
+                Italic,
+                Font,
+                Paragraph,
+                SourceEditing,
+                HtmlEmbed,
+                GeneralHtmlSupport,
+            ],
+            toolbar: [
+                "undo",
+                "redo",
+                "|",
+                "bold",
+                "italic",
+                "|",
+                "fontSize",
+                "fontFamily",
+                "fontColor",
+                "fontBackgroundColor",
+                "|",
+                "sourceEditing",
+                "|",
+                "htmlEmbed",
+            ],
+
+            // Allow all HTML tags, attributes, classes, and inline styles
+            htmlSupport: {
+                allow: [
+                    {
+                        name: /.*/, // allow all elements
+                        attributes: true,
+                        classes: true,
+                        styles: true,
+                    },
+                ],
+            },
+
+            htmlEmbed: {
+                showPreviews: true,
+            },
+        })
+            .then((newEditor) => {
+                // Store instance
+                window.editors = window.editors || [];
+                window.editors.push(newEditor);
+            })
+            .catch((error) => console.error(error));
+    });
+}
 
 // image  upload start
 (($) => {
@@ -933,37 +991,6 @@ $(".hamburg-icon").click(function () {
     $(".sidebar").toggleClass("sidebar-close");
     $(".main-content").toggleClass("fullWidth-screen");
 });
-
-if ($(".editor").length) {
-    document.querySelectorAll(".editor").forEach((editorElement) => {
-        ClassicEditor.create(editorElement, {
-            licenseKey: "GPL",
-            plugins: [Essentials, Bold, Italic, Font, Paragraph, SourceEditing],
-            toolbar: [
-                "undo",
-                "redo",
-                "|",
-                "bold",
-                "italic",
-                "|",
-                "fontSize",
-                "fontFamily",
-                "fontColor",
-                "fontBackgroundColor",
-                "|",
-                "sourceEditing",
-            ],
-        })
-            .then((newEditor) => {
-                // Optional: Store editor instance if needed
-                window.editors = window.editors || [];
-                window.editors.push(newEditor);
-            })
-            .catch((error) => console.error(error));
-    });
-}
-
-
 
 /**Sweet alert on delete button
  * code start */
