@@ -13,9 +13,11 @@ use DB;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class FrontAuthController extends Controller
 {
@@ -24,6 +26,18 @@ class FrontAuthController extends Controller
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+    /** Route a Book Now click through sign-in before opening the tour details. */
+    public function bookNow(string $slug): RedirectResponse
+    {
+        $detailsUrl = route('front.tour-details', ['slug' => $slug]);
+
+        if ($this->userRepository->isFrontAuthenticated()) {
+            return redirect()->to($detailsUrl);
+        }
+
+        return redirect()->route('front.login', ['redirect' => $detailsUrl]);
     }
 
     /**
@@ -36,7 +50,7 @@ class FrontAuthController extends Controller
             session(['url.intended' => $request->get('redirect')]);
         }
 
-        if (Auth::check()) {
+        if ($this->userRepository->isFrontAuthenticated()) {
             return redirect()->intended(route('home'));
         }
 
@@ -55,9 +69,9 @@ class FrontAuthController extends Controller
 
         $remember = $request->has('remember_me');
 
-        if (Auth::attempt($credentials, $remember)) {
-            if (Auth::user()->status == config('constants.in_active_status_value')) {
-                Auth::guard('web')->logout();
+        if ($this->userRepository->attemptFrontLogin($credentials, $remember)) {
+            if ($this->userRepository->currentFrontUser()->status == config('constants.in_active_status_value')) {
+                $this->userRepository->logoutFrontUser();
                 $request->session()->invalidate();
                 return redirect()->route('front.login')->with('error', trans('app.auth.login.inactive_access'));
             }
@@ -69,12 +83,92 @@ class FrontAuthController extends Controller
         return redirect()->back()->with('error', 'Invalid email or password.')->withInput();
     }
 
+    /** Start the Google OAuth authorization flow. */
+    public function redirectToGoogle(Request $request): RedirectResponse
+    {
+        if (!config('services.google.client_id') || !config('services.google.client_secret') || !config('services.google.redirect')) {
+            return redirect()->route('front.login')->with('error', 'Google sign-in is not configured yet.');
+        }
+
+        return Socialite::driver('google')->scopes(['openid', 'email', 'profile'])
+            ->with(['prompt' => 'select_account'])
+            ->redirect();
+    }
+
+    /** Complete Google OAuth and sign in or create a customer account. */
+    public function handleGoogleCallback(Request $request): RedirectResponse
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            $googleProfile = $googleUser->getRaw();
+            $email = Str::lower((string) $googleUser->getEmail());
+
+            if (!$googleUser->getId() || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)
+                || !($googleProfile['verified_email'] ?? $googleProfile['email_verified'] ?? false)) {
+                return redirect()->route('front.login')->with('error', 'Google did not provide a verified email address.');
+            }
+
+            $user = DB::transaction(function () use ($googleUser, $email) {
+                $user = User::where('google_id', $googleUser->getId())->first()
+                    ?? User::whereRaw('LOWER(email) = ?', [$email])->first();
+
+                if ($user && $user->google_id && $user->google_id !== $googleUser->getId()) {
+                    throw new Exception('This email is linked to a different Google account.');
+                }
+
+                if (!$user) {
+                    $user = User::create([
+                        'name' => $googleUser->getName() ?: $email,
+                        'email' => $email,
+                        'google_id' => $googleUser->getId(),
+                        'password' => null,
+                        'is_email_verified' => true,
+                        'email_verified_at' => now(),
+                        'status' => config('constants.active_status_value', 1),
+                    ]);
+                    $user->assignRole(config('constants.customer_role_name', 'Customer'));
+                } else {
+                    $user->google_id = $googleUser->getId();
+                    $user->is_email_verified = true;
+                    $user->email_verified_at ??= now();
+                    $user->save();
+                }
+
+                // The app's profile views expect a locally stored filename, not a remote URL.
+                if (empty($user->profile_pic) && $googleUser->getAvatar()) {
+                    $avatar = Http::timeout(10)->get($googleUser->getAvatar());
+                    if ($avatar->successful() && str_starts_with((string) $avatar->header('Content-Type'), 'image/')) {
+                        $filename = 'google_' . $user->id . '.jpg';
+                        Storage::disk('public')->put('profile_images/' . $filename, $avatar->body());
+                        $user->profile_pic = $filename;
+                        $user->save();
+                    }
+                }
+
+                return $user;
+            });
+
+            if ((string) $user->status === (string) config('constants.in_active_status_value')) {
+                return redirect()->route('front.login')->with('error', trans('app.auth.login.inactive_access'));
+            }
+
+            // Keep Google sign-ins persistent across browser restarts.
+            $this->userRepository->loginFrontUser($user, true);
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('home'))->with('message', 'Signed in with Google successfully!');
+        } catch (Exception $e) {
+            report($e);
+            return redirect()->route('front.login')->with('error', 'Google sign-in failed. Please try again.');
+        }
+    }
+
     /**
      * Show registration form
      */
     public function showRegister()
     {
-        if (Auth::check()) {
+        if ($this->userRepository->isFrontAuthenticated()) {
             return redirect()->route('home');
         }
 
@@ -104,7 +198,8 @@ class FrontAuthController extends Controller
             DB::commit();
 
             // Auto login
-            Auth::login($user);
+            $this->userRepository->loginFrontUser($user);
+            $request->session()->regenerate();
 
             return redirect()->intended(route('home'))->with('message', 'Registration successful! Welcome!');
 
@@ -119,11 +214,11 @@ class FrontAuthController extends Controller
      */
     public function showProfile()
     {
-        if (!Auth::check()) {
+        if (!$this->userRepository->isFrontAuthenticated()) {
             return redirect()->route('front.login');
         }
 
-        $user = Auth::user();
+        $user = $this->userRepository->currentFrontUser();
         return view('front.auth.profile', compact('user'));
     }
 
@@ -133,7 +228,7 @@ class FrontAuthController extends Controller
     public function updateProfile(FrontProfileRequest $request): RedirectResponse
     {
         try {
-            $user = Auth::user();
+            $user = $this->userRepository->currentFrontUser();
 
             $data = [
                 'name' => $request->name,
@@ -207,7 +302,7 @@ class FrontAuthController extends Controller
      */
     public function logout(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        $this->userRepository->logoutFrontUser();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

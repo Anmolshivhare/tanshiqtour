@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserRepository extends BaseRepository
 {
@@ -39,5 +40,30 @@ class UserRepository extends BaseRepository
                 'status',
             ]
         );
+    }
+
+    public function attemptFrontLogin(array $credentials, bool $remember = false): bool
+    {
+        return Auth::guard('web')->attempt($credentials, $remember);
+    }
+
+    public function currentFrontUser(): ?User
+    {
+        return Auth::guard('web')->user();
+    }
+
+    public function isFrontAuthenticated(): bool
+    {
+        return Auth::guard('web')->check();
+    }
+
+    public function loginFrontUser(User $user, bool $remember = false): void
+    {
+        Auth::guard('web')->login($user, $remember);
+    }
+
+    public function logoutFrontUser(): void
+    {
+        Auth::guard('web')->logout();
     }
 }

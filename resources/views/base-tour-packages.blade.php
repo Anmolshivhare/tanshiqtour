@@ -27,7 +27,7 @@
                     $tourCategory = optional($tour->destination)->name ?: 'Featured';
                 @endphp
                 <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 80 }}">
-                    <a href="{{ route('front.tour-details', $tour->slug) }}">
+                    <div>
 
                         <div class="tt-pkg-card__img">
                             <img src="{{ $tourImage }}" alt="{{ $tour->title }}" loading="lazy">
@@ -47,16 +47,16 @@
                                 @endif
                             </div>
                             <div class="tt-pkg-card__footer">
-                               {{--  <div>
+                                <div>
                                     <span class="tt-pkg-card__label">From</span>
                                     <span class="tt-pkg-card__price">
                                         {!! $tour->price_per_person ? '&#8377;' . number_format($tour->price_per_person, 0) : 'On Request' !!}
-                                    </span> 
-                                </div> --}}
-                                <a href="{{ route('front.tour-details', $tour->slug) }}" class="tt-pkg-card__book">Book Now</a>
+                                    </span>
+                                </div>
+                                <a href="{{ route('front.tour.book', $tour->slug) }}" class="tt-pkg-card__book">Book Now</a>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             @empty
                 <div class="text-center w-100" data-aos="fade-up">

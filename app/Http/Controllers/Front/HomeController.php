@@ -31,7 +31,7 @@ class HomeController extends Controller
     protected $galleryRepository;
 
     /**
-     * 
+     *
      */
     public function __construct(
         DestinationRepository $destinationRepository,

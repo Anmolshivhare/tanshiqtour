@@ -53,6 +53,18 @@
                 <li><a href="{{ route('front.gallery') }}" class="tt-nav__link {{ Request::routeIs('front.gallery') ? 'active' : '' }}">Gallery</a></li>
                 {{-- <li><a href="{{ route('front.careers') }}" class="tt-nav__link {{ Request::routeIs('front.careers') ? 'active' : '' }}">Careers</a></li> --}}
                 <li><a href="{{ route('front.contact') }}" class="tt-nav__link {{ Request::routeIs('front.contact') ? 'active' : '' }}">Contact Us</a></li>
+                @auth
+                    <li><a href="{{ route('front.profile') }}" class="tt-nav__link {{ Request::routeIs('front.profile*') ? 'active' : '' }}">My Profile</a></li>
+                    <li>
+                        <form method="POST" action="{{ route('front.logout') }}">
+                            @csrf
+                            <button type="submit" class="tt-nav__link border-0 bg-transparent">Sign Out</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ route('front.login') }}" class="tt-nav__link {{ Request::routeIs('front.login') ? 'active' : '' }}">Sign In</a></li>
+                    <li><a href="{{ route('front.register') }}" class="tt-nav__link {{ Request::routeIs('front.register') ? 'active' : '' }}">Register</a></li>
+                @endauth
             </ul>
 
             {{-- Nav Actions --}}
@@ -82,6 +94,16 @@
         <a href="{{ route('front.gallery') }}" class="tt-drawer__link {{ Request::routeIs('front.gallery') ? 'active' : '' }}"><i class="fas fa-images"></i> Gallery</a>
         {{-- <a href="{{ route('front.careers') }}" class="tt-drawer__link {{ Request::routeIs('front.careers') ? 'active' : '' }}"><i class="fas fa-briefcase"></i> Careers</a> --}}
         <a href="{{ route('front.contact') }}" class="tt-drawer__link {{ Request::routeIs('front.contact') ? 'active' : '' }}"><i class="fas fa-phone-alt"></i> Contact</a>
+        @auth
+            <a href="{{ route('front.profile') }}" class="tt-drawer__link {{ Request::routeIs('front.profile*') ? 'active' : '' }}"><i class="fas fa-user"></i> My Profile</a>
+            <form method="POST" action="{{ route('front.logout') }}">
+                @csrf
+                <button type="submit" class="tt-drawer__link w-100 text-start border-0 bg-transparent"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+            </form>
+        @else
+            <a href="{{ route('front.login') }}" class="tt-drawer__link {{ Request::routeIs('front.login') ? 'active' : '' }}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+            <a href="{{ route('front.register') }}" class="tt-drawer__link {{ Request::routeIs('front.register') ? 'active' : '' }}"><i class="fas fa-user-plus"></i> Register</a>
+        @endauth
     </nav>
     <div class="tt-drawer__footer">
         {{-- <a href="{{ route('front.tours') }}" class="tt-nav__btn-primary w-100 text-center"><i class="fas fa-compass me-1"></i> Book Now</a> --}}

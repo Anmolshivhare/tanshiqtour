@@ -118,6 +118,12 @@
 
                         <hr class="my-4">
 
+                        <div class="d-grid mb-4">
+                            <a href="{{ route('front.google.redirect') }}" class="btn btn-outline-dark fw-semibold">
+                                <i class="fa-brands fa-google me-2"></i>Sign up with Google
+                            </a>
+                        </div>
+
                         <div class="text-center">
                             <p class="text-muted mb-0">Already have an account?</p>
                             <a href="{{ route('front.login') }}" class="btn btn-outline-primary mt-2 fw-semibold">
