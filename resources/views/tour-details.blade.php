@@ -192,8 +192,8 @@
                         <div class="td-stats-bar__value">
                             {{ $tour->max_persons ? 'Max ' . $tour->max_persons : 'Unlimited' }}</div>
                     </div>
-                </div>  
-                @if ($tour->price_per_person)
+                </div>
+                {{-- @if ($tour->price_per_person)
             <div class="td-stats-bar__divider"></div>
             <div class="td-stats-bar__item td-stats-bar__item--price">
                 <span class="td-price-badge">
@@ -465,7 +465,7 @@
                                         <div class="swiper-slide">
                                             <div class="tt-pkg-card" data-cat="featured" data-aos="fade-up"
                                                 data-aos-delay="{{ ($i % 3) * 80 }}">
-                                                <a href="{{ route('front.tour-details', $relatedTour->slug) }}">
+                                                <a href="{{ route('front.tour.book', $relatedTour->slug) }}">
                                                     <div class="tt-pkg-card__img">
                                                         <img src="{{ $relatedTourImage }}"
                                                             alt="{{ $relatedTour->title }}" loading="lazy">
@@ -701,13 +701,13 @@
                     <div class="td-booking-card" style="position:sticky; top:110px; z-index:10;">
                         <div class="td-booking-card__header">
                             <h3 class="td-booking-card__title">Book This Tour</h3>
-                            {{-- @if ($tour->price_per_person)
+                            @if ($tour->price_per_person)
                                 <div class="td-booking-card__price">
                                     <span class="td-booking-card__price-from">from</span>
                                     <span
                                         class="td-booking-card__price-value">₹{{ number_format($tour->price_per_person) }}</span>
                                 </div>
-                            @endif --}}
+                            @endif
                         </div>
 
                         <div class="td-booking-card__body">

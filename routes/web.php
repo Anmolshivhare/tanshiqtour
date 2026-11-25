@@ -29,6 +29,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::redirect('/home', '/', 301)->name('front.home');
 Route::get('/tour-packages', [HomeController::class, 'tours'])->name('front.tours');
 Route::get('/tours/{slug}', [HomeController::class, 'tourDetails'])->name('front.tour-details');
+Route::get('/tours/{slug}/book', [FrontAuthController::class, 'bookNow'])->name('front.tour.book');
 Route::post('/tours/{slug}/enquiry', [HomeController::class, 'storeTourEnquiry'])->name('front.tour.enquiry.store');
 Route::post('/tours/{slug}/reviews', [HomeController::class, 'storeReview'])->name('front.tour.review.store');
 Route::get('/about-us', [HomeController::class, 'about'])->name('front.about');
@@ -71,21 +72,18 @@ Route::get('/sitemap.xml', function () {
 // Frontend Authentication Routes
 Route::get('/login', [FrontAuthController::class, 'showLogin'])->name('front.login');
 Route::post('/login', [FrontAuthController::class, 'login'])->name('front.post-login');
+Route::get('/auth/google', [FrontAuthController::class, 'redirectToGoogle'])->name('front.google.redirect');
+Route::get('/auth/google/callback', [FrontAuthController::class, 'handleGoogleCallback'])->name('front.google.callback');
 Route::get('/register', [FrontAuthController::class, 'showRegister'])->name('front.register');
 Route::post('/register', [FrontAuthController::class, 'register'])->name('front.post-register');
 Route::get('/profile', [FrontAuthController::class, 'showProfile'])->name('front.profile')->middleware('auth');
 Route::post('/profile', [FrontAuthController::class, 'updateProfile'])->name('front.profile.update')->middleware('auth');
-Route::get('/logout', [FrontAuthController::class, 'logout'])->name('front.logout');
+Route::post('/logout', [FrontAuthController::class, 'logout'])->name('front.logout');
 
 // Admin auth
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 })->name('admin.root');
-
-Route::get('/login', function () {
-    return redirect()->route('admin.login');
-})->name('admin.root');
-
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('login');

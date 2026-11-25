@@ -9,6 +9,7 @@
         "php": "^8.2",
         "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^12.0",
+        "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10",
         "laravel/ui": "^4.6",
         "spatie/laravel-activitylog": "^4.10",
