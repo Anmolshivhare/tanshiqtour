@@ -8,7 +8,7 @@
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
                             <a href="{{ route('home') }}">
-                                <img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="Logo" width="120"
+                                <img src="{{ Vite::asset('resources/images/logo.jpg') }}" alt="Logo" width="120"
                                     class="mb-3">
                             </a>
                             <h2 class="fw-bold text-primary">Welcome Back</h2>
@@ -18,14 +18,16 @@
                         @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
                         @if (session('message'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('message') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -40,8 +42,8 @@
                                     </span>
                                     <input type="email"
                                         class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror"
-                                        id="email" name="email" value="{{ old('email') }}" placeholder="Enter your email"
-                                        required>
+                                        id="email" name="email" value="{{ old('email') }}"
+                                        placeholder="Enter your email" required>
                                 </div>
                                 @error('email')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
