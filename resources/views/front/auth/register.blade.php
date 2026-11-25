@@ -8,7 +8,7 @@
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
                             <a href="{{ route('home') }}">
-                                <img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="Logo" width="120"
+                                <img src="{{ Vite::asset('resources/images/logo.jpg') }}" alt="Logo" width="120"
                                     class="mb-3">
                             </a>
                             <h2 class="fw-bold text-primary">Create Account</h2>
